@@ -44,4 +44,10 @@
   display: none;
 }
 
+#frigoGrill {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 /*# sourceMappingURL=Grill.css.map */
