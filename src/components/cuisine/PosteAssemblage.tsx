@@ -289,7 +289,7 @@ function PosteAssemblage() {
                       : "tabContentPosteAssemblage"
                   }
                 >
-                  <React.Fragment key={element.nom}>
+                  
                   <h3>{element.nom}</h3>
                   {element.tableau.map((e: string) => (
                     <>
@@ -303,9 +303,9 @@ function PosteAssemblage() {
                       </button>
                     </>
                   ))}
-                  </React.Fragment>
+                  
                   <div id="partieRecette">
-                    <h2>Recettes</h2>
+                    <h3>Recettes</h3>
                     <ul>
                       {burgers.map((burger: Burger, index: number) => (
                         <li key={index}>
@@ -321,7 +321,7 @@ function PosteAssemblage() {
               ))}
             </div>
             <div id="standByPosteAssemblage" className="postePosteAssemblage">
-              <h2>En attente</h2>
+              <h3>En attente</h3>
               {burgerEnAttente.map((e: Burger, index: number) => (
                 <button
                   key={index}
@@ -332,7 +332,7 @@ function PosteAssemblage() {
               ))}
             </div>
             <div id="partieStock">
-              <h2>Stocks</h2>
+              <h3>Stocks</h3>
               <ul>
                 <li>stocks : 1</li>
                 <li>stocks : 2</li>
@@ -344,7 +344,7 @@ function PosteAssemblage() {
             </div>
           </div>
           <div id="burgerEnPreparation">
-            <h2>Current burger</h2>
+            <h3>Current burger</h3>
             {currentBurger.sauce?.length === 2 && (
               <p>{currentBurger.sauce[1]}</p>
             )}
@@ -361,7 +361,7 @@ function PosteAssemblage() {
         </div>
       </div>
       <div id="standByPosteAssemblage" className="postePosteAssemblage">
-        <h2>En attente</h2>
+        <h3>En attente</h3>
         {burgerEnAttente.map((e: Burger, index: number) => (
           <button key={index} onClick={() => handleClickReprendreBurger(e)}>
             {e.pain}
@@ -369,7 +369,7 @@ function PosteAssemblage() {
         ))}
       </div>
       <div id="pretPosteAssemblage" className="postePosteAssemblage">
-        <h2>Pret</h2>
+        <h3>Pret</h3>
         {burgerPret.map((e: Burger, index: number) => (
           <button key={index}>{e.pain}</button>
         ))}
