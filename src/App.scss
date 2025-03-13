@@ -1,0 +1,30 @@
+html {
+  font-size: 10px;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+#page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#bureauManager {
+  border: solid black;
+  height: 10vh;
+}
+
+#cuisine {
+  border: solid red;
+  height: 55vh;
+}
+
+#comptoir {
+  border: solid blue;
+  height: 35vh;
+}
