@@ -3,7 +3,6 @@ import "./Grill.css";
 //import { taille } from "../../elements/stocks";
 
 function Grill() {
-
   const viande: string[] = [
     "oeuf",
     "jambon",
@@ -29,12 +28,12 @@ function Grill() {
     []
   );
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
-  const [timeOutPretId, setTimeOutPretId] = useState<number[]>([])
+  const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
 
   const tabCuisson = useRef<string[]>([]);
   const tabPret = useRef<string[]>([]);
   const tabGrille = useRef<string[]>([]);
-  const timeOutPretRef = useRef<number[]>([])
+  const timeOutPretRef = useRef<number[]>([]);
 
   useEffect(() => {
     tabCuisson.current = plaqueDeCuisson;
@@ -50,18 +49,17 @@ function Grill() {
 
   useEffect(() => {
     timeOutPretRef.current = timeOutPretId;
-  }, [timeOutPretId])
-
+  }, [timeOutPretId]);
 
   function steakCuitStandBy(element: string): void {
     standByTimeOut = setTimeout(() => {
-        setPlaqueDeCuissonGrille([...tabGrille.current, element]);
-        const oldestSteak: number = tabPret.current.indexOf(element);
-        const tabPretCopie: string[] = tabPret.current.slice();
-        tabPretCopie.splice(oldestSteak, 1);
-        setPlaqueDeCuissonPret(tabPretCopie);
-      }, 10000);
-      setTimeOutPretId([...timeOutPretRef.current, standByTimeOut]);
+      setPlaqueDeCuissonGrille([...tabGrille.current, element]);
+      const oldestSteak: number = tabPret.current.indexOf(element);
+      const tabPretCopie: string[] = tabPret.current.slice();
+      tabPretCopie.splice(oldestSteak, 1);
+      setPlaqueDeCuissonPret(tabPretCopie);
+    }, 10000);
+    setTimeOutPretId([...timeOutPretRef.current, standByTimeOut]);
   }
 
   function handleClickFrigoToGrill(element: string): void {
@@ -88,38 +86,31 @@ function Grill() {
       tabCuisson.current.length +
       tabPret.current.length +
       tabGrille.current.length;
-    const placeVide: string[] = []
+    const placeVide: string[] = [];
     if (actualSizeGrill < limitSizeGrill) {
       for (let i = actualSizeGrill; i < limitSizeGrill; i++) {
-
         placeVide.push("Vide");
       }
     }
-    setPlaceVideGrill(placeVide)
+    setPlaceVideGrill(placeVide);
   }, [plaqueDeCuisson, plaqueDeCuissonPret, plaqueDeCuissonGrille]);
 
   function handleClickAvailabilitySteak(element: string): void {
     const getReadySteak: number = tabPret.current.indexOf(element);
     const timeOutIdCopie: number[] = timeOutPretRef.current.slice();
-    const steakTimeOutId = timeOutIdCopie[getReadySteak]
-    clearTimeout(steakTimeOutId)
+    const steakTimeOutId = timeOutIdCopie[getReadySteak];
+    clearTimeout(steakTimeOutId);
     const tabCuissonCopie: string[] = tabPret.current.slice();
-    tabCuissonCopie.splice(getReadySteak, 1)
-    setPlaqueDeCuissonPret(tabCuissonCopie)
+    tabCuissonCopie.splice(getReadySteak, 1);
+    setPlaqueDeCuissonPret(tabCuissonCopie);
   }
 
   function handleClickPoubelle(element: string): void {
     const oldestSteak: number = tabGrille.current.indexOf(element);
     const tabGrilleCopie: string[] = tabGrille.current.slice();
     tabGrilleCopie.splice(oldestSteak, 1);
-    setPlaqueDeCuissonGrille(tabGrilleCopie)
+    setPlaqueDeCuissonGrille(tabGrilleCopie);
   }
-
-
-  console.log("plaque", plaqueDeCuisson);
-  console.log("pret", plaqueDeCuissonPret);
-  console.log("grille", plaqueDeCuissonGrille)
-
 
   return (
     <div id="grillComponent">
@@ -147,21 +138,32 @@ function Grill() {
           }
           id="CuissonGrill"
         >
+          {plaqueDeCuissonGrille.map((emplacement: string, index: number) => (
+            <button
+              onClick={() => handleClickPoubelle(emplacement)}
+              key={index}
+            >
+              {emplacement}
+            </button>
+          ))}
+          {plaqueDeCuissonPret.map((emplacement: string, index: number) => (
+            <button
+              key={index}
+              onClick={() => handleClickAvailabilitySteak(emplacement)}
+            >
+              {emplacement}
+            </button>
+          ))}
           {plaqueDeCuisson.map((emplacement: string, index: number) => (
             <button disabled={true} key={index}>
               {emplacement}
             </button>
           ))}
-          {plaqueDeCuissonPret.map((emplacement: string, index: number) => (
-            <button key={index} onClick={() => handleClickAvailabilitySteak(emplacement)}>{emplacement}</button>
+          {placeVideGrill.map((emplacement: string, index: number) => (
+            <button disabled={true} key={index}>
+              {emplacement}
+            </button>
           ))}
-          {plaqueDeCuissonGrille.map((emplacement: string, index: number) => (
-            <button onClick={() => handleClickPoubelle(emplacement)} key={index}>{emplacement}</button>
-          ))}
-            {placeVideGrill.map((emplacement: string, index: number) => (
-            <button disabled={true} key={index}>{emplacement}</button>
-          ))}
-
         </div>
         <div
           className={
@@ -182,7 +184,7 @@ function Grill() {
         </div>
       </div>
       <div>
-        <h3>Pret</h3>
+        <h3>Pret stock</h3>
         <ul>
           {viande.map((element) => (
             <li key={element}>{element} : X</li>

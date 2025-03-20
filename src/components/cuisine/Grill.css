@@ -35,6 +35,9 @@
 }
 
 .tabGrillContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
@@ -42,12 +45,6 @@
 
 .tabGrillContentHidden {
   display: none;
-}
-
-#frigoGrill {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 }
 
 /*# sourceMappingURL=Grill.css.map */
