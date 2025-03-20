@@ -7,16 +7,9 @@ function Grill() {
   const limitSizeGrill: number = 8;
   let standByTimeOut: number = 0;
   const [toggleTabGrill, setToggleTabGrill] = useState<string>("cuisson");
-
-  function handleClickTabButtonGrill(element: string): void {
-    setToggleTabGrill(element);
-  }
-
   const [plaqueDeCuisson, setPlaqueDeCuisson] = useState<string[]>([]);
   const [plaqueDeCuissonPret, setPlaqueDeCuissonPret] = useState<string[]>([]);
-  const [plaqueDeCuissonGrille, setPlaqueDeCuissonGrille] = useState<string[]>(
-    []
-  );
+  const [plaqueDeCuissonGrille, setPlaqueDeCuissonGrille] = useState<string[]>([]);
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
   const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
 
@@ -40,6 +33,10 @@ function Grill() {
   useEffect(() => {
     timeOutPretRef.current = timeOutPretId;
   }, [timeOutPretId]);
+
+  function handleClickTabButtonGrill(element: string): void {
+    setToggleTabGrill(element);
+  }
 
   function steakCuitStandBy(element: string): void {
     standByTimeOut = setTimeout(() => {
