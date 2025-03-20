@@ -107,9 +107,14 @@ function Grill() {
     tabCuissonCopie.splice(getReadySteak, 1)
     setPlaqueDeCuissonPret(tabCuissonCopie)
   }
-  const styleTest = {
-    color: "blue"
+
+  function handleClickPoubelle(element: string): void {
+    const oldestSteak: number = tabGrille.current.indexOf(element);
+    const tabGrilleCopie: string[] = tabGrille.current.slice();
+    tabGrilleCopie.splice(oldestSteak, 1);
+    setPlaqueDeCuissonGrille(tabGrilleCopie)
   }
+
 
   console.log("plaque", plaqueDeCuisson);
   console.log("pret", plaqueDeCuissonPret);
@@ -151,7 +156,7 @@ function Grill() {
             <button key={index} onClick={() => handleClickAvailabilitySteak(emplacement)}>{emplacement}</button>
           ))}
           {plaqueDeCuissonGrille.map((emplacement: string, index: number) => (
-            <button style={styleTest} key={index}>{emplacement}</button>
+            <button onClick={() => handleClickPoubelle(emplacement)} key={index}>{emplacement}</button>
           ))}
             {placeVideGrill.map((emplacement: string, index: number) => (
             <button disabled={true} key={index}>{emplacement}</button>
