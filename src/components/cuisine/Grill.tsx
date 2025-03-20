@@ -1,19 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Grill.css";
-//import { taille } from "../../elements/stocks";
+import { viande } from "../../elements/stocks";
 
 function Grill() {
-  const viande: string[] = [
-    "oeuf",
-    "jambon",
-    "steak",
-    "mayo",
-    "ketchup",
-    "moutarde",
-    "pain",
-    "salade",
-    "bougie",
-  ];
+
   const limitSizeGrill: number = 8;
   let standByTimeOut: number = 0;
   const [toggleTabGrill, setToggleTabGrill] = useState<string>("cuisson");
