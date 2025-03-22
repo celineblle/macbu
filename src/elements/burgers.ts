@@ -290,18 +290,17 @@ function glace (): Glace[] {
     const allGlace = [];
     for(let i = 0; i < toppings.length; i++){
         for(let j= 0; j < coulis.length; j++){
-          for(let k = 0; k < taille.length; k++) {
               const unGlace: Glace = {
                 nom: "Glace",
                 base: "Glace au lait",
                 topping: toppings[i],
                 coulis: coulis[j],
                 emballage: stocks.gobelet[3],
-                tailleProduit: taille[k],
+                tailleProduit: taille[1],
                 type: "dessert",
                 sousType: "glace",
             };
-            allGlace.push(unGlace);}
+            allGlace.push(unGlace);
         }
     }
     return allGlace;
