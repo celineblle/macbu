@@ -20,7 +20,7 @@ function Friteuse () {
     const [timeOutPretFriteuseId, setTimeOutPretFriteuseId] = useState<number[]>(
       []
     );
-    const [placeVideFriteuse, setPlaceVideFiteuse] = useState<string[]>([])
+    const [placeVideFriteuse, setPlaceVideFriteuse] = useState<string[]>([])
   
     const friteuseRef = useRef<Friture[]>([]);
     const pretRef = useRef<Friture[]>([]);
@@ -88,14 +88,14 @@ function Friteuse () {
             placeVide.push("Vide");
           }
         }
-        setPlaceVideFiteuse(placeVide);
+        setPlaceVideFriteuse(placeVide);
       }, [friteuse, friteusePret, friteuseGrille]);
 
       function handleClickAvailabilityFriture(element: Friture): void {
         const getReadyFriture: number = pretRef.current.indexOf(element);
         const timeOutIdCopie: number[] = timeOutPretFriteuseRef.current.slice();
-        const steakTimeOutId = timeOutIdCopie[getReadyFriture];
-        clearTimeout(steakTimeOutId);
+        const friteTimeOutId = timeOutIdCopie[getReadyFriture];
+        clearTimeout(friteTimeOutId);
         const tabCuissonCopie: Friture[] = pretRef.current.slice();
         tabCuissonCopie.splice(getReadyFriture, 1);
         setFriteusePret(tabCuissonCopie);
@@ -132,7 +132,7 @@ function Friteuse () {
               ? "tabFriteuseContent"
               : "tabFriteuseContentHidden"
           }
-          id="CuissonFriteuse"
+          id="cuissonFriteuse"
         >
           {friteuseGrille.map((emplacement: Friture, index: number) => (
             <button key={index} onClick={() => handleClickPoubelle(emplacement)}>{emplacement.friture}</button>

@@ -22,7 +22,7 @@ function FriteuseNugget() {
   const [timeOutPretFriteuseGpId, setTimeOutPretFriteuseGpId] = useState<number[]>(
     []
   );
-  const [placeVideFriteuseGp, setPlaceVideFiteuseGp] = useState<string[]>([])
+  const [placeVideFriteuseGp, setPlaceVideFriteuseGp] = useState<string[]>([])
 
   const friteuseGpRef = useRef<Friture[]>([]);
   const pretGpRef = useRef<Friture[]>([]);
@@ -87,14 +87,14 @@ function FriteuseNugget() {
           placeVide.push("Vide");
         }
       }
-      setPlaceVideFiteuseGp(placeVide);
+      setPlaceVideFriteuseGp(placeVide);
     }, [friteuseGp, friteuseGpPret, friteuseGpGrille]);
   
     function handleClickAvailabilityFriture(element: Friture): void {
       const getReadyFriture: number = pretGpRef.current.indexOf(element);
       const timeOutIdCopie: number[] = timeOutPretFriteuseGpRef.current.slice();
-      const steakTimeOutId = timeOutIdCopie[getReadyFriture];
-      clearTimeout(steakTimeOutId);
+      const friteTimeOutId = timeOutIdCopie[getReadyFriture];
+      clearTimeout(friteTimeOutId);
       const tabCuissonCopie: Friture[] = pretGpRef.current.slice();
       tabCuissonCopie.splice(getReadyFriture, 1);
       setFriteuseGpPret(tabCuissonCopie);
@@ -135,7 +135,7 @@ function FriteuseNugget() {
               ? "tabFriteuseNuggetContent"
               : "tabFriteuseNuggetContentHidden"
           }
-          id="CuissonFriteuseNugget"
+          id="cuissonFriteuseNugget"
         >
           {friteuseGpGrille.map((emplacement: Friture, index: number) => (
             <button key={index} onClick={() => handleClickPoubelle(emplacement)}>{emplacement.friture}</button>
