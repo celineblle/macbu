@@ -1,6 +1,6 @@
 import * as stocks from "./stocks";
 
-interface Salade {
+export interface Salade {
     nom: string,
     base: string,
     topping: string,
@@ -39,7 +39,7 @@ export const saladeItalienne: Salade = {
     sousType: "salade",
 };
 
-interface Nugget {
+export interface Nugget {
     nom: string,
     ingredient: string,
     nombreNugget: number,
@@ -284,8 +284,8 @@ export interface Glace{
 };
 
 function glace (): Glace[] {
-    const toppings = [stocks.glaceToppings[2], stocks.glaceToppings[3], stocks.glaceToppings[4], stocks.glaceToppings[5], null];
-    const coulis = [stocks.glaceToppings[0], stocks.glaceToppings[1], null];
+    const toppings = [stocks.glaceToppings[2], stocks.glaceToppings[3], stocks.glaceToppings[4], stocks.glaceToppings[5]];
+    const coulis = [stocks.glaceToppings[0], stocks.glaceToppings[1]];
     const taille = [stocks.taille[0], stocks.taille[2]]
     const allGlace = [];
     for(let i = 0; i < toppings.length; i++){
@@ -407,6 +407,6 @@ export const jusDefruit: Accompagnement = {
     sousType: "enfant",
 }
 
-export const sandwichs: object[] = [saladeCesar, saladeItalienne, nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
+export const sandwichs: (Salade | Nugget | Burger)[] = [saladeCesar, saladeItalienne, nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
 
 export const burgers: Burger[] = [fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
