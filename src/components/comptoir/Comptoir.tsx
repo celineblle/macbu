@@ -2,7 +2,7 @@ import React from "react";
 import "./Comptoir.css"
 import Caisse from "./Caisse";
 import ComptoirAssemblage from "./ComptoirAssemblage";
-import Boisson from "./Boisson";
+import PosteBoisson from "./Boisson";
 import Glace from "./Glace";
 
 function Comptoir() {
@@ -15,7 +15,7 @@ function Comptoir() {
       <ComptoirAssemblage />
       </div>
       <div id="boisson">
-      <Boisson />
+      <PosteBoisson />
       </div>
       <div id="glace">
       <Glace />
