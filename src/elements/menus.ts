@@ -1,14 +1,7 @@
 import * as burgers from "./burgers";
 import { taille, sac } from "./stocks";
 
-export interface Menu {
-  sandwich: object;
-  accompagnement: object;
-  boisson: object;
-  taille: number;
-}
-
-function menu(): Menu[] {
+function menu():(object[] | object)[] {
   const grandSandwichs: object[] = [];
   const moyenSandwichs: object[] = [];
   const petitSandwichs: object[] = [];
@@ -18,7 +11,7 @@ function menu(): Menu[] {
   const grandeBoisson: object[] = [];
   const moyenneBoisson: object[] = [];
   const petiteBoisson: object[] = [];
-  const allMenu: Menu[] = [];
+  const allMenu: (object[] | object)[] = [];
 
   function tableauTaille(
     tabGrand: object[],
@@ -67,19 +60,8 @@ function menu(): Menu[] {
     tabBoisson: object[],
     taille: number
   ) {
-    for (let i = 0; i < tabSandwich.length; i++) {
-      for (let j = 0; j < tabAccompagnement.length; j++) {
-        for (let k = 0; k < tabBoisson.length; k++) {
-          const unMenu: Menu = {
-            sandwich: tabSandwich[i],
-            accompagnement: tabAccompagnement[j],
-            boisson: tabBoisson[k],
-            taille: taille,
-          };
-          allMenu.push(unMenu);
-        }
-      }
-    }
+    const tailleMenu = {taille: taille}
+    allMenu.push(tabSandwich, tabAccompagnement, tabBoisson, tailleMenu)
   }
 
   composeMenu(grandSandwichs, grandAccompagnement, grandeBoisson, 9);
@@ -89,23 +71,23 @@ function menu(): Menu[] {
   return allMenu;
 }
 
-export const menus: Menu[] = menu();
+export const menus: (object[] | object)[] = menu();
 
 export interface MenuEnfant {
-  sandwich: object;
-  accompagnement: object;
-  boisson: object;
-  dessert: object;
   emballage: string;
   taille: number;
 }
 
-function menuEnfant(): MenuEnfant[] {
-  const petitSandwichs = [];
-  const petitAccompagnement = [burgers.legume];
-  const petiteBoisson = [burgers.jusDefruit];
-  const dessert = [burgers.boissonYaourt, burgers.fruits];
+function menuEnfant(): (MenuEnfant | burgers.Accompagnement[] | (burgers.Salade | burgers.Nugget | burgers.Burger)[])[]  {
+  const petitSandwichs: (burgers.Salade | burgers.Nugget | burgers.Burger)[] = [];
+  const petitAccompagnement: (burgers.Accompagnement)[] = [burgers.legume];
+  const petiteBoisson: burgers.Boisson[] = [burgers.jusDefruit];
+  const dessert: (burgers.Accompagnement | burgers.Glace)[] = [burgers.boissonYaourt, burgers.fruits];
   const allMenuEnfant = [];
+  const constanteObjMenuEnfant: MenuEnfant= {
+    emballage: sac[3],
+    taille: 4,
+  };
 
   for (let a = 0; a < burgers.sandwichs.length; a++) {
     if (burgers.sandwichs[a].tailleProduit === taille[2]) {
@@ -130,25 +112,10 @@ function menuEnfant(): MenuEnfant[] {
       dessert.push(burgers.glaces[d]);
     }
   }
+  allMenuEnfant.push(petitSandwichs, petitAccompagnement, petiteBoisson, dessert, constanteObjMenuEnfant)
 
-  for (let i = 0; i < petitSandwichs.length; i++) {
-    for (let j = 0; j < petitAccompagnement.length; j++) {
-      for (let k = 0; k < petiteBoisson.length; k++) {
-        for (let l = 0; l < dessert.length; l++) {
-          const unMenuEnfant: MenuEnfant = {
-            sandwich: petitSandwichs[i],
-            accompagnement: petitAccompagnement[j],
-            boisson: petiteBoisson[k],
-            dessert: dessert[l],
-            emballage: sac[3],
-            taille: 4,
-          };
-          allMenuEnfant.push(unMenuEnfant);
-        }
-      }
-    }
-  }
+
   return allMenuEnfant;
 }
 
-export const menusEnfant: MenuEnfant[] = menuEnfant();
+export const menusEnfant: (MenuEnfant | burgers.Accompagnement[] | (burgers.Salade | burgers.Nugget | burgers.Burger)[])[] = menuEnfant();
