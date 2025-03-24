@@ -1,40 +1,73 @@
-import { frituresCuisine, frite } from "./stocks";
+import { frituresCuisine, frite, taille } from "./stocks";
 
 export interface Friture {
-    friture: string,
-    quantiteSachet: number
+  friture: string;
+  quantiteSachet: number;
 }
 
 export const frituresCuisineQuantite: Friture[] = [
-    {
-        friture: frituresCuisine[0],
-        quantiteSachet: 20
-    },
-    {
-        friture: frituresCuisine[1],
-        quantiteSachet: 20
-    },
-    {
-        friture: frituresCuisine[2],
-        quantiteSachet: 10
-    },
-    {
-        friture: frituresCuisine[3],
-        quantiteSachet: 15
-    },
-    {
-        friture: frituresCuisine[4],
-        quantiteSachet: 10
-    }
-]
+  {
+    friture: frituresCuisine[0],
+    quantiteSachet: 20,
+  },
+  {
+    friture: frituresCuisine[1],
+    quantiteSachet: 20,
+  },
+  {
+    friture: frituresCuisine[2],
+    quantiteSachet: 10,
+  },
+  {
+    friture: frituresCuisine[3],
+    quantiteSachet: 15,
+  },
+  {
+    friture: frituresCuisine[4],
+    quantiteSachet: 10,
+  },
+];
 
 export const frites: Friture[] = [
-    {
-        friture: frite[0],
-        quantiteSachet: 20
-    },
-    {
-        friture: frite[1],
-        quantiteSachet: 20
-    },
-]
+  {
+    friture: frite[0],
+    quantiteSachet: 20,
+  },
+  {
+    friture: frite[1],
+    quantiteSachet: 20,
+  },
+];
+//export interface Accompagnement {
+//     nom: string,
+//     base: string,
+//     emballage: string,
+//     tailleProduit: string,
+//     type: string,
+//     sousType: string,
+// };
+
+export interface PortionFrite {
+  base: string;
+  quantite: number;
+  tailleProduit: string;
+}
+
+function getPortionFrite(): PortionFrite[] {
+  const allFrites: PortionFrite[] = [];
+
+  for (let i = 0; i < frites.length; i++) {
+    let quantite: number = 3;
+    for (let j = 0; j < taille.length; j++) {
+      allFrites.push({
+        base: frite[i],
+        quantite: quantite,
+        tailleProduit: taille[j],
+      });
+      quantite = quantite - 1;
+    }
+  }
+  return allFrites;
+}
+
+export const portionFrite: PortionFrite[] = getPortionFrite();

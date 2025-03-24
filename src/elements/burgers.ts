@@ -319,8 +319,8 @@ export interface Accompagnement {
 };
 
  function accompagnement (): Accompagnement[] {
-    const noms = ["Frites", "Potatoes", "Salade"];
-    const bases = [stocks.frite[0], stocks.frite[1], stocks.frais[0]];
+    const noms = ["Frite", "Potatoe"];
+    const bases = [stocks.frite[0], stocks.frite[1]];
     const allAccompagnements = [];
     for(let i = 0; i < noms.length; i++){
         for(let j= 0; j < stocks.taille.length; j++){
@@ -339,6 +339,15 @@ export interface Accompagnement {
 };
 
 export const accompagnements: Accompagnement[] = accompagnement();
+
+export const salade: Accompagnement = {
+    nom: stocks.frais[0],
+    base: stocks.frais[0],
+    emballage: stocks.emballageFrite[2],
+    tailleProduit: stocks.taille[2],
+    type: "accompagnement",
+    sousType: "salade",
+}
 
 export const legume: Accompagnement = {
     nom: "Légumes",
