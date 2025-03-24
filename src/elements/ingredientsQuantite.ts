@@ -38,14 +38,6 @@ export const frites: Friture[] = [
     quantiteSachet: 20,
   },
 ];
-//export interface Accompagnement {
-//     nom: string,
-//     base: string,
-//     emballage: string,
-//     tailleProduit: string,
-//     type: string,
-//     sousType: string,
-// };
 
 export interface PortionFrite {
   base: string;
