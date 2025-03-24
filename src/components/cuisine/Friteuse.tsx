@@ -320,6 +320,14 @@ function Friteuse() {
     }
   }
 
+  function handleClickAvailabilityFrite(element: Accompagnement): void {
+    const rackFriteCopie: Accompagnement[] = rackAFriteRef.current.slice();
+    const indexfrite: number = rackAFriteRef.current.findIndex((e) => e === element);
+
+    rackFriteCopie.splice(indexfrite, 1)
+    setRackAFrite(rackFriteCopie)
+  }
+
   return (
     <div id="friteuseComponent">
       <button onClick={handleClickToggleModal} id="buttonFriteuse">
@@ -389,7 +397,7 @@ function Friteuse() {
             </div>
             <div>
               {rackAFrite.map((emplacement: Accompagnement, index: number) => (
-                <button key={index}>
+                <button key={index} onClick={() => handleClickAvailabilityFrite(emplacement)}>
                   {emplacement.tailleProduit} {emplacement.nom}
                 </button>
               ))}
