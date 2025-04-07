@@ -286,7 +286,6 @@ export interface Glace{
 function glace (): Glace[] {
     const toppings = [stocks.glaceToppings[2], stocks.glaceToppings[3], stocks.glaceToppings[4], stocks.glaceToppings[5]];
     const coulis = [stocks.glaceToppings[0], stocks.glaceToppings[1]];
-    const taille = [stocks.taille[0], stocks.taille[2]]
     const allGlace = [];
     for(let i = 0; i < toppings.length; i++){
         for(let j= 0; j < coulis.length; j++){
@@ -296,7 +295,7 @@ function glace (): Glace[] {
                 topping: toppings[i],
                 coulis: coulis[j],
                 emballage: stocks.gobelet[3],
-                tailleProduit: taille[1],
+                tailleProduit: stocks.taille[2],
                 type: "dessert",
                 sousType: "glace",
             };
@@ -311,7 +310,7 @@ export const glaces: Glace[] = glace();
 
 export interface Accompagnement {
     nom: string,
-    base: string,
+    complement: string,
     emballage: string,
     tailleProduit: string,
     type: string,
@@ -326,7 +325,7 @@ export interface Accompagnement {
         for(let j= 0; j < stocks.taille.length; j++){
             const unAccompagnement: Accompagnement = {
                 nom: noms[i],
-                base: bases[i],
+                complement: bases[i],
                 emballage: stocks.emballageFrite[j],
                 tailleProduit: stocks.taille[j],
                 type: "accompagnement",
@@ -342,7 +341,7 @@ export const accompagnements: Accompagnement[] = accompagnement();
 
 export const salade: Accompagnement = {
     nom: stocks.frais[0],
-    base: stocks.frais[0],
+    complement: stocks.frais[0],
     emballage: stocks.emballageFrite[2],
     tailleProduit: stocks.taille[2],
     type: "accompagnement",
@@ -351,7 +350,7 @@ export const salade: Accompagnement = {
 
 export const legume: Accompagnement = {
     nom: "Légumes",
-    base: stocks.frais[1],
+    complement: stocks.frais[1],
     emballage: stocks.sac[2],
     tailleProduit: stocks.taille[2],
     type: "accompagnement",
@@ -360,7 +359,7 @@ export const legume: Accompagnement = {
 
 export const boissonYaourt: Accompagnement = {
     nom: "Boisson yaourt",
-    base: stocks.frais[3],
+    complement: stocks.frais[3],
     emballage: stocks.gobelet[2],
     tailleProduit: stocks.taille[2],
     type: "dessert",
@@ -369,7 +368,7 @@ export const boissonYaourt: Accompagnement = {
 
 export const fruits: Accompagnement = {
     nom: "Fruits",
-    base: stocks.frais[4],
+    complement: stocks.frais[4],
     emballage: stocks.gobelet[3],
     tailleProduit: stocks.taille[2],
     type: "dessert",
@@ -378,7 +377,7 @@ export const fruits: Accompagnement = {
 
 export interface Boisson {
     nom: string,
-    base: string,
+    saveur: string,
     emballage: string,
     tailleProduit: string,
     type: string,
@@ -393,7 +392,7 @@ function boisson (): Boisson[] {
         for(let j= 0; j < stocks.taille.length; j++){
             const uneBoisson: Boisson = {
                 nom: noms[i],
-                base: bases[i],
+                saveur: bases[i],
                 emballage: stocks.gobelet[j],
                 tailleProduit: stocks.taille[j],
                 type: "boisson",
@@ -407,15 +406,41 @@ function boisson (): Boisson[] {
 
 export const boissons: Boisson[] = boisson();
 
-export const jusDefruit: Accompagnement = {
+export const jusDefruit: Boisson = {
     nom: "Jus de Fruit",
-    base: stocks.frais[2],
+    saveur: stocks.frais[2],
     emballage: stocks.gobelet[2],
     tailleProduit: stocks.taille[2],
     type: "boisson",
     sousType: "enfant",
 }
 
+accompagnements.push(salade)
+accompagnements.push(legume)
+
 export const sandwichs: (Salade | Nugget | Burger)[] = [saladeCesar, saladeItalienne, nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
 
 export const burgers: Burger[] = [fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
+
+function getOnlyAdultAccompagnement(): Accompagnement[] {
+
+    const accompagnementTriee: Accompagnement[] = [];
+
+    for(let i = 0; i < accompagnements.length; i++) {
+        if(accompagnements[i].tailleProduit !== stocks.taille[2]) {
+            accompagnementTriee.push(accompagnements[i])
+        }
+    }
+    accompagnementTriee.push(salade)
+    return accompagnementTriee;
+}
+
+export const adultAccompagnement: Accompagnement[] = getOnlyAdultAccompagnement()
+
+export const enfantDessert: (Glace | Accompagnement)[] = glaces.slice()
+enfantDessert.push(boissonYaourt, fruits)
+
+export const enfantBoisson: Boisson[] = boissons.slice();
+enfantBoisson.push(jusDefruit)
+
+export const allProduits: (Salade | Nugget | Burger | Glace | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
