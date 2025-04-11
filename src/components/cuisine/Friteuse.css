@@ -4,6 +4,7 @@
 }
 #friteuseComponent {
   height: 50%;
+  width: calc(100% - 24px);
 }
 
 #modalFriteuseContent {
