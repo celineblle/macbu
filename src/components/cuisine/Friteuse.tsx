@@ -323,6 +323,27 @@ function Friteuse() {
       <button onClick={handleClickToggleModal} className="buttonModal">
         Friteuse
       </button>
+      <div id="pageContent">
+        <div>
+        <h4>pret</h4>
+        {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
+                  <button
+                    key={index}
+                    className={emplacement.grille === true ? "buttonGrille bacFriteuse" : emplacement.quantiteSachet === 0 ? "buttonNeutre bacFriteuse" : "buttonPret bacFriteuse" }
+                    onClick={
+                      emplacement.grille === true
+                        ? () => handleClickPoubelleBac(emplacement)
+                        : () => choisirIngredient(emplacement)
+                    }
+                  >
+                    {emplacement.friture} : {emplacement.quantiteSachet}
+                  </button>
+                ))}
+        </div>
+    <div>
+      <h4>Stock</h4>
+    </div>
+      </div>
       <div
         className={modalActionFriteuse ? "modalOpen" : "modalClose"}
         id="modalFriteuse"

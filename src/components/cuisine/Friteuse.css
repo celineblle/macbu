@@ -45,4 +45,9 @@
   flex-direction: row;
 }
 
+#pageContent {
+  display: flex;
+  flex-direction: row;
+}
+
 /*# sourceMappingURL=Friteuse.css.map */
