@@ -42,4 +42,9 @@
   width: 200px;
 }
 
+#pageContentNugget {
+  display: flex;
+  flex-direction: row;
+}
+
 /*# sourceMappingURL=FriteuseNugget.css.map */

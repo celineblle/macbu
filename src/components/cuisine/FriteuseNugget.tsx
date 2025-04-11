@@ -114,6 +114,16 @@ function FriteuseNugget() {
       <button className="buttonModal" onClick={handleClickToggleModal}>
         Friteuse Nugget
       </button>
+      <div id="pageContentNugget">
+        <div>
+          <h4>Pret</h4>
+        </div>
+        <hr />
+        <div>
+          <h4>Stock</h4>
+        </div>
+      </div>
+
       <div
         id="modalFriteuseNugget"
         className={modalActionFriteuseNugget ? "modalOpen" : "modalClose"}
@@ -130,71 +140,67 @@ function FriteuseNugget() {
             </button>
           </div>
           <div id="modalNuggetContent">
-          <div className="nuggetConstructeur" id="pretNugget">
-            <h3>Pret</h3>
-            <div></div>
-            <h3>Boite à nugget</h3>
-            <h3>Stocks boites</h3>
-          </div>
-          <hr />
-          <div className="nuggetConstructeur" id="cuissonNugget">
-            <h3>Cuisson</h3>
-            {friteuseGpGrille.map((emplacement: Friture, index: number) => (
-              <button
-                key={index}
-                onClick={() => handleClickPoubelle(emplacement)}
-                className="buttonGrille cuissonNugget"
-              >
-                {emplacement.friture}
-              </button>
-            ))}
-            {friteuseGpPret.map((emplacement: Friture, index: number) => (
-              <button
-                key={index}
-                onClick={() => handleClickAvailabilityFriture(emplacement)}
-                className="buttonPret cuissonNugget"
-              >
-                {emplacement.friture}
-              </button>
-            ))}
-            {friteuseGp.map((emplacement: Friture, index: number) => (
-              <button disabled={true} key={index} className="buttonCuisson cuissonNugget">
-                {emplacement.friture}
-              </button>
-            ))}
-            {placeVideFriteuseGp.map((emplacement: string, index: number) => (
-              <button key={index} className="buttonNeutre cuissonNugget">
-                {emplacement}
-              </button>
-            ))}
-            <h3>Frigo</h3>
-            {frituresCuisineQuantite.map(
-            (emplacement: Friture, index: number) => (
-              <button
-                onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
-                key={index}
-                className="buttonNeutre buttonFrigo"
-              >
-                {emplacement.friture} : {emplacement.quantiteSachet}
-              </button>
-            )
-          )}
-            <h3>Stocks frigo</h3>
-          </div>
-          <hr />
-          <div className="nuggetConstructeur" id="commandeNugget">
-            <h3>Commandes</h3>
-          </div>
+            <div className="nuggetConstructeur" id="pretNugget">
+              <h3>Pret</h3>
+              <div></div>
+              <h3>Boite à nugget</h3>
+              <h3>Stocks boites</h3>
+            </div>
+            <hr />
+            <div className="nuggetConstructeur" id="cuissonNugget">
+              <h3>Cuisson</h3>
+              {friteuseGpGrille.map((emplacement: Friture, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleClickPoubelle(emplacement)}
+                  className="buttonGrille cuissonNugget"
+                >
+                  {emplacement.friture}
+                </button>
+              ))}
+              {friteuseGpPret.map((emplacement: Friture, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleClickAvailabilityFriture(emplacement)}
+                  className="buttonPret cuissonNugget"
+                >
+                  {emplacement.friture}
+                </button>
+              ))}
+              {friteuseGp.map((emplacement: Friture, index: number) => (
+                <button
+                  disabled={true}
+                  key={index}
+                  className="buttonCuisson cuissonNugget"
+                >
+                  {emplacement.friture}
+                </button>
+              ))}
+              {placeVideFriteuseGp.map((emplacement: string, index: number) => (
+                <button key={index} className="buttonNeutre cuissonNugget">
+                  {emplacement}
+                </button>
+              ))}
+              <h3>Frigo</h3>
+              {frituresCuisineQuantite.map(
+                (emplacement: Friture, index: number) => (
+                  <button
+                    onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
+                    key={index}
+                    className="buttonNeutre buttonFrigo"
+                  >
+                    {emplacement.friture} : {emplacement.quantiteSachet}
+                  </button>
+                )
+              )}
+              <h3>Stocks frigo</h3>
+            </div>
+            <hr />
+            <div className="nuggetConstructeur" id="commandeNugget">
+              <h3>Commandes</h3>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <h3>Pret stock</h3>
-        <ul>
-          {frituresCuisineQuantite.map((element: Friture, index: number) => (
-            <li key={index}>{element.friture} : X</li>
-          ))}
-        </ul>
       </div>
     </div>
   );
