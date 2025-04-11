@@ -14,6 +14,9 @@ $gris: #d7d3d2;
 $grisBordure: #a6a6a6;
 $blanc: #f2f2f2;
 $noir: #0d0d0d;
+$beige: #D9AF8B;
+$vertFonce: #4BBF52;
+$vertClair: #C7F2B3;
 
 @mixin border-component {
   border: 4px solid $rose;
@@ -26,49 +29,4 @@ $noir: #0d0d0d;
 
 @mixin close-mode {
   display: none;
-}
-
-@mixin button-grille {
-  background-color: $marron;
-  color: $blanc;
-  border-radius: 5px;
-}
-
-@mixin button-pret {
-  background-color: $vert;
-  border-radius: 5px;
-}
-
-@mixin button-cuisson {
-  background-color: $orange;
-  border-radius: 5px;
-}
-
-@mixin button-neutre {
-  background-color: $gris;
-  border-radius: 5px;
-}
-
-@mixin commande-cuisson {
-  background-color: transparent;
-  border: 2px solid $orange;
-  border-radius: 5px;
-}
-
-@mixin commande-pret {
-  background-color: transparent;
-  border-radius: 5px;
-  border: 2px solid $vert;
-}
-
-@mixin commande-modal {
-  background-color: transparent;
-  border-radius: 5px;
-  border: 2px solid $rose;
-}
-
-@mixin onglet {
-  background-color: $gris;
-  border: 1px solid $grisBordure;
-  border-radius: 5px 5px 0px 0px;
 }

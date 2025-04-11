@@ -11,6 +11,32 @@ h1, h2, h3 {
   margin: 4px
 }
 
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+button {
+  border-radius: 5px; 
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: style.$noir;
+  padding: 3px 8px;
+  margin: 3px 8px;
+}
+
+hr {
+  border: 1px solid style.$noir;
+}
+
 #page {
   display: flex;
   flex-direction: column;
@@ -22,23 +48,20 @@ h1, h2, h3 {
 
 .buttonModal {
   background-color: transparent;
-  color: style.$noir;
-  cursor: pointer;
   font-family: 'BebasNeue', Impact;
   border: 2px solid style.$rose;
-  border-radius: 5px;
 }
 
 #headerModal {
   display: flex;
   justify-content: space-between;
   padding: 4px;
+  height: 10%;
+  width: 100%;
 }
 
 .closeModalButton {
   background-color: transparent;
-  cursor: pointer;
-  border: none;
 }
 
 @keyframes animatetop {
@@ -73,7 +96,6 @@ h1, h2, h3 {
 .tabLinksButton {
   background-color: style.$gris;
   padding: 5px;
-  cursor: pointer;
   transition: 0.3s;
   float: left;
   outline: none;
@@ -84,7 +106,7 @@ h1, h2, h3 {
   background-color: style.$grisBordure;
 }
 
-.tabLinksButton.active {
+.tabLinksButton:active {
   background-color: style.$rose;
   transition: 0.2s;
 }
@@ -92,3 +114,64 @@ h1, h2, h3 {
 .tabContentHidden, .modalClose {
   @include style.close-mode
 }
+
+.buttonGrille {
+  background-color: style.$marron;
+  color: style.$blanc;
+}
+
+.buttonPret {
+  background-color: style.$vert;
+}
+
+.buttonCuisson {
+  background-color: style.$orange;
+}
+
+.buttonNeutre {
+  background-color: style.$gris;
+}
+
+.onglet {
+  background-color: style.$gris;
+  border: 1px solid style.$grisBordure;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.buttonNeutre:hover, .onglet:hover, .buttonGrille:hover {
+  background-color: style.$rose;
+  color: style.$noir;
+}
+
+.buttonNeutre:active, .onglet:active {
+background-color: style.$grisBordure;
+}
+
+.buttonGrille:active {
+  background-color: style.$beige;
+  color: style.$noir;
+}
+
+.buttonPret:hover {
+  background-color: style.$vertFonce;
+}
+
+.buttonPret:active {
+  background-color: style.$vertClair;
+}
+
+.commandeCuisson {
+  background-color: transparent;
+  border: 2px solid style.$orange;
+}
+
+.commandePret {
+  background-color: transparent;
+  border: 2px solid style.$vert;
+}
+
+.commandeModal {
+  background-color: transparent;
+  border: 2px solid style.$rose;
+}
+

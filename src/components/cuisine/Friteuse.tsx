@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Friteuse.css";
-import close from "../../assets/close.svg"
+import close from "../../assets/close.svg";
 import {
   Friture,
   PortionFrite,
@@ -22,15 +22,8 @@ function Friteuse() {
     grille: boolean;
   }
 
-  const styleGrille = {
-    color: "blue",
-  };
-  const styleNormal = {
-    color: "black",
-  };
-
-  const tailleFriteuse: number = 4;
-  const tailleRackAFrite: number = 20;
+  const tailleFriteuse: number = 6;
+  const tailleRackAFrite: number = 18;
   let standByTimeOutFriteuse: number = 0;
   const friteVide: Friture = {
     friture: "Vide",
@@ -39,8 +32,6 @@ function Friteuse() {
   const [modalActionFriteuse, setModalActionFriteuse] =
     useState<boolean>(false);
 
-  const [toggleTabFriteuse, setToggleTabFriteuse] =
-    useState<string>("bac a frites");
   const [friteuse, setFriteuse] = useState<Friture[]>([]);
   const [friteusePret, setFriteusePret] = useState<Friture[]>([]);
   const [friteuseGrille, setFriteuseGrille] = useState<Friture[]>([]);
@@ -155,10 +146,6 @@ function Friteuse() {
       setPlaceVideFriteuse
     );
   }, [friteuse, friteusePret, friteuseGrille]);
-
-  function handleClickTabButtonFriteuse(element: string): void {
-    setToggleTabFriteuse(element);
-  }
 
   function friteuseStandBy(element: Friture): void {
     standByTimeOutFriteuse = setTimeout(() => {
@@ -323,10 +310,12 @@ function Friteuse() {
 
   function handleClickAvailabilityFrite(element: Accompagnement): void {
     const rackFriteCopie: Accompagnement[] = rackAFriteRef.current.slice();
-    const indexfrite: number = rackAFriteRef.current.findIndex((e) => e === element);
+    const indexfrite: number = rackAFriteRef.current.findIndex(
+      (e) => e === element
+    );
 
-    rackFriteCopie.splice(indexfrite, 1)
-    setRackAFrite(rackFriteCopie)
+    rackFriteCopie.splice(indexfrite, 1);
+    setRackAFrite(rackFriteCopie);
   }
 
   return (
@@ -335,129 +324,129 @@ function Friteuse() {
         Friteuse
       </button>
       <div
-        className={
-          modalActionFriteuse ? "modalOpen" : "modalClose"
-        }
+        className={modalActionFriteuse ? "modalOpen" : "modalClose"}
         id="modalFriteuse"
       >
         <div className="modalContent">
-        <div id="headerModal">
-        <h2>Friteuse</h2>
-          <button onClick={handleClickToggleModal} className="closeModalButton">
-            {" "}
-            <img alt="fermer" title="fermer" src={close}></img>
-          </button>
-          </div>
-          <div className="friteuseTabButton">
+          <div id="headerModal">
+            <h2>Friteuse</h2>
             <button
-              className="tabLinksButton"
-              onClick={() => handleClickTabButtonFriteuse("bac a frites")}
+              onClick={handleClickToggleModal}
+              className="closeModalButton"
             >
-              Cuisson
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
             </button>
-            <button
-              className="tabLinksButton"
-              onClick={() => handleClickTabButtonFriteuse("friteuse")}
-            >
-              Friteuses
-            </button>
-          </div>
-          <div
-            className={
-              toggleTabFriteuse === "bac a frites"
-                ? "tabFriteuseContent"
-                : "tabContentHidden"
-            }
-            id="bacFriteuse"
-          >
-            <div>
-              {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
-                <button
-                  key={index}
-                  style={
-                    emplacement.grille === true ? styleGrille : styleNormal
-                  }
-                  onClick={
-                    emplacement.grille === true
-                      ? () => handleClickPoubelleBac(emplacement)
-                      : () => choisirIngredient(emplacement)
-                  }
-                >
-                  {emplacement.friture} : {emplacement.quantiteSachet}
-                </button>
-              ))}
-            </div>
-            <div>
-              {taille.map((emplacement: string, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickFabriquerPortion(emplacement)}
-                >
-                  {emplacement}
-                </button>
-              ))}
-            </div>
-            <div>
-              {rackAFrite.map((emplacement: Accompagnement, index: number) => (
-                <button key={index} onClick={() => handleClickAvailabilityFrite(emplacement)}>
-                  {emplacement.tailleProduit} {emplacement.nom}
-                </button>
-              ))}
-              {placeVideRack.map((emplacement: Friture, index: number) => (
-                <button key={index}>{emplacement.friture}</button>
-              ))}
-            </div>
           </div>
 
-          <div
-            className={
-              toggleTabFriteuse === "friteuse"
-                ? "tabFriteuseContent"
-                : "tabContentHidden"
-            }
-            id="frigoFriteuse"
-          >
-            <div>
-              {frites.map((emplacement: Friture, index: number) => (
-                <button
-                  onClick={() => handleClickFrigoToFriteuse(emplacement)}
-                  key={index}
-                >
-                  {emplacement.friture} : {emplacement.quantiteSachet}
-                </button>
-              ))}
+          <div id="modalFriteuseContent">
+            <div id="pretFriteuse" className="modalComponent">
+              <h3 className="titreModalContent">Pret</h3>
+              <br />
+              <div className="fritureConstructeur">
+                {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
+                  <button
+                    key={index}
+                    className={emplacement.grille === true ? "buttonGrille bacFriteuse" : emplacement.quantiteSachet === 0 ? "buttonNeutre bacFriteuse" : "buttonPret bacFriteuse" }
+                    onClick={
+                      emplacement.grille === true
+                        ? () => handleClickPoubelleBac(emplacement)
+                        : () => choisirIngredient(emplacement)
+                    }
+                  >
+                    {emplacement.friture} : {emplacement.quantiteSachet}
+                  </button>
+                ))}
+              </div>
+              <div className="fritureConstructeur">
+                {taille.map((emplacement: string, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClickFabriquerPortion(emplacement)}
+                    className="buttonNeutre bacFriteuse"
+                  >
+                    {emplacement}
+                  </button>
+                ))}
+              </div>
+              <br />
+              <div className="fritureConstructeur">
+                {rackAFrite.map(
+                  (emplacement: Accompagnement, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => handleClickAvailabilityFrite(emplacement)}
+                      className="buttonPret rackFrite"
+                    >
+                      {emplacement.tailleProduit} {emplacement.nom}
+                    </button>
+                  )
+                )}
+                {placeVideRack.map((emplacement: Friture, index: number) => (
+                  <button className="buttonNeutre rackFrite" key={index}>{emplacement.friture}</button>
+                ))}
+              </div>
             </div>
-            <div>
-              {friteuseGrille.map((emplacement: Friture, index: number) => (
-                <button
-                  key={index}
-                  onClick={() =>
-                    handleClickPoubelle(
-                      emplacement,
-                      friteuseGrilleRef,
-                      setFriteuseGrille
-                    )
-                  }
-                >
-                  {emplacement.friture} à jeter
-                </button>
-              ))}
-              {friteusePret.map((emplacement: Friture, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickFriteuseToBac(emplacement, index)}
-                >
-                  {emplacement.friture}
-                </button>
-              ))}
-              {friteuse.map((emplacement: Friture, index: number) => (
-                <button disabled={true} key={index}>
-                  {emplacement.friture}
-                </button>
-              ))}
-              {placeVideFriteuse.map((emplacement: Friture, index: number) => (
-                <button key={index}>{emplacement.friture}</button>
-              ))}
+            <hr />
+            <div id="preparationFriteuse" className="modalComponent">
+              <h3 className="titreModalContent">Preparation</h3>
+              <br />
+              <div className="fritureConstructeur">
+                {frites.map((emplacement: Friture, index: number) => (
+                  <button
+                    onClick={() => handleClickFrigoToFriteuse(emplacement)}
+                    key={index}
+                    className="buttonNeutre bacFriteuse"
+                  >
+                    {emplacement.friture} : {emplacement.quantiteSachet}
+                  </button>
+                ))}
+              </div>
+              <div className="fritureConstructeur">
+                {friteuseGrille.map((emplacement: Friture, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      handleClickPoubelle(
+                        emplacement,
+                        friteuseGrilleRef,
+                        setFriteuseGrille
+                      )
+                    }
+                    className="buttonGrille bacFriteuse"
+                  >
+                    {emplacement.friture} à jeter
+                  </button>
+                ))}
+                {friteusePret.map((emplacement: Friture, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClickFriteuseToBac(emplacement, index)}
+                  className="buttonPret bacFriteuse"
+                  >
+                    {emplacement.friture}
+                  </button>
+                ))}
+                {friteuse.map((emplacement: Friture, index: number) => (
+                  <button className="buttonCuisson bacFriteuse" disabled={true} key={index}>
+                    {emplacement.friture}
+                  </button>
+                ))}
+                {placeVideFriteuse.map(
+                  (emplacement: Friture, index: number) => (
+                    <button className="buttonNeutre bacFriteuse" key={index}>{emplacement.friture}</button>
+                  )
+                )}
+              </div>
+              <br />
+              <div>
+                <h3>Stock</h3>
+              </div>
+            </div>
+            <hr/>
+            <div id="commandeFriteuse" className="modalComponent">
+              <h3 className="titreModalContent">Commande</h3>
+              <br />
             </div>
           </div>
         </div>
