@@ -1,32 +1,16 @@
 #cuisineComponent {
   display: flex;
   flex-direction: row;
-  height: 100%;
   width: 100vw;
+  border: solid red;
+  height: 50vh;
 }
-#cuisineComponent #lesFriteuses {
+
+#lesFriteuses {
   height: 100%;
-  width: 30vw;
+  width: 35vw;
   display: flex;
   flex-direction: column;
-}
-#cuisineComponent #lesFriteuses #friteuse {
-  border: solid blue;
-  height: 50%;
-}
-#cuisineComponent #lesFriteuses #friteuseNugget {
-  border: solid violet;
-  height: 50%;
-}
-
-#posteAssemblage {
-  border: solid yellow;
-  width: 40vw;
-}
-
-#grill {
-  border: solid green;
-  width: 30vw;
 }
 
 /*# sourceMappingURL=Cuisine.css.map */

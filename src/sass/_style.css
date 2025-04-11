@@ -2,16 +2,5 @@
   font-family: "BebasNeue";
   src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
 }
-#friteuseComponent {
-  height: 50%;
-}
 
-.tabFriteuseContent {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 6px 12px;
-  border-top: none;
-}
-
-/*# sourceMappingURL=Friteuse.css.map */
+/*# sourceMappingURL=_style.css.map */

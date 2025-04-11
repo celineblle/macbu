@@ -93,18 +93,18 @@ function PosteBoisson() {
   console.log(fontainePret[0])
 
   return (
-    <div id="boissonComponent">
-      <h2 id="buttonBoisson">boisson</h2>
+    <div id="boissonComponent" className="component">
+      <h2 className="buttonModal">boisson</h2>
       <div id="tabContentBoisson">
         <div className="boissonTabButton">
           <button
-            className="tabLinksBoissonButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonBoisson("fontaine")}
           >
             Fontaine
           </button>
           <button
-            className="tabLinksBoissonButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonBoisson("preparation")}
           >
             Preparation
@@ -114,7 +114,7 @@ function PosteBoisson() {
           className={
             toggleTabBoisson === "fontaine"
               ? "tabBoissonContent"
-              : "tabBoissonContentHidden"
+              : "tabContentHidden"
           }
           id="fontaineBoisson"
         >
@@ -133,7 +133,7 @@ function PosteBoisson() {
           className={
             toggleTabBoisson === "preparation"
               ? "tabBoissonContent"
-              : "tabBoissonContentHidden"
+              : "tabContentHidden"
           }
           id="preparationBoisson"
         >

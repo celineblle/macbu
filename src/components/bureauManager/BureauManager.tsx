@@ -1,18 +1,15 @@
 import React from "react";
-import "./BureauManager.css"
+import "./BureauManager.css";
 
-function BureauManager () {
-
-    return (
-        <div id="bureauManagerComponent">
-            <h1>MacBu</h1>
-            <div >
-        <button id="buttonBureauManager">bureau manager</button>
-        <p>bureau manager</p> 
-        </div>
-        </div>
-        
-    )
+function BureauManager() {
+  return (
+    <div id="bureauManagerComponent">
+      <h1>MacBu</h1>
+      <div>
+        <h2>bureau manager</h2>
+      </div>
+    </div>
+  );
 }
 
 export default BureauManager;

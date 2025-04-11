@@ -1,11 +1,8 @@
 #bureauManagerComponent {
-    background-color: #F2D4AE;
-    color: #8b2a09;
     width: 100%;
-    height: 100%;
+    border: solid black;
+    height: 8vh;  
+    display: flex;
+    flex-direction: row;
 }
 
-#buttonBureauManager {
-    background-color: #8b2a09;
-    color:#F2D4AE;
-}

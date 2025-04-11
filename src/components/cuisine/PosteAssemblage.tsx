@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./PosteAssemblage.css";
+import close from "../../assets/close.svg";
 import {
   pains,
   frituresCuisine,
@@ -94,8 +95,11 @@ function PosteAssemblage() {
     setModalAction(!modalAction);
   }
 
-  function handleClickOneIngredient(element: string, property: keyof Burger): void {
-    console.log(element)
+  function handleClickOneIngredient(
+    element: string,
+    property: keyof Burger
+  ): void {
+    console.log(element);
     if (!Object.prototype.hasOwnProperty.call(currentBurger, property)) {
       setCurrentBurger({
         ...currentBurger,
@@ -116,10 +120,12 @@ function PosteAssemblage() {
     element: string,
     property: keyof Burger
   ): void {
-    let ingredientButtonAction: string[] = Array.isArray(currentBurger[property])
-    ? currentBurger[property]
-    : [];
-      
+    let ingredientButtonAction: string[] = Array.isArray(
+      currentBurger[property]
+    )
+      ? currentBurger[property]
+      : [];
+
     const limit: number = property === "ingredient" ? 3 : 2;
 
     if (ingredientButtonAction.length === 0) {
@@ -155,16 +161,16 @@ function PosteAssemblage() {
 
     if (finalBurgerSize.length !== modelBurgerSize.length) {
       return false;
-    };
+    }
 
     for (const property in finalBurger) {
       const propertyItemFinalB = finalBurger[property as keyof Burger];
       const propertyItemModelB = modelBurger[property as keyof Burger];
-      if (!Array.isArray(propertyItemFinalB) || !Array.isArray(propertyItemModelB)) {
-        if (
-          propertyItemFinalB !== propertyItemModelB &&
-          property !== "nom"
-        ) {
+      if (
+        !Array.isArray(propertyItemFinalB) ||
+        !Array.isArray(propertyItemModelB)
+      ) {
+        if (propertyItemFinalB !== propertyItemModelB && property !== "nom") {
           return false;
         }
       } else {
@@ -174,28 +180,27 @@ function PosteAssemblage() {
             return false;
           }
           i++;
-        };
+        }
         i = 0;
-      };
-    
-    };
+      }
+    }
     return true;
-  };
+  }
 
   function handleClickBurgerPret(): void {
     const finalBurger: Burger = currentBurger;
 
     function burgerSize(tailleProduitBurgerTab: string[], size: number): void {
-      
-      if (finalBurger.pain && (tailleProduitBurgerTab.includes(finalBurger.pain))
-         ||
-        (finalBurger.viande && tailleProduitBurgerTab.includes(finalBurger.viande))
+      if (
+        (finalBurger.pain &&
+          tailleProduitBurgerTab.includes(finalBurger.pain)) ||
+        (finalBurger.viande &&
+          tailleProduitBurgerTab.includes(finalBurger.viande))
       ) {
         finalBurger.tailleProduit = taille[size];
-      finalBurger.emballage = boiteBurger[size];
+        finalBurger.emballage = boiteBurger[size];
       }
-
-    };
+    }
 
     for (let i = 0; i < tailleProduitBurger.length; i++) {
       if (!Object.prototype.hasOwnProperty.call(finalBurger, "tailleProduit")) {
@@ -218,7 +223,7 @@ function PosteAssemblage() {
 
     for (let i = 0; i < burgers.length; i++) {
       conforme = checkBurger(finalBurger, burgers[i]);
-      const nom = burgers[i].nom
+      const nom = burgers[i].nom;
       if (conforme === true) {
         i = burgers.length;
         finalBurger.nom = nom;
@@ -235,9 +240,9 @@ function PosteAssemblage() {
   }
 
   return (
-    <div id="posteAssemblageComponent">
+    <div id="posteAssemblageComponent" className="component">
       <button
-        id="buttonModalPosteAssemblage"
+        className="buttonModal"
         role="button"
         onClick={handleClickToggleModal}
       >
@@ -247,12 +252,19 @@ function PosteAssemblage() {
         id="modalPosteAssemblage"
         className={modalAction ? "modalOpen" : "modalClose"}
       >
-        <div className="modalContentPosteAssemblage">
+        <div className="modalContent">
+        <div id="headerModal">
+                <h2>Cuisine</h2>
+                <button
+                  onClick={handleClickToggleModal}
+                  className="closeModalButton"
+                >
+                  {" "}
+                  <img alt="fermer" title="fermer" src={close}></img>
+                </button>
+              </div>
           <div id="cuisinePreparation">
             <div id="buttonActionModal">
-              <button className="close" onClick={handleClickToggleModal}>
-                close
-              </button>
               <button
                 className="exitButtonBurger"
                 onClick={handleClickBurgerAttente}
@@ -270,7 +282,7 @@ function PosteAssemblage() {
               {buttonIngredientsBurger.map((element: ButtonIngredient) => (
                 <button
                   key={element.nom}
-                  className="tablinksPosteAssemblage"
+                  className="tabLinksButton"
                   onClick={() => handleClickTabIngredients(element.nom)}
                 >
                   {element.nom}
@@ -285,25 +297,27 @@ function PosteAssemblage() {
                   id={element.nom}
                   className={
                     element.nom != tabAction
-                      ? "tabContentPosteAssemblageHidden"
+                      ? "tabContentHidden"
                       : "tabContentPosteAssemblage"
                   }
                 >
-                  
                   <h3>{element.nom}</h3>
                   {element.tableau.map((e: string) => (
                     <>
                       <button
                         key={e}
                         onClick={() =>
-                          element.fonctionConstruction(e, element.nom as keyof Burger)
+                          element.fonctionConstruction(
+                            e,
+                            element.nom as keyof Burger
+                          )
                         }
                       >
                         {e}
                       </button>
                     </>
                   ))}
-                  
+
                   <div id="partieRecette">
                     <h3>Recettes</h3>
                     <ul>

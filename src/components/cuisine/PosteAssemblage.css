@@ -1,11 +1,12 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #posteAssemblageComponent {
-  background-color: #F28705;
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  color: #5B1E13;
+  width: calc(40vw - 24px);
 }
 
 .postePosteAssemblage {
@@ -13,29 +14,8 @@
   height: 30%;
 }
 
-.modalOpen {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 5%;
-  top: 5%;
-  width: 90%;
-  height: 90%;
-  overflow: auto;
-}
-
-.modalClose, .tabContentPosteAssemblageHidden, .suivantButtonHidden, .exitButtonBurgerHidden {
+.suivantButtonHidden, .exitButtonBurgerHidden {
   display: none;
-}
-
-.modalContentPosteAssemblage {
-  background-color: #FCD2A2;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-direction: row;
 }
 
 #cuisinePreparation {
@@ -47,78 +27,9 @@
   display: inline;
 }
 
-#buttonModalPosteAssemblage, .close {
-  font-size: 2.6rem;
-  background-color: #5B1E13;
-  color: #F28705;
-  border: 0;
-  border-radius: 14px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 18px;
-  font-weight: 600;
-  outline: 0;
-  padding: 10px 15px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.3s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  height: 7vh;
-  width: 15vw;
-  max-width: 100px;
-  min-height: 40px;
-  margin: 2vh;
-}
-
-#buttonModalPosteAssemblage:before, .close:before {
-  background-color: initial;
-  background-image: linear-gradient(#FF5736, #5B1E13);
-  border-radius: 15px;
-  content: "";
-  height: 30%;
-  left: 4%;
-  opacity: 0.5;
-  position: absolute;
-  top: 0;
-  transition: all 0.3s;
-  width: 92%;
-}
-
-#buttonModalPosteAssemblage:hover {
-  box-shadow: #852C1B 0 3px 5px, #852C1B 0 7px 13px;
-  transform: scale(1.05);
-}
-
 .tabPosteAssemblage {
   overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
   height: 100px;
-}
-.tabPosteAssemblage button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-.tabPosteAssemblage button:hover {
-  background-color: #ddd;
-}
-.tabPosteAssemblage button:active {
-  background-color: #ccc;
-}
-
-#tabContentPosteAssemblage {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
 }
 
 /*# sourceMappingURL=PosteAssemblage.css.map */

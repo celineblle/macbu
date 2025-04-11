@@ -148,19 +148,19 @@ function Glace() {
   }, [posteGlace, posteGlacePret, posteGlaceFondue]);
 
   return (
-    <div id="glaceComponent">
-      <h2 id="buttonGlace">glace</h2>
+    <div id="glaceComponent" className="component">
+      <h2 className="buttonModal">glace</h2>
 
       <div id="tabContentGlace">
         <div className="glaceTabButton">
           <button
-            className="tabLinksGlaceButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonGlace("poste glace")}
           >
             Poste glace
           </button>
           <button
-            className="tabLinksGlaceButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonGlace("frigo")}
           >
             Frigo
@@ -170,7 +170,7 @@ function Glace() {
           className={
             toggleTabGlace === "poste glace"
               ? "tabGlaceContent"
-              : "tabGlaceContentHidden"
+              : "tabContentHidden"
           }
           id="posteGlace"
         >
@@ -203,7 +203,7 @@ function Glace() {
           className={
             toggleTabGlace === "frigo"
               ? "tabGlaceContent"
-              : "tabGlaceContentHidden"
+              : "tabContentHidden"
           }
           id="frigoGlace"
         >

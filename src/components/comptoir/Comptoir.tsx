@@ -8,18 +8,10 @@ import Glace from "./Glace";
 function Comptoir() {
   return (
     <div id="comptoirComponent">
-      <div id="caisse">
       <Caisse />
-      </div>
-      <div id="comptoirAssemblage">
       <ComptoirAssemblage />
-      </div>
-      <div id="boisson">
       <PosteBoisson />
-      </div>
-      <div id="glace">
       <Glace />
-      </div>
     </div>
   );
 }

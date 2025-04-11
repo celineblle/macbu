@@ -3,8 +3,8 @@ import "./Caisse.css";
 
 function Caisse () {
 
-    return ( <div id="caisseComponent">
-        <button id="buttonCaisse">caisse</button>
+    return ( <div id="caisseComponent" className="component">
+        <button className="buttonModal">caisse</button>
         <p>caisse</p> 
         </div>)
 }

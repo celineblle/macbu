@@ -1,30 +1,94 @@
-html {
-  font-size: 10px;
+@use "sass/style" as style;
+
+body {
+  margin: 0px;
+  background-color: whitesmoke;
+  color: style.$noir;
 }
 
-h2 {
-  font-size: 1.2em;
-  font-weight: bold;
+h1, h2, h3 {
+  font-family: "BebasNeue";
+  margin: 4px
 }
 
 #page {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-#bureauManager {
-  border: solid black;
-  height: 10vh;
+.component {
+  @include style.border-component;
 }
 
-#cuisine {
-  border: solid red;
-  height: 55vh;
+.buttonModal {
+  background-color: transparent;
+  color: style.$noir;
+  cursor: pointer;
+  font-family: 'BebasNeue', Impact;
+  border: 2px solid style.$rose;
+  border-radius: 5px;
 }
 
-#comptoir {
-  border: solid blue;
-  height: 35vh;
+#headerModal {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px;
+}
+
+.closeModalButton {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+
+.modalOpen {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  background-color: rgba(0,0,0,0.4); 
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+.modalContent {
+  position: relative;
+  background-color: style.$blanc;
+  color: style.$noir;
+  @include style.border-component;
+  margin: auto;
+  width: 80%;
+  height: 80%;
+}
+
+.tabLinksButton {
+  background-color: style.$gris;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  float: left;
+  outline: none;
+  border: 1px solid style.$grisBordure;
+}
+
+.tabLinksButton:hover {
+  background-color: style.$grisBordure;
+}
+
+.tabLinksButton.active {
+  background-color: style.$rose;
+  transition: 0.2s;
+}
+
+.tabContentHidden, .modalClose {
+  @include style.close-mode
 }

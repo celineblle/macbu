@@ -100,18 +100,18 @@ function Grill() {
   }
 
   return (
-    <div id="grillComponent">
-      <h2 id="buttonGrill">grill</h2>
+    <div id="grillComponent" className="component">
+      <h2 className="buttonModal">grill</h2>
       <div id="tabContentGrill">
         <div className="grillTabButton">
           <button
-            className="tabLinksGrillButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonGrill("cuisson")}
           >
             Cuisson
           </button>
           <button
-            className="tabLinksGrillButton"
+            className="tabLinksButton"
             onClick={() => handleClickTabButtonGrill("frigo")}
           >
             Frigo
@@ -121,7 +121,7 @@ function Grill() {
           className={
             toggleTabGrill === "cuisson"
               ? "tabGrillContent"
-              : "tabGrillContentHidden"
+              : "tabContentHidden"
           }
           id="CuissonGrill"
         >
@@ -156,7 +156,7 @@ function Grill() {
           className={
             toggleTabGrill === "frigo"
               ? "tabGrillContent"
-              : "tabGrillContentHidden"
+              : "tabContentHidden"
           }
           id="frigoGrill"
         >

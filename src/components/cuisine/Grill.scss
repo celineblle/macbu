@@ -1,48 +1,10 @@
 #grillComponent {
-    background-color: #f27405;
-    color: #36261D;
-    width: 100%;
-    height: 100%;
+  width: calc(25vw - 24px);
 }
 
-#buttonGrill {
-    background-color: #36261D;
-    color:#f27405
+.tabGrillContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 6px 12px;
 }
-
-.grillTabButton {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-  }
-  
-  .grillTabButton button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-  }
-  
-  .grillTabButton button:hover {
-    background-color: #ddd;
-  }
-  
-  .grillTabButton button.active {
-    background-color: #ccc;
-  }
-  
-  .tabGrillContent {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-  }
-  
-  .tabGrillContentHidden {
-    display: none;
-  }

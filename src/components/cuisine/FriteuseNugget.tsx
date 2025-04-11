@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FriteuseNugget.css";
+import close from "../../assets/close.svg";
 import {
   Friture,
   frituresCuisineQuantite,
@@ -109,38 +110,43 @@ function FriteuseNugget() {
   }
 
   function handleClickPoubelle(element: Friture): void {
-    const oldestSteak: number = grilleGpRef.current.indexOf(element);
+    const oldestFritureNugget: number = grilleGpRef.current.indexOf(element);
     const tabGrilleCopie: Friture[] = grilleGpRef.current.slice();
-    tabGrilleCopie.splice(oldestSteak, 1);
+    tabGrilleCopie.splice(oldestFritureNugget, 1);
     setFriteuseGpGrille(tabGrilleCopie);
   }
 
-  console.log(friteuseGpPret)
-
   return (
-    <div id="friteuseNuggetComponent">
-      <button id="buttonFriteuseNugget" onClick={handleClickToggleModal}>
+    <div id="friteuseNuggetComponent" className="component">
+      <button className="buttonModal" onClick={handleClickToggleModal}>
         Friteuse Nugget
       </button>
       <div
         id="modalFriteuseNugget"
         className={
           modalActionFriteuseNugget
-            ? "modalOpenFriteuseNugget"
-            : "modalCloseFriteuseNugget"
+            ? "modalOpen"
+            : "modalClose"
         }
       >
-        <div id="tabContentFriteuseNugget">
-          <button onClick={handleClickToggleModal}>fermer</button>
+        <div className="modalContent">
+          <div id="headerModal">
+        <h2>Nugget</h2>
+          <button onClick={handleClickToggleModal} className="closeModalButton">
+            {" "}
+            <img alt="fermer" title="fermer" src={close}></img>
+          </button>
+          </div>
+
           <div className="friteuseNuggetTabButton">
             <button
-              className="tabLinksFriteuseNuggetButton"
+              className="tabLinksButton"
               onClick={() => handleClickTabButtonFriteuseNugget("cuisson")}
             >
               Cuisson
             </button>
             <button
-              className="tabLinksFriteuseNuggetButton"
+              className="tabLinksButton"
               onClick={() => handleClickTabButtonFriteuseNugget("frigo")}
             >
               Frigo
@@ -150,7 +156,7 @@ function FriteuseNugget() {
             className={
               toggleTabFriteuseNugget === "cuisson"
                 ? "tabFriteuseNuggetContent"
-                : "tabFriteuseNuggetContentHidden"
+                : "tabContentHidden"
             }
             id="cuissonFriteuseNugget"
           >
@@ -183,7 +189,7 @@ function FriteuseNugget() {
             className={
               toggleTabFriteuseNugget === "frigo"
                 ? "tabFriteuseNuggetContent"
-                : "tabFriteuseNuggetContentHidden"
+                : "tabContentHidden"
             }
             id="frigoFriteuseNugget"
           >

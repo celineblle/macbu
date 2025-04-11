@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Friteuse.css";
+import close from "../../assets/close.svg"
 import {
   Friture,
   PortionFrite,
@@ -329,32 +330,33 @@ function Friteuse() {
   }
 
   return (
-    <div id="friteuseComponent">
-      <button onClick={handleClickToggleModal} id="buttonFriteuse">
+    <div id="friteuseComponent" className="component">
+      <button onClick={handleClickToggleModal} className="buttonModal">
         Friteuse
       </button>
       <div
         className={
-          modalActionFriteuse ? "modalOpenFriteuse" : "modalCloseFriteuse"
+          modalActionFriteuse ? "modalOpen" : "modalClose"
         }
         id="modalFriteuse"
       >
-        <div id="tabContentFriteuse">
-          <button
-            onClick={handleClickToggleModal}
-            className="closeModalFriteuse"
-          >
-            fermer
+        <div className="modalContent">
+        <div id="headerModal">
+        <h2>Friteuse</h2>
+          <button onClick={handleClickToggleModal} className="closeModalButton">
+            {" "}
+            <img alt="fermer" title="fermer" src={close}></img>
           </button>
+          </div>
           <div className="friteuseTabButton">
             <button
-              className="tabLinksFriteuseButton"
+              className="tabLinksButton"
               onClick={() => handleClickTabButtonFriteuse("bac a frites")}
             >
               Cuisson
             </button>
             <button
-              className="tabLinksFriteuseButton"
+              className="tabLinksButton"
               onClick={() => handleClickTabButtonFriteuse("friteuse")}
             >
               Friteuses
@@ -364,7 +366,7 @@ function Friteuse() {
             className={
               toggleTabFriteuse === "bac a frites"
                 ? "tabFriteuseContent"
-                : "tabFriteuseContentHidden"
+                : "tabContentHidden"
             }
             id="bacFriteuse"
           >
@@ -411,7 +413,7 @@ function Friteuse() {
             className={
               toggleTabFriteuse === "friteuse"
                 ? "tabFriteuseContent"
-                : "tabFriteuseContentHidden"
+                : "tabContentHidden"
             }
             id="frigoFriteuse"
           >

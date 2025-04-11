@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as stocks from "../../elements/stocks";
+import close from "../../assets/close.svg"
 import {
   Accompagnement,
   Boisson,
@@ -822,20 +823,25 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
   }, [commandeEnCour]);
 
   return (
-    <div id="comptoirAssemblageComponent">
-      <button id="buttonComptoirAssemblage" onClick={handleClickActionModal}>
+    <div id="comptoirAssemblageComponent" className="component">
+      <button className="buttonModal" onClick={handleClickActionModal}>
         comptoir ComptoirAssemblage
       </button>
       <div
         className={
           buttonActionModalComptoirA
-            ? "modalComptoirAOpen"
-            : "modalComptoirAClose"
+            ? "modalOpen"
+            : "modalClose"
         }
       >
-        <div className="modalContentComptoirA">
-          <button onClick={handleClickActionModal}>fermer</button>
-
+        <div className="modalContent">
+          <div id="headerModal">
+        <h2>Comptoir</h2>
+          <button onClick={handleClickActionModal} className="closeModalButton">
+            {" "}
+            <img alt="fermer" title="fermer" src={close}></img>
+          </button>
+          </div>
           <div>
             <h3>Commandes à prerarer</h3>
             {aPreparerAffichage.map(
@@ -922,14 +928,14 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               {elementsCommandes.map((element) => (
                 <button
                   key={element.nom}
-                  className="tabLinksComptoirA"
+                  className="tabLinksButton"
                   onClick={() => handleClickTab(element.nom)}
                 >
                   {element.nom}
                 </button>
               ))}
               <button
-                className="tabLinksComptoirA"
+                className="tabLinksButton"
                 onClick={() => handleClickTab("Sac")}
               >
                 Sac
@@ -939,7 +945,7 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               <div
                 className={
                   elementsCommandes[0].nom != tabActionComptoirA
-                    ? "tabContentComptoirAHidden"
+                    ? "tabContentHidden"
                     : "tabContenComptoirA"
                 }
               >
@@ -952,7 +958,7 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               <div
                 className={
                   elementsCommandes[1].nom != tabActionComptoirA
-                    ? "tabContentComptoirAHidden"
+                    ? "tabContentHidden"
                     : "tabContenComptoirA"
                 }
               >
@@ -965,7 +971,7 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               <div
                 className={
                   elementsCommandes[2].nom != tabActionComptoirA
-                    ? "tabContentComptoirAHidden"
+                    ? "tabContentHidden"
                     : "tabContenComptoirA"
                 }
               >
@@ -978,7 +984,7 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               <div
                 className={
                   elementsCommandes[3].nom != tabActionComptoirA
-                    ? "tabContentComptoirAHidden"
+                    ? "tabContentHidden"
                     : "tabContenComptoirA"
                 }
               >
@@ -991,7 +997,7 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
               <div
                 className={
                   "Sac" != tabActionComptoirA
-                    ? "tabContentComptoirAHidden"
+                    ? "tabContentHidden"
                     : "tabContenComptoirA"
                 }
               >
