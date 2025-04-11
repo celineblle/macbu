@@ -10,15 +10,8 @@ function FriteuseNugget() {
   const tailleFriteuseGp: number = 4;
   let standByTimeOutFriteuseGp: number = 0;
 
-  const [toggleTabFriteuseNugget, setToggleTabFriteuseNugget] =
-    useState<string>("cuisson");
   const [modalActionFriteuseNugget, setModalActionFriteuseNugget] =
     useState<boolean>(false);
-
-  function handleClickTabButtonFriteuseNugget(element: string): void {
-    setToggleTabFriteuseNugget(element);
-  }
-
   const [friteuseGp, setFriteuseGp] = useState<Friture[]>([]);
   const [friteuseGpPret, setFriteuseGpPret] = useState<Friture[]>([]);
   const [friteuseGpGrille, setFriteuseGpGrille] = useState<Friture[]>([]);
@@ -123,47 +116,34 @@ function FriteuseNugget() {
       </button>
       <div
         id="modalFriteuseNugget"
-        className={
-          modalActionFriteuseNugget
-            ? "modalOpen"
-            : "modalClose"
-        }
+        className={modalActionFriteuseNugget ? "modalOpen" : "modalClose"}
       >
         <div className="modalContent">
           <div id="headerModal">
-        <h2>Nugget</h2>
-          <button onClick={handleClickToggleModal} className="closeModalButton">
-            {" "}
-            <img alt="fermer" title="fermer" src={close}></img>
-          </button>
-          </div>
-
-          <div className="friteuseNuggetTabButton">
+            <h2>Nugget</h2>
             <button
-              className="tabLinksButton"
-              onClick={() => handleClickTabButtonFriteuseNugget("cuisson")}
+              onClick={handleClickToggleModal}
+              className="closeModalButton"
             >
-              Cuisson
-            </button>
-            <button
-              className="tabLinksButton"
-              onClick={() => handleClickTabButtonFriteuseNugget("frigo")}
-            >
-              Frigo
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
             </button>
           </div>
-          <div
-            className={
-              toggleTabFriteuseNugget === "cuisson"
-                ? "tabFriteuseNuggetContent"
-                : "tabContentHidden"
-            }
-            id="cuissonFriteuseNugget"
-          >
+          <div id="modalNuggetContent">
+          <div className="nuggetConstructeur" id="pretNugget">
+            <h3>Pret</h3>
+            <div></div>
+            <h3>Boite à nugget</h3>
+            <h3>Stocks boites</h3>
+          </div>
+          <hr />
+          <div className="nuggetConstructeur" id="cuissonNugget">
+            <h3>Cuisson</h3>
             {friteuseGpGrille.map((emplacement: Friture, index: number) => (
               <button
                 key={index}
                 onClick={() => handleClickPoubelle(emplacement)}
+                className="buttonGrille cuissonNugget"
               >
                 {emplacement.friture}
               </button>
@@ -172,37 +152,39 @@ function FriteuseNugget() {
               <button
                 key={index}
                 onClick={() => handleClickAvailabilityFriture(emplacement)}
+                className="buttonPret cuissonNugget"
               >
                 {emplacement.friture}
               </button>
             ))}
             {friteuseGp.map((emplacement: Friture, index: number) => (
-              <button disabled={true} key={index}>
+              <button disabled={true} key={index} className="buttonCuisson cuissonNugget">
                 {emplacement.friture}
               </button>
             ))}
             {placeVideFriteuseGp.map((emplacement: string, index: number) => (
-              <button key={index}>{emplacement}</button>
+              <button key={index} className="buttonNeutre cuissonNugget">
+                {emplacement}
+              </button>
             ))}
-          </div>
-          <div
-            className={
-              toggleTabFriteuseNugget === "frigo"
-                ? "tabFriteuseNuggetContent"
-                : "tabContentHidden"
-            }
-            id="frigoFriteuseNugget"
-          >
+            <h3>Frigo</h3>
             {frituresCuisineQuantite.map(
-              (emplacement: Friture, index: number) => (
-                <button
-                  onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
-                  key={index}
-                >
-                  {emplacement.friture} : {emplacement.quantiteSachet}
-                </button>
-              )
-            )}
+            (emplacement: Friture, index: number) => (
+              <button
+                onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
+                key={index}
+                className="buttonNeutre buttonFrigo"
+              >
+                {emplacement.friture} : {emplacement.quantiteSachet}
+              </button>
+            )
+          )}
+            <h3>Stocks frigo</h3>
+          </div>
+          <hr />
+          <div className="nuggetConstructeur" id="commandeNugget">
+            <h3>Commandes</h3>
+          </div>
           </div>
         </div>
       </div>

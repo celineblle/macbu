@@ -5,15 +5,37 @@
   height: 50%;
 }
 
-.tabFriteuseNuggetContent {
+#modalNuggetContent {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  padding: 6px 12px;
-  border-top: none;
+  height: 90%;
 }
 
-.tabFriteuseNuggetContentHidden,
-.modalCloseFriteuseNugget {
-  @include style.close-mode;
+#pretNugget,
+#cuissonNugget {
+  width: 40%;
+}
+
+#commandeNugget {
+  width: 20%;
+}
+
+.cuissonNugget {
+  height: 30px;
+  width: 170px;
+}
+
+.pretFriture {
+  height: 30px;
+  width: 200px;
+}
+
+.boiteANugget {
+  height: 30px;
+  width: 170px;
+}
+
+.buttonFrigo {
+  height: 30px;
+  width: 200px;
 }
