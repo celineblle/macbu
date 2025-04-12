@@ -1,12 +1,45 @@
 #grillComponent {
   width: calc(25vw - 24px);
+  height: calc(100% - 24px);
 }
 
-.tabGrillContent {
+#modalGrillContent {
   display: flex;
   flex-direction: row;
+  height: 90%;
+}
+
+#stockPretGrill, #cuissonGrill, #stockFrigoGrill {
+  width: 20%;
+}
+
+#frigoGrill {
+  width: 40%;
+}
+
+#buttonFrigoGrill {
+  display: flex;
   flex-wrap: wrap;
-  padding: 6px 12px;
+}
+
+.buttonGrill {
+  height: 30px;
+  width: 130px;
+}
+
+#pageContent {
+  display: flex;
+  flex-direction: row;
+}
+
+#stockPretPage, #stockFrigoPage {
+  width: 50%;
+}
+
+.listStock {
+  margin: 4px;
+  padding: 4px;
+  list-style: none;
 }
 
 /*# sourceMappingURL=Grill.css.map */

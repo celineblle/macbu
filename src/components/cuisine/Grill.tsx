@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Grill.css";
+import close from "../../assets/close.svg";
 import { viande } from "../../elements/stocks";
 
 function Grill() {
-
   const limitSizeGrill: number = 8;
   let standByTimeOut: number = 0;
-  const [toggleTabGrill, setToggleTabGrill] = useState<string>("cuisson");
+  const [toggleModalGrill, setToggleModalGrill] = useState<boolean>(false);
   const [plaqueDeCuisson, setPlaqueDeCuisson] = useState<string[]>([]);
   const [plaqueDeCuissonPret, setPlaqueDeCuissonPret] = useState<string[]>([]);
-  const [plaqueDeCuissonGrille, setPlaqueDeCuissonGrille] = useState<string[]>([]);
+  const [plaqueDeCuissonGrille, setPlaqueDeCuissonGrille] = useState<string[]>(
+    []
+  );
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
   const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
 
@@ -34,8 +36,8 @@ function Grill() {
     timeOutPretRef.current = timeOutPretId;
   }, [timeOutPretId]);
 
-  function handleClickTabButtonGrill(element: string): void {
-    setToggleTabGrill(element);
+  function handleClickToggleModal(): void {
+    setToggleModalGrill(!toggleModalGrill);
   }
 
   function steakCuitStandBy(element: string): void {
@@ -101,82 +103,112 @@ function Grill() {
 
   return (
     <div id="grillComponent" className="component">
-      <h2 className="buttonModal">grill</h2>
-      <div id="tabContentGrill">
-        <div className="grillTabButton">
-          <button
-            className="tabLinksButton"
-            onClick={() => handleClickTabButtonGrill("cuisson")}
-          >
-            Cuisson
-          </button>
-          <button
-            className="tabLinksButton"
-            onClick={() => handleClickTabButtonGrill("frigo")}
-          >
-            Frigo
-          </button>
-        </div>
-        <div
-          className={
-            toggleTabGrill === "cuisson"
-              ? "tabGrillContent"
-              : "tabContentHidden"
-          }
-          id="CuissonGrill"
-        >
-          {plaqueDeCuissonGrille.map((emplacement: string, index: number) => (
-            <button
-              onClick={() => handleClickPoubelle(emplacement)}
-              key={index}
-            >
-              {emplacement}
-            </button>
-          ))}
-          {plaqueDeCuissonPret.map((emplacement: string, index: number) => (
-            <button
-              key={index}
-              onClick={() => handleClickAvailabilitySteak(emplacement)}
-            >
-              {emplacement}
-            </button>
-          ))}
-          {plaqueDeCuisson.map((emplacement: string, index: number) => (
-            <button disabled={true} key={index}>
-              {emplacement}
-            </button>
-          ))}
-          {placeVideGrill.map((emplacement: string, index: number) => (
-            <button disabled={true} key={index}>
-              {emplacement}
-            </button>
-          ))}
-        </div>
-        <div
-          className={
-            toggleTabGrill === "frigo"
-              ? "tabGrillContent"
-              : "tabContentHidden"
-          }
-          id="frigoGrill"
-        >
-          {viande.map((element) => (
-            <div key={element}>
-              <button onClick={() => handleClickFrigoToGrill(element)}>
-                {element}
-              </button>
-              <p>quantité : x</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <h3>Pret stock</h3>
-        <ul>
+      <button className="buttonModal" onClick={handleClickToggleModal}>
+        grill
+      </button>
+    <div id="pageContent">
+      <div id="stockPretPage">
+        <h3>Pret</h3>
+        <ul className="listStock">
           {viande.map((element) => (
             <li key={element}>{element} : X</li>
           ))}
         </ul>
+      </div>
+      <hr />
+      <div id="stockFrigoPage">
+        <h3>Stock</h3>
+      </div>
+      </div>
+      <div className={toggleModalGrill ? "modalOpen" : "modalClose"}>
+        <div className="modalContent">
+          <div id="headerModal">
+            <h2>Grill</h2>
+            <button
+              onClick={handleClickToggleModal}
+              className="closeModalButton"
+            >
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
+            </button>
+          </div>
+          <div id="modalGrillContent">
+            <div id="stockPretGrill">
+              <h3>Pret</h3>
+              <ul>
+                {viande.map((element) => (
+                  <li key={element}>{element} : X</li>
+                ))}
+              </ul>
+            </div>
+            <hr />
+            <div id="cuissonGrill">
+              <h3>Cuisson</h3>
+              <br />
+              {plaqueDeCuissonGrille.map(
+                (emplacement: string, index: number) => (
+                  <button
+                    onClick={() => handleClickPoubelle(emplacement)}
+                    key={index}
+                    className="buttonGrille buttonGrill"
+                  >
+                    {emplacement}
+                  </button>
+                )
+              )}
+              {plaqueDeCuissonPret.map((emplacement: string, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleClickAvailabilitySteak(emplacement)}
+                  className="buttonPret buttonGrill"
+                >
+                  {emplacement}
+                </button>
+              ))}
+              {plaqueDeCuisson.map((emplacement: string, index: number) => (
+                <button
+                  disabled={true}
+                  key={index}
+                  className="buttonCuisson buttonGrill"
+                >
+                  {emplacement}
+                </button>
+              ))}
+              {placeVideGrill.map((emplacement: string, index: number) => (
+                <button
+                  disabled={true}
+                  key={index}
+                  className="buttonNeutre buttonGrill"
+                >
+                  {emplacement}
+                </button>
+              ))}
+            </div>
+            <hr />
+            <div id="frigoGrill">
+              <h3>Frigo</h3>
+              <br />
+              <div id="buttonFrigoGrill">
+                {viande.map((element) => (
+                  <>
+                    <button
+                      key={element}
+                      onClick={() => handleClickFrigoToGrill(element)}
+                      className="buttonNeutre buttonGrill"
+                    >
+                      {element}
+                    </button>
+                    <p>quantité : x</p>
+                  </>
+                ))}
+              </div>
+            </div>
+            <hr />
+            <div id="stockFrigoGrill">
+              <h3>Stock</h3>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
