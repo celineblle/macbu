@@ -129,7 +129,7 @@ hr {
   background-color: style.$vert;
 }
 
-.buttonCuisson {
+.buttonCuisson, .commandeCuisson:hover {
   background-color: style.$orange;
 }
 
@@ -152,7 +152,7 @@ hr {
 background-color: style.$grisBordure;
 }
 
-.buttonGrille:active {
+.buttonGrille:active, .commandeCuisson:active {
   background-color: style.$beige;
   color: style.$noir;
 }
@@ -168,15 +168,29 @@ background-color: style.$grisBordure;
 .commandeCuisson {
   background-color: transparent;
   border: 2px solid style.$orange;
+  width: 170px;
+  height: 75px;
 }
 
 .commandePret {
   background-color: transparent;
   border: 2px solid style.$vert;
+  width: 170px;
+  height: 75px;
 }
 
 .commandeModal {
   background-color: transparent;
   border: 2px solid style.$rose;
+  width: 170px;
+  height: 75px;
 }
 
+.commandePret:hover {
+  background-color: style.$vert;
+}
+
+.commandePret:active {
+  background-color: style.$vertClair;
+  border-color: style.$vertClair;
+}

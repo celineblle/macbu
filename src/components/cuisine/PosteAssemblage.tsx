@@ -245,148 +245,185 @@ function PosteAssemblage() {
         className="buttonModal"
         role="button"
         onClick={handleClickToggleModal}
+        id="buttonCuisine"
       >
         Cuisine
       </button>
+
+      <div id="pretPosteAssemblage" className="postePosteAssemblage">
+        <h3>Pret</h3>
+        {burgerPret.map((e: Burger, index: number) => (
+          <button className="commandePret" key={index}>
+            {e.pain}
+          </button>
+        ))}
+      </div>
+
+      <div id="standByPosteAssemblage" className="postePosteAssemblage">
+        <h3>En attente</h3>
+        {burgerEnAttente.map((e: Burger, index: number) => (
+          <button
+            className="commandeCuisson"
+            key={index}
+            onClick={() => handleClickReprendreBurger(e)}
+          >
+            {e.pain}
+          </button>
+        ))}
+      </div>
+
       <div
         id="modalPosteAssemblage"
         className={modalAction ? "modalOpen" : "modalClose"}
       >
         <div className="modalContent">
-        <div id="headerModal">
-                <h2>Cuisine</h2>
-                <button
-                  onClick={handleClickToggleModal}
-                  className="closeModalButton"
-                >
-                  {" "}
-                  <img alt="fermer" title="fermer" src={close}></img>
-                </button>
-              </div>
-          <div id="cuisinePreparation">
-            <div id="buttonActionModal">
-              <button
-                className="exitButtonBurger"
-                onClick={handleClickBurgerAttente}
-              >
-                Mettre en attente
-              </button>
-              <button
-                className="exitButtonBurger"
-                onClick={handleClickBurgerPret}
-              >
-                Prêt
-              </button>
-            </div>
-            <div className="tabPosteAssemblage">
-              {buttonIngredientsBurger.map((element: ButtonIngredient) => (
-                <button
-                  key={element.nom}
-                  className="tabLinksButton"
-                  onClick={() => handleClickTabIngredients(element.nom)}
-                >
-                  {element.nom}
-                </button>
-              ))}
-            </div>
-
-            <div>
-              {buttonIngredientsBurger.map((element: ButtonIngredient) => (
-                <div
-                  key={element.nom}
-                  id={element.nom}
-                  className={
-                    element.nom != tabAction
-                      ? "tabContentHidden"
-                      : "tabContentPosteAssemblage"
-                  }
-                >
-                  <h3>{element.nom}</h3>
-                  {element.tableau.map((e: string) => (
-                    <>
-                      <button
-                        key={e}
-                        onClick={() =>
-                          element.fonctionConstruction(
-                            e,
-                            element.nom as keyof Burger
-                          )
-                        }
-                      >
-                        {e}
-                      </button>
-                    </>
-                  ))}
-
-                  <div id="partieRecette">
-                    <h3>Recettes</h3>
-                    <ul>
-                      {burgers.map((burger: Burger, index: number) => (
-                        <li key={index}>
-                          {burger.nom} :{" "}
-                          {!burger[element.nom as keyof Burger]
-                            ? "aucun"
-                            : `${burger[element.nom as keyof Burger]} `}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div id="standByPosteAssemblage" className="postePosteAssemblage">
-              <h3>En attente</h3>
-              {burgerEnAttente.map((e: Burger, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickReprendreBurger(e)}
-                >
-                  {e.pain}
-                </button>
-              ))}
-            </div>
-            <div id="partieStock">
-              <h3>Stocks</h3>
-              <ul>
-                <li>stocks : 1</li>
-                <li>stocks : 2</li>
-                <li>stocks : 3</li>
-                <li>stocks : 4</li>
-                <li>stocks : 5</li>
-                <li>stocks : 6</li>
-              </ul>
-            </div>
+          <div id="headerModal">
+            <h2>Cuisine</h2>
+            <button
+              onClick={handleClickToggleModal}
+              className="closeModalButton"
+            >
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
+            </button>
           </div>
-          <div id="burgerEnPreparation">
-            <h3>Current burger</h3>
-            {currentBurger.sauce?.length === 2 && (
-              <p>{currentBurger.sauce[1]}</p>
-            )}
-            {currentBurger.sauce && <p>{currentBurger.sauce[0]}</p>}
+          <div id="modalCuisineContent">
+            <div id="modalGauche">
+              <div id="enTeteConstructeur">
+                <h3 id="titreEnCour">En cour</h3>
+                <div id="buttonActionBurger">
+                  <button
+                    className="buttonNeutre buttonSortieBurger"
+                    onClick={handleClickBurgerAttente}
+                  >
+                    Mettre en attente
+                  </button>
+                  <button
+                    className="buttonNeutre buttonSortieBurger"
+                    onClick={handleClickBurgerPret}
+                  >
+                    Prêt
+                  </button>
+                </div>
+              </div>
+              <br />
+              <div id="toutOnglets">
+                {buttonIngredientsBurger.map((element: ButtonIngredient) => (
+                  <button
+                    key={element.nom}
+                    className="onglet"
+                    onClick={() => handleClickTabIngredients(element.nom)}
+                  >
+                    {element.nom}
+                  </button>
+                ))}
+              </div>
 
-            {currentBurger.ingredient && <p>{currentBurger.ingredient}</p>}
-            {currentBurger.fromage?.length === 2 && (
-              <p>{currentBurger.fromage[1]}</p>
-            )}
-            {currentBurger.fromage && <p>{currentBurger.fromage[0]}</p>}
-            {currentBurger.viande && <p>{currentBurger.viande}</p>}
-            {currentBurger.pain && <p>{currentBurger.pain}</p>}
+              <div>
+                {buttonIngredientsBurger.map((element: ButtonIngredient) => (
+                  <div
+                    key={element.nom}
+                    id={element.nom}
+                    className={
+                      element.nom != tabAction
+                        ? "tabContentHidden"
+                        : "tabContentPosteAssemblage"
+                    }
+                  >
+                    <div id="toutButtonIngredient">
+                      {element.tableau.map((e: string) => (
+                        <button
+                          key={e}
+                          onClick={() =>
+                            element.fonctionConstruction(
+                              e,
+                              element.nom as keyof Burger
+                            )
+                          }
+                          className="buttonNeutre buttonIngredient"
+                        >
+                          {e}
+                        </button>
+                      ))}
+                    </div>
+                    <br />
+                    <div id="suiviConstruction">
+                      <div id="partieRecette">
+                        <h3>Recettes</h3>
+                        <ul>
+                          {burgers.map((burger: Burger, index: number) => (
+                            <li key={index}>
+                              {burger.nom} :{" "}
+                              {!burger[element.nom as keyof Burger]
+                                ? "aucun"
+                                : `${burger[element.nom as keyof Burger]} `}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div id="currentBurger">
+                        <h3>Current burger</h3>
+                        {currentBurger.sauce?.length === 2 && (
+                          <p>{currentBurger.sauce[1]}</p>
+                        )}
+                        {currentBurger.sauce && <p>{currentBurger.sauce[0]}</p>}
+
+                        {currentBurger.ingredient && (
+                          <p>{currentBurger.ingredient}</p>
+                        )}
+                        {currentBurger.fromage?.length === 2 && (
+                          <p>{currentBurger.fromage[1]}</p>
+                        )}
+                        {currentBurger.fromage && (
+                          <p>{currentBurger.fromage[0]}</p>
+                        )}
+                        {currentBurger.viande && <p>{currentBurger.viande}</p>}
+                        {currentBurger.pain && <p>{currentBurger.pain}</p>}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <hr />
+            <div id="modalDroite">
+              <div>
+                <h3>Commande</h3>
+              </div>
+              <div id="pretBurger" className="postePosteAssemblage">
+                <h3>Pret</h3>
+                {burgerPret.map((e: Burger, index: number) => (
+                  <button className="commandePret" key={index}>
+                    {e.pain}
+                  </button>
+                ))}
+              </div>
+              <div id="standBurger" className="postePosteAssemblage">
+                <h3>En attente</h3>
+                {burgerEnAttente.map((e: Burger, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClickReprendreBurger(e)}
+                    className="commandeCuisson"
+                  >
+                    {e.pain}
+                  </button>
+                ))}
+              </div>
+              <div id="partieStock">
+                <h3>Stocks</h3>
+                <ul>
+                  <li>stocks : 1</li>
+                  <li>stocks : 2</li>
+                  <li>stocks : 3</li>
+                  <li>stocks : 4</li>
+                  <li>stocks : 5</li>
+                  <li>stocks : 6</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div id="standByPosteAssemblage" className="postePosteAssemblage">
-        <h3>En attente</h3>
-        {burgerEnAttente.map((e: Burger, index: number) => (
-          <button key={index} onClick={() => handleClickReprendreBurger(e)}>
-            {e.pain}
-          </button>
-        ))}
-      </div>
-      <div id="pretPosteAssemblage" className="postePosteAssemblage">
-        <h3>Pret</h3>
-        {burgerPret.map((e: Burger, index: number) => (
-          <button key={index}>{e.pain}</button>
-        ))}
       </div>
     </div>
   );

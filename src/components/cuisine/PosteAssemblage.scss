@@ -5,27 +5,67 @@
     flex-direction: column;
     justify-content: space-around;
     width: calc(40vw - 24px) ;
-}
-
-.postePosteAssemblage {
-  border: solid black;
-  height: 30%;
+    height: calc(100% - 24px);
 }
 
 .suivantButtonHidden, .exitButtonBurgerHidden {
     @include style.close-mode
 }
 
-#cuisinePreparation {
+#buttonCuisine {
+  width: 55px;
+}
+
+.postePosteAssemblage {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  height: 40%;
+  h3 {
+    width: 90px;
+  }
 }
 
-#buttonActionModal {
-  display: inline;
+#modalCuisineContent {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+  height: 90%;
 }
 
-.tabPosteAssemblage {
-  overflow: hidden;
-  height: 100px;
+#modalGauche, #modalDroite {
+  width: 50%;
+}
+
+#enTeteConstructeur {
+  display: flex;
+justify-content: space-between;
+}
+
+.buttonSortieBurger {
+  height: 30px;
+  min-width: 50px;
+}
+
+#toutOnglets {
+  height: 10%;
+}
+
+#toutButtonIngredient {
+  height: 30%;
+}
+
+.buttonIngredient {
+  height: 30px;
+  width: 170px;
+}
+
+#suiviConstruction {
+  display: flex;
+  flex-direction: row;
+  height: 50%;
+}
+
+#partieRecette, #currentBurger {
+  height: 50%;
+  width: 100%;
 }
