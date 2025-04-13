@@ -1,3 +1,94 @@
+@use "../../sass/style" as style;
+
 #comptoirAssemblageComponent {
   width: calc(40vw - 24px);
+}
+
+#comptoirModal {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  height: 89%;
+}
+
+.commandeUnique {
+  height: 250px;
+  width: 25%;
+  overflow: scroll;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding-top: 8px;
+  padding-left: 12px;
+  ul,
+  ul ul {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    li {
+      margin-left: 8px;
+    }
+  }
+  ul ul li {
+    margin-left: 24px;
+  }
+}
+
+.commandesComptoir {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: space-between;
+}
+
+.tabComptoirA button {
+  height: 30px;
+  width: 80px;
+}
+
+#buttonProduitDispo {
+  height: 15vh;
+  padding: 12px 4px;
+}
+
+.tabContenComptoirA button {
+  height: 40px;
+  width: 170px;
+}
+
+#buttonFinir {
+  margin-left: 16px;
+  height: 30px;
+  width: 50px;
+}
+
+.commandeContruction {
+  list-style: none;
+}
+
+.buttonCommandeEnCour {
+  height: 40px;
+  width: 230px;
+}
+
+.commandeEnCour {
+  margin: auto;
+  padding-left: 0;
+}
+
+.commandeVide {
+  background-color: style.$gris;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: style.$noir;
+  padding: 5px 8px;
+  margin: 5px 8px;
+}
+
+#contenuVide {
+  margin: auto;
+  margin-top: 8px;
 }

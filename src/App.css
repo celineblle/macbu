@@ -8,7 +8,10 @@ body {
   color: #0d0d0d;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "BebasNeue";
   margin: 4px;
 }
@@ -68,8 +71,10 @@ hr {
   display: flex;
   justify-content: space-between;
   padding: 4px;
-  height: 10%;
+  height: 40px;
   width: 100%;
+  background-color: #f2f2f2;
+  border-radius: 5px;
 }
 
 .closeModalButton {
@@ -133,7 +138,8 @@ hr {
   transition: 0.2s;
 }
 
-.tabContentHidden, .modalClose {
+.tabContentHidden,
+.modalClose {
   display: none;
 }
 
@@ -146,7 +152,8 @@ hr {
   background-color: #78e8c1;
 }
 
-.buttonCuisson, .commandeCuisson:hover {
+.buttonCuisson,
+.commandeCuisson:hover {
   background-color: #f78800;
 }
 
@@ -160,16 +167,20 @@ hr {
   border-radius: 5px 5px 0px 0px;
 }
 
-.buttonNeutre:hover, .onglet:hover, .buttonGrille:hover {
+.buttonNeutre:hover,
+.onglet:hover,
+.buttonGrille:hover {
   background-color: #f2bbc9;
   color: #0d0d0d;
 }
 
-.buttonNeutre:active, .onglet:active {
+.buttonNeutre:active,
+.onglet:active {
   background-color: #a6a6a6;
 }
 
-.buttonGrille:active, .commandeCuisson:active {
+.buttonGrille:active,
+.commandeCuisson:active {
   background-color: #D9AF8B;
   color: #0d0d0d;
 }
@@ -185,6 +196,7 @@ hr {
 .commandeCuisson {
   background-color: transparent;
   border: 2px solid #f78800;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }
@@ -192,6 +204,7 @@ hr {
 .commandePret {
   background-color: transparent;
   border: 2px solid #78e8c1;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }
@@ -199,6 +212,7 @@ hr {
 .commandeModal {
   background-color: transparent;
   border: 2px solid #f2bbc9;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }

@@ -6,9 +6,12 @@ body {
   color: style.$noir;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "BebasNeue";
-  margin: 4px
+  margin: 4px;
 }
 
 h1 {
@@ -29,7 +32,7 @@ h4 {
 }
 
 button {
-  border-radius: 5px; 
+  border-radius: 5px;
   outline: none;
   border: none;
   cursor: pointer;
@@ -53,7 +56,7 @@ hr {
 
 .buttonModal {
   background-color: transparent;
-  font-family: 'BebasNeue', Impact;
+  font-family: "BebasNeue", Impact;
   border: 2px solid style.$rose;
 }
 
@@ -61,8 +64,10 @@ hr {
   display: flex;
   justify-content: space-between;
   padding: 4px;
-  height: 10%;
+  height: 40px;
   width: 100%;
+  background-color: style.$blanc;
+  border-radius: 5px;
 }
 
 .closeModalButton {
@@ -70,8 +75,14 @@ hr {
 }
 
 @keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 .modalOpen {
@@ -83,9 +94,9 @@ hr {
   width: 100%;
   height: 100%;
   overflow: scroll;
-  background-color: rgba(0,0,0,0.4); 
+  background-color: rgba(0, 0, 0, 0.4);
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 .modalContent {
@@ -116,8 +127,9 @@ hr {
   transition: 0.2s;
 }
 
-.tabContentHidden, .modalClose {
-  @include style.close-mode
+.tabContentHidden,
+.modalClose {
+  @include style.close-mode;
 }
 
 .buttonGrille {
@@ -129,7 +141,8 @@ hr {
   background-color: style.$vert;
 }
 
-.buttonCuisson, .commandeCuisson:hover {
+.buttonCuisson,
+.commandeCuisson:hover {
   background-color: style.$orange;
 }
 
@@ -143,16 +156,20 @@ hr {
   border-radius: 5px 5px 0px 0px;
 }
 
-.buttonNeutre:hover, .onglet:hover, .buttonGrille:hover {
+.buttonNeutre:hover,
+.onglet:hover,
+.buttonGrille:hover {
   background-color: style.$rose;
   color: style.$noir;
 }
 
-.buttonNeutre:active, .onglet:active {
-background-color: style.$grisBordure;
+.buttonNeutre:active,
+.onglet:active {
+  background-color: style.$grisBordure;
 }
 
-.buttonGrille:active, .commandeCuisson:active {
+.buttonGrille:active,
+.commandeCuisson:active {
   background-color: style.$beige;
   color: style.$noir;
 }
@@ -168,6 +185,7 @@ background-color: style.$grisBordure;
 .commandeCuisson {
   background-color: transparent;
   border: 2px solid style.$orange;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }
@@ -175,6 +193,7 @@ background-color: style.$grisBordure;
 .commandePret {
   background-color: transparent;
   border: 2px solid style.$vert;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }
@@ -182,6 +201,7 @@ background-color: style.$grisBordure;
 .commandeModal {
   background-color: transparent;
   border: 2px solid style.$rose;
+  border-radius: 5px;
   width: 170px;
   height: 75px;
 }

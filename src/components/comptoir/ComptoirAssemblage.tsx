@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as stocks from "../../elements/stocks";
-import close from "../../assets/close.svg"
+import close from "../../assets/close.svg";
 import {
   Accompagnement,
   Boisson,
@@ -403,7 +403,7 @@ function ComptoirAssemblage() {
     finalProduitTriee.push(plat, complement, boissonCommande, autreProduit);
     return finalProduitTriee;
   }
-  
+
   function triProduitEnfant(tableauToutProduit: Produit[][]): Produit[][] {
     const petitPlat: (Salade | Nugget | Burger)[] = [];
     const petitComplement: Accompagnement[] = [];
@@ -447,17 +447,15 @@ function ComptoirAssemblage() {
         dessert.push(actuelProduit);
       } else if ("saveur" in actuelProduit) {
         petiteBoisson.push(actuelProduit);
-      } else if ("complement" in actuelProduit && actuelProduit.sousType === "enfant") {
-        petitComplement.push(actuelProduit)
+      } else if (
+        "complement" in actuelProduit &&
+        actuelProduit.sousType === "enfant"
+      ) {
+        petitComplement.push(actuelProduit);
       }
     }
 
-    toutProduitEnfant.push(
-      petitPlat,
-      petitComplement,
-      petiteBoisson,
-      dessert
-    );
+    toutProduitEnfant.push(petitPlat, petitComplement, petiteBoisson, dessert);
     return toutProduitEnfant;
   }
 
@@ -484,9 +482,12 @@ function ComptoirAssemblage() {
       const commandeTrie: Produit[][] = triProduit(commande);
       const commandeTrieEnfant: Produit[][] = triProduitEnfant(commandeTrie);
 
-      if(commandeTrie[0].length !== 0 && (commandeTrie[1].length !== 0 || commandeTrie[2].length !== 0)) {
-        for(let i = 0; i < commandeTrie[0].length; i++) {
-          if(commandeTrie[1].length === 0 && commandeTrie[2].length === 0) {
+      if (
+        commandeTrie[0].length !== 0 &&
+        (commandeTrie[1].length !== 0 || commandeTrie[2].length !== 0)
+      ) {
+        for (let i = 0; i < commandeTrie[0].length; i++) {
+          if (commandeTrie[1].length === 0 && commandeTrie[2].length === 0) {
             finalCommande.push(commandeTrie[0][i]);
           } else {
             const currentSize: string = commandeTrie[0][i].tailleProduit;
@@ -498,13 +499,18 @@ function ComptoirAssemblage() {
               taille: 0,
             };
 
-            currentMenu.sandwich = commandeTrie[0][i] as  Salade | Burger | Nugget;
+            currentMenu.sandwich = commandeTrie[0][i] as
+              | Salade
+              | Burger
+              | Nugget;
 
             let currentAccompagnement;
 
-            if(commandeTrie[1].length !== 0) {
-               const produit: number = commandeTrie[1].findIndex((e) => e.tailleProduit === currentSize);
-              if(produit === -1) {
+            if (commandeTrie[1].length !== 0) {
+              const produit: number = commandeTrie[1].findIndex(
+                (e) => e.tailleProduit === currentSize
+              );
+              if (produit === -1) {
                 currentAccompagnement = commandeTrie[1][0];
                 commandeTrie[1].shift();
               } else {
@@ -512,21 +518,27 @@ function ComptoirAssemblage() {
                 commandeTrie[1].splice(produit, 1);
               }
             } else {
-              const randomSaveur: number = getRandom(adultAccompagnement.length - 1);
+              const randomSaveur: number = getRandom(
+                adultAccompagnement.length - 1
+              );
               currentAccompagnement = adultAccompagnement[randomSaveur];
             }
 
-            if(currentAccompagnement.nom !== stocks.frais[0]) {
-              currentAccompagnement.emballage = stocks.emballageFrite[indexSize];
+            if (currentAccompagnement.nom !== stocks.frais[0]) {
+              currentAccompagnement.emballage =
+                stocks.emballageFrite[indexSize];
               currentAccompagnement.tailleProduit = currentSize;
             }
-            currentMenu.accompagnement = currentAccompagnement as Accompagnement;
+            currentMenu.accompagnement =
+              currentAccompagnement as Accompagnement;
 
             let currentBoisson;
 
-            if(commandeTrie[2].length !== 0) {
-              const produit: number = commandeTrie[2].findIndex((e) => e.tailleProduit === currentSize);
-              if(produit === -1) {
+            if (commandeTrie[2].length !== 0) {
+              const produit: number = commandeTrie[2].findIndex(
+                (e) => e.tailleProduit === currentSize
+              );
+              if (produit === -1) {
                 currentBoisson = commandeTrie[2][0];
                 commandeTrie[2].shift();
               } else {
@@ -538,20 +550,20 @@ function ComptoirAssemblage() {
               currentBoisson = boissons[randomSaveur];
             }
 
-              currentBoisson.emballage = stocks.gobelet[indexSize];
-              currentBoisson.tailleProduit = currentSize;
-             currentMenu.boisson = currentBoisson as Boisson;
+            currentBoisson.emballage = stocks.gobelet[indexSize];
+            currentBoisson.tailleProduit = currentSize;
+            currentMenu.boisson = currentBoisson as Boisson;
 
-             let tailleMenu: number = currentSize === stocks.taille[0] ? 3 : 2;
-             tailleMenu = tailleMenu * 3;
-             currentMenu.taille = tailleMenu;
-             finalCommande.push(currentMenu);
+            let tailleMenu: number = currentSize === stocks.taille[0] ? 3 : 2;
+            tailleMenu = tailleMenu * 3;
+            currentMenu.taille = tailleMenu;
+            finalCommande.push(currentMenu);
           }
         }
       }
 
-      if(commandeTrieEnfant[0].length !== 0 ) {
-        for(let i = 0; i < commandeTrieEnfant[0].length; i++) {
+      if (commandeTrieEnfant[0].length !== 0) {
+        for (let i = 0; i < commandeTrieEnfant[0].length; i++) {
           const currentMenu: MenuEnfant = {
             sandwich: pouce,
             accompagnement: legume,
@@ -559,31 +571,38 @@ function ComptoirAssemblage() {
             dessert: fruits,
             taille: 4,
           };
-          
+
           currentMenu.sandwich = commandeTrieEnfant[0][i] as Nugget | Burger;
 
-          if(commandeTrieEnfant[1].length !== 0) {
-            currentMenu.accompagnement = commandeTrieEnfant[1][0] as Accompagnement;
+          if (commandeTrieEnfant[1].length !== 0) {
+            currentMenu.accompagnement =
+              commandeTrieEnfant[1][0] as Accompagnement;
             commandeTrieEnfant[1].shift();
           } else {
-            const randomSaveur: number = getRandom(menuEnfant[1].length - 1)
-            currentMenu.accompagnement = menuEnfant[1][randomSaveur] as Accompagnement
+            const randomSaveur: number = getRandom(menuEnfant[1].length - 1);
+            currentMenu.accompagnement = menuEnfant[1][
+              randomSaveur
+            ] as Accompagnement;
           }
 
-          if(commandeTrieEnfant[2].length !== 0) {
+          if (commandeTrieEnfant[2].length !== 0) {
             currentMenu.boisson = commandeTrieEnfant[2][0] as Boisson;
             commandeTrieEnfant[2].shift();
           } else {
-            const randomSaveur: number = getRandom(menuEnfant[2].length - 1)
-            currentMenu.boisson = menuEnfant[2][randomSaveur] as Boisson
+            const randomSaveur: number = getRandom(menuEnfant[2].length - 1);
+            currentMenu.boisson = menuEnfant[2][randomSaveur] as Boisson;
           }
 
-          if(commandeTrieEnfant[3].length !== 0) {
-            currentMenu.dessert = commandeTrieEnfant[3][0] as Glace | Accompagnement;
+          if (commandeTrieEnfant[3].length !== 0) {
+            currentMenu.dessert = commandeTrieEnfant[3][0] as
+              | Glace
+              | Accompagnement;
             commandeTrieEnfant[3].shift();
           } else {
-            const randomSaveur: number = getRandom(menuEnfant[3].length - 1)
-            currentMenu.dessert = menuEnfant[3][randomSaveur] as Glace | Accompagnement
+            const randomSaveur: number = getRandom(menuEnfant[3].length - 1);
+            currentMenu.dessert = menuEnfant[3][randomSaveur] as
+              | Glace
+              | Accompagnement;
           }
 
           finalCommande.push(currentMenu);
@@ -591,17 +610,17 @@ function ComptoirAssemblage() {
       }
 
       function finirCommande(tableauProduit: Produit[]): void {
-        for(let i = 0; i < tableauProduit.length; i++) {
-          finalCommande.push(tableauProduit[i])
+        for (let i = 0; i < tableauProduit.length; i++) {
+          finalCommande.push(tableauProduit[i]);
         }
       }
 
-      for(let i = 1; i < commandeTrie.length; i++) {
-        if(commandeTrie[i].length !== 0) {
-          finirCommande(commandeTrie[i])
+      for (let i = 1; i < commandeTrie.length; i++) {
+        if (commandeTrie[i].length !== 0) {
+          finirCommande(commandeTrie[i]);
         }
-        if(commandeTrieEnfant[i].length !== 0) {
-          finirCommande(commandeTrieEnfant[i])
+        if (commandeTrieEnfant[i].length !== 0) {
+          finirCommande(commandeTrieEnfant[i]);
         }
       }
 
@@ -718,8 +737,10 @@ function ComptoirAssemblage() {
 
   function handleClickValiderPlateau(commande: number): boolean {
     if (validerPlateau === true) {
-      const copiePlateau: ProduitEtMenu[] = enCourRef.current[idPlateauPrepa].slice();
-      const copieCommande: ProduitEtMenu[] = aPreparerRef.current[commande].slice();
+      const copiePlateau: ProduitEtMenu[] =
+        enCourRef.current[idPlateauPrepa].slice();
+      const copieCommande: ProduitEtMenu[] =
+        aPreparerRef.current[commande].slice();
 
       for (let i = 0; i < copieCommande.length; i++) {
         const currentProduit = copieCommande[i];
@@ -737,47 +758,64 @@ function ComptoirAssemblage() {
         }
       }
 
-const copiePlateauTrie: Produit[][] = triProduit(copiePlateau);
-const copieCommandeTrie: Produit[][] = triProduit(copieCommande);
-let parametreLambda1: string = "";
-let parametreLambda2: string  = "";
-let indexLambda: number = 0
-const lambaComparaison = [
-  (element: Produit) => {return element.nom === parametreLambda1 ? element : undefined},
-  (element: Produit) => {return element.nom === parametreLambda1 && element.tailleProduit === parametreLambda2 ? element : undefined},
-]
+      const copiePlateauTrie: Produit[][] = triProduit(copiePlateau);
+      const copieCommandeTrie: Produit[][] = triProduit(copieCommande);
+      let parametreLambda1: string = "";
+      let parametreLambda2: string = "";
+      let indexLambda: number = 0;
+      const lambaComparaison = [
+        (element: Produit) => {
+          return element.nom === parametreLambda1 ? element : undefined;
+        },
+        (element: Produit) => {
+          return element.nom === parametreLambda1 &&
+            element.tailleProduit === parametreLambda2
+            ? element
+            : undefined;
+        },
+      ];
 
-for(let i = 0; i < copieCommandeTrie.length; i++){
-  if(copiePlateauTrie[i].length !== copieCommandeTrie[i].length) {
-    return false
-  } else {
-    if(copieCommandeTrie[i].length > 0) {
-      for(let j = 0; j < copieCommandeTrie[i].length; j++) {
-        parametreLambda1 = copieCommandeTrie[i][j].nom;
-        parametreLambda2 = copieCommandeTrie[i][j].tailleProduit;
-        if(i > 0) {
-          indexLambda = 1
-        }
-        const validProduit: Produit | undefined = copiePlateauTrie[i].find(lambaComparaison[indexLambda])
-        if(i === 3) {
-          const produitEval = copieCommandeTrie[i][j];
-          if ("coulis" in produitEval) {
-            const validGlace: Produit | undefined = copiePlateauTrie[i].find((element) => "coulis" in element && element.coulis === produitEval.coulis && element.topping === produitEval.topping)
-            if(!validGlace) {
-              return false
+      for (let i = 0; i < copieCommandeTrie.length; i++) {
+        if (copiePlateauTrie[i].length !== copieCommandeTrie[i].length) {
+          return false;
+        } else {
+          if (copieCommandeTrie[i].length > 0) {
+            for (let j = 0; j < copieCommandeTrie[i].length; j++) {
+              parametreLambda1 = copieCommandeTrie[i][j].nom;
+              parametreLambda2 = copieCommandeTrie[i][j].tailleProduit;
+              if (i > 0) {
+                indexLambda = 1;
+              }
+              const validProduit: Produit | undefined = copiePlateauTrie[
+                i
+              ].find(lambaComparaison[indexLambda]);
+              if (i === 3) {
+                const produitEval = copieCommandeTrie[i][j];
+                if ("coulis" in produitEval) {
+                  const validGlace: Produit | undefined = copiePlateauTrie[
+                    i
+                  ].find(
+                    (element) =>
+                      "coulis" in element &&
+                      element.coulis === produitEval.coulis &&
+                      element.topping === produitEval.topping
+                  );
+                  if (!validGlace) {
+                    return false;
+                  }
+                }
+              }
+              if (!validProduit) {
+                return false;
+              } else {
+                copieCommandeTrie[i] = copieCommandeTrie[i].filter(
+                  (e) => e !== validProduit
+                );
+              }
             }
           }
         }
-        if(!validProduit) {
-          return false
-        } else {
-          copieCommandeTrie[i] = copieCommandeTrie[i].filter((e) => e !== validProduit)
-        }
       }
-    }
-
-  }
-}
       setValiderPlateau(false);
       return true;
     } else {
@@ -827,185 +865,222 @@ for(let i = 0; i < copieCommandeTrie.length; i++){
       <button className="buttonModal" onClick={handleClickActionModal}>
         comptoir ComptoirAssemblage
       </button>
-      <div
-        className={
-          buttonActionModalComptoirA
-            ? "modalOpen"
-            : "modalClose"
-        }
-      >
+      <div className={buttonActionModalComptoirA ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
           <div id="headerModal">
-        <h2>Comptoir</h2>
-          <button onClick={handleClickActionModal} className="closeModalButton">
-            {" "}
-            <img alt="fermer" title="fermer" src={close}></img>
-          </button>
+            <h2>Comptoir</h2>
+            <button
+              onClick={handleClickActionModal}
+              className="closeModalButton"
+            >
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
+            </button>
           </div>
-          <div>
-            <h3>Commandes à prerarer</h3>
-            {aPreparerAffichage.map(
-              (tab: (string | string[])[], position: number) => (
-                <button
-                  key={position}
-                  onClick={() => handleClickValiderPlateau(position)}
-                >
-                  {tab.map((commande: string | string[], index: number) => (
-                    <ul key={index}>
-                      {typeof commande === "string" ? (
-                        <li>{commande}</li>
-                      ) : (
-                        <ul>
-                          {commande.map((menu: string, i: number) => (
-                            <li key={i}>{menu}</li>
-                          ))}
+          <div id="comptoirModal">
+            <div>
+              <h3>Commandes à prerarer</h3>
+              <div className="commandesComptoir">
+                {aPreparerAffichage.map(
+                  (tab: (string | string[])[], position: number) => (
+                    <button
+                      key={position}
+                      onClick={() => handleClickValiderPlateau(position)}
+                      className="commandeModal commandeUnique"
+                    >
+                      {tab.map((commande: string | string[], index: number) => (
+                        <ul key={index}>
+                          {typeof commande === "string" ? (
+                            <li>{commande}</li>
+                          ) : (
+                            <ul>
+                              {commande.map((menu: string, i: number) => (
+                                <li key={i}>{menu}</li>
+                              ))}
+                            </ul>
+                          )}
                         </ul>
-                      )}
-                    </ul>
-                  ))}
-                </button>
-              )
-            )}
-            {aPreparerVide.map((e: string, i: number) => (
-              <button key={i} disabled={true}>
-                {e}
-              </button>
-            ))}
-          </div>
-          <div>
-            <h3>Commandes en cours</h3>
-            {enCourAffichage.map(
-              (tab: (string | string[])[], position: number) => (
-                <div
-                  key={position}
-                  onClick={() => handleClickPlateau(position)}
-                >
-                  {tab.map((commande: string | string[], index: number) => (
-                    <ul key={index}>
-                      {typeof commande === "string" ? (
-                        <li>
-                          <button
-                            onClick={() =>
-                              handleClickSupprimerPlat(position, index)
-                            }
-                          >
-                            {commande}
-                          </button>
-                        </li>
-                      ) : (
-                        <ul>
-                          {commande.map((menu: string, i: number) => (
-                            <li key={i}>
-                              {menu !== "menu" && (
-                                <button
-                                  onClick={() =>
-                                    handleClickSupprimerPlat(position, i)
-                                  }
-                                >
-                                  {menu}
-                                </button>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </ul>
-                  ))}
-                  <button onClick={() => handleClickFinirPlateau(position)}>
-                    fini
+                      ))}
+                    </button>
+                  )
+                )}
+                {aPreparerVide.map((e: string, i: number) => (
+                  <button
+                    key={i}
+                    disabled={true}
+                    className="buttonNeutre commandeUnique"
+                  >
+                    {e}
                   </button>
-                </div>
-              )
-            )}
-            {enCourVide.map((e: string, i: number) => (
-              <button key={i} onClick={() => handleClickPlateau(-1)}>
-                {e}
-              </button>
-            ))}
-          </div>
-          <div>
-            <div className="tabComptoirA">
-              {elementsCommandes.map((element) => (
-                <button
-                  key={element.nom}
-                  className="tabLinksButton"
-                  onClick={() => handleClickTab(element.nom)}
-                >
-                  {element.nom}
-                </button>
-              ))}
-              <button
-                className="tabLinksButton"
-                onClick={() => handleClickTab("Sac")}
-              >
-                Sac
-              </button>
+                ))}
+              </div>
             </div>
             <div>
-              <div
-                className={
-                  elementsCommandes[0].nom != tabActionComptoirA
-                    ? "tabContentHidden"
-                    : "tabContenComptoirA"
-                }
-              >
-                {burger.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}>
-                    {e.nom}
+              <h3>Commandes en cours</h3>
+              <div className="commandesComptoir">
+              {enCourAffichage.map(
+                (tab: (string | string[])[], position: number) => (
+                  <div
+                    key={position}
+                    onClick={() => handleClickPlateau(position)}
+                    className="commandeCuisson commandeUnique commandeEnCour"
+                  >
+                    {tab.map((commande: string | string[], index: number) => (
+                      <ul key={index} className="commandeContruction">
+                        {typeof commande === "string" ? (
+                          <li>
+                            <button
+                              onClick={() =>
+                                handleClickSupprimerPlat(position, index)
+                              }
+                               className="buttonNeutre buttonCommandeEnCour"
+                            >
+                              {commande}
+                            </button>
+                          </li>
+                        ) : (
+                          <ul className="commandeContruction">
+                            {commande.map((menu: string, i: number) => (
+                              <li key={i}>
+                                {menu !== "menu" && (
+                                  <button
+                                    onClick={() =>
+                                      handleClickSupprimerPlat(position, i)
+                                    }
+                                    className="buttonNeutre buttonCommandeEnCour"
+                                  >
+                                    {menu}
+                                  </button>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </ul>
+                    ))}
+                    <button onClick={() => handleClickFinirPlateau(position)}
+                      className="buttonNeutre"
+                      id="buttonFinir"
+                      >
+                      Finir
+                    </button>
+                  </div>
+                )
+              )}
+              {enCourVide.map((e: string, i: number) => (
+                <div key={i} onClick={() => handleClickPlateau(-1)}
+                className="commandeVide commandeUnique"
+                >
+                  <p id="contenuVide">{e}</p>
+                  
+                </div>
+              ))}
+              </div>
+            </div>
+            <div>
+            <h3>Frigo</h3>
+              <div className="tabComptoirA">
+                {elementsCommandes.map((element) => (
+                  <button
+                    key={element.nom}
+                    className="onglet"
+                    onClick={() => handleClickTab(element.nom)}
+                  >
+                    {element.nom}
                   </button>
                 ))}
+                <button
+                  className="onglet"
+                  onClick={() => handleClickTab("Sac")}
+                >
+                  Sac
+                </button>
               </div>
-              <div
-                className={
-                  elementsCommandes[1].nom != tabActionComptoirA
-                    ? "tabContentHidden"
-                    : "tabContenComptoirA"
-                }
-              >
-                {frites.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}>
-                    {e.tailleProduit} {e.nom}
-                  </button>
-                ))}
-              </div>
-              <div
-                className={
-                  elementsCommandes[2].nom != tabActionComptoirA
-                    ? "tabContentHidden"
-                    : "tabContenComptoirA"
-                }
-              >
-                {boissonsTest.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}>
-                    {e.tailleProduit} {e.nom}
-                  </button>
-                ))}
-              </div>
-              <div
-                className={
-                  elementsCommandes[3].nom != tabActionComptoirA
-                    ? "tabContentHidden"
-                    : "tabContenComptoirA"
-                }
-              >
-                {glace.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}>
-                    {e.nom} {e.topping} {e.coulis}
-                  </button>
-                ))}
-              </div>
-              <div
-                className={
-                  "Sac" != tabActionComptoirA
-                    ? "tabContentHidden"
-                    : "tabContenComptoirA"
-                }
-              >
-                {/* {stocks.boiteBurger.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}>
+              <div id="buttonProduitDispo">
+                <div
+                  className={
+                    elementsCommandes[0].nom != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                >
+                  {burger.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleClickRemplirPlateau(e)}
+                    className="buttonNeutre"
+                    >
+                      {e.nom}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className={
+                    elementsCommandes[1].nom != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                  
+                >
+                  {frites.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleClickRemplirPlateau(e)}
+                      className="buttonNeutre"
+                    >
+                      {e.tailleProduit} {e.nom}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className={
+                    elementsCommandes[2].nom != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                >
+                  {boissonsTest.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleClickRemplirPlateau(e)}
+                      className="buttonNeutre"
+                    >
+                      {e.tailleProduit} {e.nom}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className={
+                    elementsCommandes[3].nom != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                >
+                  {glace.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleClickRemplirPlateau(e)}
+                      className="buttonNeutre"
+                    >
+                      {e.nom} {e.topping} {e.coulis}
+                    </button>
+                  ))}
+                </div>
+                <div
+                  className={
+                    "Sac" != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                >
+                  {/* {stocks.boiteBurger.map((e, i) => (
+                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}
+                  className="buttonNeutre"
+                  >
                     {e}
                   </button>
                 ))} */}
+                </div>
               </div>
             </div>
           </div>
