@@ -6,6 +6,12 @@
   width: calc(40vw - 24px);
 }
 
+#headerPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 #comptoirModal {
   display: flex;
   flex-direction: column;
@@ -37,6 +43,10 @@
 }
 .commandeUnique ul ul li {
   margin-left: 24px;
+}
+
+.visuelPage {
+  height: 100px;
 }
 
 .commandesComptoir {
@@ -81,7 +91,8 @@
   padding-left: 0;
 }
 
-.commandeVide {
+.commandeVide,
+#compteurCommande {
   background-color: #d7d3d2;
   border-radius: 5px;
   outline: none;

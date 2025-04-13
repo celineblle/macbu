@@ -862,9 +862,52 @@ function ComptoirAssemblage() {
 
   return (
     <div id="comptoirAssemblageComponent" className="component">
-      <button className="buttonModal" onClick={handleClickActionModal}>
-        comptoir ComptoirAssemblage
-      </button>
+      <div id="headerPage">
+        <button className="buttonModal" onClick={handleClickActionModal}>
+          comptoir ComptoirAssemblage
+        </button>
+        <p id="compteurCommande">
+          Commande en attente : {enCourAffichage.length}
+        </p>
+      </div>
+      <div>
+        <h3>Commandes en cours</h3>
+        <div className="commandesComptoir">
+          {enCourAffichage.map(
+            (tab: (string | string[])[], position: number) => (
+              <div
+                key={position}
+                onClick={() => handleClickPlateau(position)}
+                className="commandeCuisson commandeUnique commandeEnCour visuelPage"
+              >
+                {tab.map((commande: string | string[], index: number) => (
+                  <ul key={index} className="commandeContruction">
+                    {typeof commande === "string" ? (
+                      <li>{commande}</li>
+                    ) : (
+                      <ul className="commandeContruction">
+                        {commande.map((menu: string, i: number) => (
+                          <li key={i}>{menu !== "menu" && menu}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </ul>
+                ))}
+              </div>
+            )
+          )}
+          {enCourVide.map((e: string, i: number) => (
+            <div
+              key={i}
+              onClick={() => handleClickPlateau(-1)}
+              className="commandeVide commandeUnique visuelPage"
+            >
+              <p id="contenuVide">{e}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className={buttonActionModalComptoirA ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
           <div id="headerModal">
@@ -918,67 +961,69 @@ function ComptoirAssemblage() {
             <div>
               <h3>Commandes en cours</h3>
               <div className="commandesComptoir">
-              {enCourAffichage.map(
-                (tab: (string | string[])[], position: number) => (
-                  <div
-                    key={position}
-                    onClick={() => handleClickPlateau(position)}
-                    className="commandeCuisson commandeUnique commandeEnCour"
-                  >
-                    {tab.map((commande: string | string[], index: number) => (
-                      <ul key={index} className="commandeContruction">
-                        {typeof commande === "string" ? (
-                          <li>
-                            <button
-                              onClick={() =>
-                                handleClickSupprimerPlat(position, index)
-                              }
-                               className="buttonNeutre buttonCommandeEnCour"
-                            >
-                              {commande}
-                            </button>
-                          </li>
-                        ) : (
-                          <ul className="commandeContruction">
-                            {commande.map((menu: string, i: number) => (
-                              <li key={i}>
-                                {menu !== "menu" && (
-                                  <button
-                                    onClick={() =>
-                                      handleClickSupprimerPlat(position, i)
-                                    }
-                                    className="buttonNeutre buttonCommandeEnCour"
-                                  >
-                                    {menu}
-                                  </button>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </ul>
-                    ))}
-                    <button onClick={() => handleClickFinirPlateau(position)}
-                      className="buttonNeutre"
-                      id="buttonFinir"
+                {enCourAffichage.map(
+                  (tab: (string | string[])[], position: number) => (
+                    <div
+                      key={position}
+                      onClick={() => handleClickPlateau(position)}
+                      className="commandeCuisson commandeUnique commandeEnCour"
+                    >
+                      {tab.map((commande: string | string[], index: number) => (
+                        <ul key={index} className="commandeContruction">
+                          {typeof commande === "string" ? (
+                            <li>
+                              <button
+                                onClick={() =>
+                                  handleClickSupprimerPlat(position, index)
+                                }
+                                className="buttonNeutre buttonCommandeEnCour"
+                              >
+                                {commande}
+                              </button>
+                            </li>
+                          ) : (
+                            <ul className="commandeContruction">
+                              {commande.map((menu: string, i: number) => (
+                                <li key={i}>
+                                  {menu !== "menu" && (
+                                    <button
+                                      onClick={() =>
+                                        handleClickSupprimerPlat(position, i)
+                                      }
+                                      className="buttonNeutre buttonCommandeEnCour"
+                                    >
+                                      {menu}
+                                    </button>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </ul>
+                      ))}
+                      <button
+                        onClick={() => handleClickFinirPlateau(position)}
+                        className="buttonNeutre"
+                        id="buttonFinir"
                       >
-                      Finir
-                    </button>
+                        Finir
+                      </button>
+                    </div>
+                  )
+                )}
+                {enCourVide.map((e: string, i: number) => (
+                  <div
+                    key={i}
+                    onClick={() => handleClickPlateau(-1)}
+                    className="commandeVide commandeUnique"
+                  >
+                    <p id="contenuVide">{e}</p>
                   </div>
-                )
-              )}
-              {enCourVide.map((e: string, i: number) => (
-                <div key={i} onClick={() => handleClickPlateau(-1)}
-                className="commandeVide commandeUnique"
-                >
-                  <p id="contenuVide">{e}</p>
-                  
-                </div>
-              ))}
+                ))}
               </div>
             </div>
             <div>
-            <h3>Frigo</h3>
+              <h3>Frigo</h3>
               <div className="tabComptoirA">
                 {elementsCommandes.map((element) => (
                   <button
@@ -1008,7 +1053,7 @@ function ComptoirAssemblage() {
                     <button
                       key={i}
                       onClick={() => handleClickRemplirPlateau(e)}
-                    className="buttonNeutre"
+                      className="buttonNeutre"
                     >
                       {e.nom}
                     </button>
@@ -1020,7 +1065,6 @@ function ComptoirAssemblage() {
                       ? "tabContentHidden"
                       : "tabContenComptoirA"
                   }
-                  
                 >
                   {frites.map((e, i) => (
                     <button

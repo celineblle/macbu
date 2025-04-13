@@ -65,7 +65,7 @@ hr {
   justify-content: space-between;
   padding: 4px;
   height: 40px;
-  width: 100%;
+  width: calc(100% - 24px);
   background-color: style.$blanc;
   border-radius: 5px;
 }
