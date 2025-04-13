@@ -1,15 +1,87 @@
+@use "../../sass/style" as style;
+
 #boissonComponent {
   width: calc(20vw - 24px);
 }
 
-.boissonTabButton {
-  overflow: hidden;
-  background-color: #f1f1f1;
+#boissonListePage {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 28vh;
+  overflow: scroll;
+  li {
+    margin: 4px auto;
+    background-color: style.$gris;
+    border-radius: 5px;
+    height: 30px;
+    width: 160px;
+    p {
+      margin: 6px auto;
+      text-align: center;
+    }
+  }
 }
 
-.tabBoissonContent {
+#buttonLancer,
+#buttonJeter {
+  border-radius: 5px;
+  height: 30px;
+  width: 80px;
+}
+
+#buttonLancer {
+  border: 2px solid style.$vert;
+}
+
+#buttonJeter {
+  border: 2px solid style.$marron;
+}
+
+.buttonFontaine,
+.buttonVide,
+.buttonSaveur,
+.buttonTaille {
+  height: 30px;
+}
+
+.buttonVide,
+.buttonTaille {
+  width: 65px;
+}
+
+.buttonSaveur {
+  width: 120px;
+}
+
+.buttonFontaine {
+  width: 160px;
+}
+
+#modalContentBoisson {
   display: flex;
   flex-direction: row;
+  height: 89%;
+}
+
+#modalGaucheBoisson {
+  width: 20%;
+}
+
+#modalCentreBoisson,
+#modalDroiteBoisson {
+  width: 40%;
+}
+
+.ensembleButton {
+  display: flex;
   flex-wrap: wrap;
-  padding: 6px 12px;
+  justify-content: center;
+  margin: 4px;
+}
+
+.finModalBoisson {
+  height: 50%;
 }

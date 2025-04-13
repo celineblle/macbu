@@ -1,17 +1,91 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #boissonComponent {
   width: calc(20vw - 24px);
 }
 
-.boissonTabButton {
-  overflow: hidden;
-  background-color: #f1f1f1;
+#boissonListePage {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 28vh;
+  overflow: scroll;
+}
+#boissonListePage li {
+  margin: 4px auto;
+  background-color: #d7d3d2;
+  border-radius: 5px;
+  height: 30px;
+  width: 160px;
+}
+#boissonListePage li p {
+  margin: 6px auto;
+  text-align: center;
 }
 
-.tabBoissonContent {
+#buttonLancer,
+#buttonJeter {
+  border-radius: 5px;
+  height: 30px;
+  width: 80px;
+}
+
+#buttonLancer {
+  border: 2px solid #78e8c1;
+}
+
+#buttonJeter {
+  border: 2px solid #402116;
+}
+
+.buttonFontaine,
+.buttonVide,
+.buttonSaveur,
+.buttonTaille {
+  height: 30px;
+}
+
+.buttonVide,
+.buttonTaille {
+  width: 65px;
+}
+
+.buttonSaveur {
+  width: 120px;
+}
+
+.buttonFontaine {
+  width: 160px;
+}
+
+#modalContentBoisson {
   display: flex;
   flex-direction: row;
+  height: 89%;
+}
+
+#modalGaucheBoisson {
+  width: 20%;
+}
+
+#modalCentreBoisson,
+#modalDroiteBoisson {
+  width: 40%;
+}
+
+.ensembleButton {
+  display: flex;
   flex-wrap: wrap;
-  padding: 6px 12px;
+  justify-content: center;
+  margin: 4px;
+}
+
+.finModalBoisson {
+  height: 50%;
 }
 
 /*# sourceMappingURL=Boisson.css.map */
