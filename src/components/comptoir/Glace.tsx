@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Glace.css";
+import close from "../../assets/close.svg";
 import { gobelet, glaceToppings, taille } from "../../elements/stocks";
 
 function Glace() {
@@ -25,10 +26,11 @@ function Glace() {
   }
 
   const toppings: string[] = getOnlyEclats();
-  const taillePosteGlace: number = 6;
+  const taillePosteGlace: number = 11;
   let standByTimeOutGlace: number = 0;
 
-  const [toggleTabGlace, setToggleTabGlace] = useState<string>("poste glace");
+  const [buttonActionModalGlace, setButtonActionModalGlace] =
+    useState<boolean>(false);
   const [currentGlace, setCurrentGlace] = useState<Glace>({});
   const [posteGlace, setPosteGlace] = useState<Glace[]>([]);
   const [posteGlacePret, setPosteGlacePret] = useState<Glace[]>([]);
@@ -59,8 +61,8 @@ function Glace() {
     timeOutPretPosteGlaceRef.current = timeOutPretPosteGlaceId;
   }, [timeOutPretPosteGlaceId]);
 
-  function handleClickTabButtonGlace(element: string): void {
-    setToggleTabGlace(element);
+  function handleClickActionModal(): void {
+    setButtonActionModalGlace(!buttonActionModalGlace);
   }
 
   function posteGlaceStandBy(element: Glace): void {
@@ -149,92 +151,133 @@ function Glace() {
 
   return (
     <div id="glaceComponent" className="component">
-      <h2 className="buttonModal">glace</h2>
-
-      <div id="tabContentGlace">
-        <div className="glaceTabButton">
+      <button className="buttonModal" onClick={handleClickActionModal}>
+        glace
+      </button>
+      <h3>Pret</h3>
+      <div id="boissonListePage">
+        {posteGlaceFondue.map((emplacement: Glace, index: number) => (
           <button
-            className="tabLinksButton"
-            onClick={() => handleClickTabButtonGlace("poste glace")}
+            key={index}
+            onClick={() => handleClickPoubelle(index)}
+            className="buttonGrille"
           >
-            Poste glace
+            {emplacement.coulis} {emplacement.topping}
           </button>
+        ))}
+        {posteGlacePret.map((emplacement: Glace, index: number) => (
           <button
-            className="tabLinksButton"
-            onClick={() => handleClickTabButtonGlace("frigo")}
+            key={index}
+            onClick={() => handleClickAvailabilityGlace(index)}
+            className="buttonPret"
           >
-            Frigo
+            {emplacement.coulis} {emplacement.topping}
           </button>
-        </div>
-        <div
-          className={
-            toggleTabGlace === "poste glace"
-              ? "tabGlaceContent"
-              : "tabContentHidden"
-          }
-          id="posteGlace"
-        >
-          {posteGlaceFondue.map((emplacement: Glace, index: number) => (
-            <button
-              key={index}
-              onClick={() => handleClickPoubelle(index)}
-            >
-              {emplacement.coulis} {emplacement.topping}
-            </button>
-          ))}
-          {posteGlacePret.map((emplacement: Glace, index: number) => (
-            <button
-              key={index}
-              onClick={() => handleClickAvailabilityGlace(index)}
-            >
-              {emplacement.coulis} {emplacement.topping}
-            </button>
-          ))}
-          {posteGlace.map((emplacement: Glace, index: number) => (
-            <button disabled={true} key={index}>
-              {emplacement.coulis} {emplacement.topping}
-            </button>
-          ))}
-          {placeVidePosteGlace.map((emplacement: string, index: number) => (
-            <button key={index}>{emplacement}</button>
-          ))}
-        </div>
-        <div
-          className={
-            toggleTabGlace === "frigo"
-              ? "tabGlaceContent"
-              : "tabContentHidden"
-          }
-          id="frigoGlace"
-        >
-          <h3>Coulis</h3>
-          {coulis.map((element: string, index: number) => (
-            <button
-              onClick={() => handleClickGlaceConstruction(element)}
-              key={index}
-            >
-              {element}
-            </button>
-          ))}
-          <h3>Toppings</h3>
-          {toppings.map((element: string, index: number) => (
-            <button
-              onClick={() => handleClickGlaceConstruction(element)}
-              key={index}
-            >
-              {element}
-            </button>
-          ))}
-          <button onClick={handleClickFrigoToPosteGlace}>Lancer</button>
-        </div>
+        ))}
+        {placeVidePosteGlace.map((emplacement: string, index: number) => (
+          <button key={index} className="buttonNeutre">
+            {emplacement}
+          </button>
+        ))}
       </div>
-      <div>
-        <h3>Pret stock</h3>
-        <ul>
-          {glaceToppings.map((element: string, index: number) => (
-            <li key={index}>{element} : X</li>
-          ))}
-        </ul>
+
+      <div className={buttonActionModalGlace ? "modalOpen" : "modalClose"}>
+        <div className="modalContent">
+          <div id="headerModal">
+            <h2>Glace</h2>
+            <button
+              onClick={handleClickActionModal}
+              className="closeModalButton"
+            >
+              {" "}
+              <img alt="fermer" title="fermer" src={close}></img>
+            </button>
+          </div>
+          <div id="modalContentGlace">
+            <div id="posteGlace">
+              <h3>Pret</h3>
+              {posteGlaceFondue.map((emplacement: Glace, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleClickPoubelle(index)}
+                  className="buttonGrille buttonPretGlace"
+                >
+                  {emplacement.coulis} {emplacement.topping}
+                </button>
+              ))}
+              {posteGlacePret.map((emplacement: Glace, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => handleClickAvailabilityGlace(index)}
+                  className="buttonPret buttonPretGlace"
+                >
+                  {emplacement.coulis} {emplacement.topping}
+                </button>
+              ))}
+              {posteGlace.map((emplacement: Glace, index: number) => (
+                <button
+                  disabled={true}
+                  key={index}
+                  className="buttonCuisson buttonPretGlace"
+                >
+                  {emplacement.coulis} {emplacement.topping}
+                </button>
+              ))}
+              {placeVidePosteGlace.map((emplacement: string, index: number) => (
+                <button key={index} className="buttonNeutre buttonVideGlace">
+                  {emplacement}
+                </button>
+              ))}
+            </div>
+            <hr />
+            <div id="frigoGlace">
+              <h3>Preparation</h3>
+              <h4>Coulis</h4>
+              <br />
+              {coulis.map((element: string, index: number) => (
+                <button
+                  onClick={() => handleClickGlaceConstruction(element)}
+                  key={index}
+                  className="buttonNeutre buttonCoulis"
+                >
+                  {element}
+                </button>
+              ))}
+              <h4>Toppings</h4>
+              <br />
+              <div>
+                {toppings.map((element: string, index: number) => (
+                  <button
+                    onClick={() => handleClickGlaceConstruction(element)}
+                    key={index}
+                    className="buttonNeutre buttonTopping"
+                  >
+                    {element}
+                  </button>
+                ))}
+              </div>
+              <br />
+              <button onClick={handleClickFrigoToPosteGlace} id="buttonLancer">
+                Lancer
+              </button>
+            </div>
+            <hr />
+            <div id="modalDroite">
+              <div className="finModal">
+                <h3>Commandes</h3>
+              </div>
+              <hr />
+              <div className="finModal">
+                <h3>Stock</h3>
+                <ul>
+                  {glaceToppings.map((element: string, index: number) => (
+                    <li key={index}>{element} : X</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

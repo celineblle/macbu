@@ -2,16 +2,63 @@
   width: calc(20vw - 24px);
 }
 
-.glaceTabButton {
-  overflow: hidden;
-  background-color: #f1f1f1;
+#boissonListePage {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 28vh;
+  overflow: scroll;
+}
+#boissonListePage button {
+  margin: 4px auto;
+  background-color: #d7d3d2;
+  border-radius: 5px;
+  height: 30px;
+  width: 160px;
 }
 
-.tabGlaceContent {
+#modalContentGlace {
+  height: 89%;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  padding: 6px 12px;
+}
+
+.finModal {
+  height: 50%;
+}
+
+#posteGlace {
+  width: 20%;
+}
+
+#frigoGlace,
+#modalDroite {
+  width: 40%;
+}
+
+.buttonPretGlace {
+  height: 40px;
+  width: 170px;
+}
+
+.buttonCoulis,
+.buttonTopping {
+  height: 30px;
+}
+
+.buttonCoulis {
+  width: 120px;
+}
+
+.buttonTopping {
+  width: 170px;
+}
+
+.buttonVideGlace {
+  height: 30px;
+  width: 70px;
 }
 
 /*# sourceMappingURL=Glace.css.map */
