@@ -1,5 +1,27 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #caisseComponent {
   width: calc(20vw - 24px);
+}
+
+#listeCommandePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  overflow: scroll;
+}
+
+.commandeUniquePage {
+  border: 2px solid #78e8c1;
+  border-radius: 5px;
+  height: 30px;
+  width: 150px;
+  text-align: center;
+  margin: 4px;
 }
 
 /*# sourceMappingURL=Caisse.css.map */
