@@ -1,14 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
+import { Nugget, nuggets } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
 
 function FriteuseNugget() {
-  const tailleFriteuseGp: number = 4;
+  interface BoiteNugget {
+    friture: string;
+    nombreNugget: number;
+    quantitePret: number;
+  }
+
+  const tailleFriteuseGp: number = 5;
   let standByTimeOutFriteuseGp: number = 0;
+
+  function getFinalStockFriture(): Friture[] {
+    const tabBacFriture: Friture[] = [];
+
+    for (let i = 0; i < frituresCuisineQuantite.length; i++) {
+      const currentFriture: Friture = {
+        friture: frituresCuisineQuantite[i].friture,
+        quantiteSachet: 0,
+      };
+      tabBacFriture.push(currentFriture);
+    }
+
+    return tabBacFriture;
+  }
+
+  const tabBacFriture: Friture[] = getFinalStockFriture();
 
   const [modalActionFriteuseNugget, setModalActionFriteuseNugget] =
     useState<boolean>(false);
@@ -19,11 +42,31 @@ function FriteuseNugget() {
     number[]
   >([]);
   const [placeVideFriteuseGp, setPlaceVideFriteuseGp] = useState<string[]>([]);
+  const [bacFriture, setBacFriture] = useState<Friture[]>(tabBacFriture);
+  const [boitesNugget, setBoitesNugget] = useState<BoiteNugget[]>([
+    {
+      friture: nuggets[0].nom,
+      nombreNugget: nuggets[0].nombreNugget,
+      quantitePret: 0,
+    },
+    {
+      friture: nuggets[1].nom,
+      nombreNugget: nuggets[1].nombreNugget,
+      quantitePret: 0,
+    },
+    {
+      friture: nuggets[2].nom,
+      nombreNugget: nuggets[2].nombreNugget,
+      quantitePret: 0,
+    },
+  ]);
 
   const friteuseGpRef = useRef<Friture[]>([]);
   const pretGpRef = useRef<Friture[]>([]);
   const grilleGpRef = useRef<Friture[]>([]);
   const timeOutPretFriteuseGpRef = useRef<number[]>([]);
+  const bacFritureRef = useRef<Friture[]>(tabBacFriture);
+  const boitesNuggetRef = useRef<BoiteNugget[]>([]);
 
   useEffect(() => {
     friteuseGpRef.current = friteuseGp;
@@ -40,6 +83,14 @@ function FriteuseNugget() {
   useEffect(() => {
     timeOutPretFriteuseGpRef.current = timeOutPretFriteuseGpId;
   }, [timeOutPretFriteuseGpId]);
+
+  useEffect(() => {
+    bacFritureRef.current = bacFriture;
+  }, [bacFriture]);
+
+  useEffect(() => {
+    boitesNuggetRef.current = boitesNugget;
+  }, [boitesNugget]);
 
   function handleClickToggleModal(): void {
     setModalActionFriteuseNugget(!modalActionFriteuseNugget);
@@ -94,12 +145,21 @@ function FriteuseNugget() {
 
   function handleClickAvailabilityFriture(element: Friture): void {
     const getReadyFriture: number = pretGpRef.current.indexOf(element);
-    const timeOutIdCopie: number[] = timeOutPretFriteuseGpRef.current.slice();
+    let timeOutIdCopie: number[] = timeOutPretFriteuseGpRef.current.slice();
     const friteTimeOutId = timeOutIdCopie[getReadyFriture];
     clearTimeout(friteTimeOutId);
+    timeOutIdCopie = timeOutIdCopie.filter((e) => e !== friteTimeOutId);
+    setTimeOutPretFriteuseGpId(timeOutIdCopie);
     const tabCuissonCopie: Friture[] = pretGpRef.current.slice();
     tabCuissonCopie.splice(getReadyFriture, 1);
     setFriteuseGpPret(tabCuissonCopie);
+    const indexCurrentFrit: number = bacFritureRef.current.findIndex(
+      (e) => e.friture === element.friture
+    );
+    const copieBacFriture: Friture[] = bacFritureRef.current.slice();
+    copieBacFriture[indexCurrentFrit].quantiteSachet =
+      copieBacFriture[indexCurrentFrit].quantiteSachet + element.quantiteSachet;
+    setBacFriture(copieBacFriture);
   }
 
   function handleClickPoubelle(element: Friture): void {
@@ -107,6 +167,21 @@ function FriteuseNugget() {
     const tabGrilleCopie: Friture[] = grilleGpRef.current.slice();
     tabGrilleCopie.splice(oldestFritureNugget, 1);
     setFriteuseGpGrille(tabGrilleCopie);
+  }
+
+  function handleClickGetNuggetBox(
+    nugget: BoiteNugget,
+    indexBoite: number
+  ): void {
+    if (bacFritureRef.current[0].quantiteSachet > nugget.nombreNugget) {
+      const allBoite: BoiteNugget[] = boitesNuggetRef.current.slice();
+      allBoite[indexBoite].quantitePret = allBoite[indexBoite].quantitePret + 1;
+      setBoitesNugget(allBoite);
+      const copieBacFriture = bacFritureRef.current.slice();
+      copieBacFriture[0].quantiteSachet =
+        copieBacFriture[0].quantiteSachet - nugget.nombreNugget;
+      setBacFriture(copieBacFriture);
+    }
   }
 
   return (
@@ -141,58 +216,84 @@ function FriteuseNugget() {
           </div>
           <div id="modalNuggetContent">
             <div className="nuggetConstructeur" id="pretNugget">
-              <h3>Pret</h3>
-              <div></div>
-              <h3>Boite à nugget</h3>
+              <div>
+                <h3>Pret</h3>
+                {bacFriture.map((emplacement: Friture, index: number) => (
+                  <button key={index} className="buttonNeutre buttonFrigo">
+                    {emplacement.friture} : {emplacement.quantiteSachet}
+                  </button>
+                ))}
+              </div>
+              <div>
+                <h3>Boite à nugget</h3>
+                {boitesNugget.map((nugget, index) => (
+                  <div key={index}>
+                    <button
+                      className="buttonNeutre buttonFrigo"
+                      onClick={() => handleClickGetNuggetBox(nugget, index)}
+                    >
+                      {nugget.friture}
+                    </button>
+                    <p className="compteurBoite">{`Boite pret : ${nugget.quantitePret}`}</p>
+                  </div>
+                ))}
+              </div>
+
               <h3>Stocks boites</h3>
             </div>
             <hr />
             <div className="nuggetConstructeur" id="cuissonNugget">
               <h3>Cuisson</h3>
-              {friteuseGpGrille.map((emplacement: Friture, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickPoubelle(emplacement)}
-                  className="buttonGrille cuissonNugget"
-                >
-                  {emplacement.friture}
-                </button>
-              ))}
-              {friteuseGpPret.map((emplacement: Friture, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickAvailabilityFriture(emplacement)}
-                  className="buttonPret cuissonNugget"
-                >
-                  {emplacement.friture}
-                </button>
-              ))}
-              {friteuseGp.map((emplacement: Friture, index: number) => (
-                <button
-                  disabled={true}
-                  key={index}
-                  className="buttonCuisson cuissonNugget"
-                >
-                  {emplacement.friture}
-                </button>
-              ))}
-              {placeVideFriteuseGp.map((emplacement: string, index: number) => (
-                <button key={index} className="buttonNeutre cuissonNugget">
-                  {emplacement}
-                </button>
-              ))}
-              <h3>Frigo</h3>
-              {frituresCuisineQuantite.map(
-                (emplacement: Friture, index: number) => (
+              <div className="preparationFriteuseNugget">
+                {friteuseGpGrille.map((emplacement: Friture, index: number) => (
                   <button
-                    onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
                     key={index}
-                    className="buttonNeutre buttonFrigo"
+                    onClick={() => handleClickPoubelle(emplacement)}
+                    className="buttonGrille cuissonNugget"
                   >
-                    {emplacement.friture} : {emplacement.quantiteSachet}
+                    {emplacement.friture}
                   </button>
-                )
-              )}
+                ))}
+                {friteuseGpPret.map((emplacement: Friture, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => handleClickAvailabilityFriture(emplacement)}
+                    className="buttonPret cuissonNugget"
+                  >
+                    {emplacement.friture}
+                  </button>
+                ))}
+                {friteuseGp.map((emplacement: Friture, index: number) => (
+                  <button
+                    disabled={true}
+                    key={index}
+                    className="buttonCuisson cuissonNugget"
+                  >
+                    {emplacement.friture}
+                  </button>
+                ))}
+                {placeVideFriteuseGp.map(
+                  (emplacement: string, index: number) => (
+                    <button key={index} className="buttonNeutre cuissonNugget">
+                      {emplacement}
+                    </button>
+                  )
+                )}
+              </div>
+              <h3>Frigo</h3>
+              <div className="preparationFriteuseNugget">
+                {frituresCuisineQuantite.map(
+                  (emplacement: Friture, index: number) => (
+                    <button
+                      onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
+                      key={index}
+                      className="buttonNeutre buttonFrigo"
+                    >
+                      {emplacement.friture} : {emplacement.quantiteSachet}
+                    </button>
+                  )
+                )}
+              </div>
               <h3>Stocks frigo</h3>
             </div>
             <hr />

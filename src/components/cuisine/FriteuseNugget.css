@@ -13,13 +13,13 @@
   height: 90%;
 }
 
-#pretNugget,
 #cuissonNugget {
   width: 40%;
 }
 
+#pretNugget,
 #commandeNugget {
-  width: 20%;
+  width: 30%;
 }
 
 .cuissonNugget {
@@ -45,6 +45,15 @@
 #pageContentNugget {
   display: flex;
   flex-direction: row;
+}
+
+.preparationFriteuseNugget {
+  height: 33%;
+}
+
+.compteurBoite {
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 /*# sourceMappingURL=FriteuseNugget.css.map */
