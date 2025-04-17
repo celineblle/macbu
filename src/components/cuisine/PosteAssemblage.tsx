@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "./PosteAssemblage.css";
 import close from "../../assets/close.svg";
@@ -14,8 +14,20 @@ import {
   taille,
 } from "../../elements/stocks";
 import { burgers } from "../../elements/burgers";
+import { ViandePret } from "./Cuisine";
+import { Friture } from "../../elements/ingredientsQuantite";
 
-function PosteAssemblage() {
+function PosteAssemblage({
+  viandePretRef,
+  setViandePret,
+  bacFritureRef,
+  setBacFriture,
+}: {
+  viandePretRef: React.RefObject<ViandePret[]>;
+  setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
+  bacFritureRef: React.RefObject<Friture[]>;
+  setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
+}) {
   interface Burger {
     nom?: string;
     pain?: string;
@@ -57,7 +69,33 @@ function PosteAssemblage() {
   ]);
   const [currentBurger, setCurrentBurger] = useState<Burger>({});
 
-  const viandeEtFriture: string[] = viande.concat(frituresCuisine);
+  function getAvailableViande(): string[] {
+    const viandePretBurger = [];
+
+    for (let i = 0; i < viandePretRef.current.length; i++) {
+      if (viandePretRef.current[i].quantite > 0) {
+        viandePretBurger.push(viandePretRef.current[i].nom);
+      }
+    }
+
+    for (let i = 0; i < bacFritureRef.current.length; i++) {
+      if (bacFritureRef.current[i].quantiteSachet > 0) {
+        viandePretBurger.push(bacFritureRef.current[i].friture);
+      }
+    }
+
+    if (viandePretBurger.length === 0) {
+      viandePretBurger.push("Aucun");
+    }
+
+    return viandePretBurger;
+  }
+
+  let viandeEtFriture: string[] = getAvailableViande();
+
+  useEffect(() => {
+    viandeEtFriture = getAvailableViande();
+  }, [viandePretRef.current, bacFritureRef.current]);
 
   const buttonIngredientsBurger: ButtonIngredient[] = [
     {
@@ -99,7 +137,6 @@ function PosteAssemblage() {
     element: string,
     property: keyof Burger
   ): void {
-    console.log(element);
     if (!Object.prototype.hasOwnProperty.call(currentBurger, property)) {
       setCurrentBurger({
         ...currentBurger,
@@ -113,6 +150,25 @@ function PosteAssemblage() {
         ...currentBurger,
         [property]: element,
       });
+    }
+
+    if (viandeEtFriture.includes(element)) {
+      const isItfriture: number = bacFritureRef.current.findIndex(
+        (e) => e.friture === element
+      );
+      if (isItfriture === -1) {
+        const isItViande: number = viandePretRef.current.findIndex(
+          (e) => e.nom === element
+        );
+        const viandeCopie: ViandePret[] = viandePretRef.current.slice();
+        viandeCopie[isItViande].quantite = viandeCopie[isItViande].quantite - 1;
+        setViandePret(viandeCopie);
+      } else {
+        const fritureCopie: Friture[] = bacFritureRef.current.slice();
+        fritureCopie[isItfriture].quantiteSachet =
+          fritureCopie[isItfriture].quantiteSachet - 1;
+        setBacFriture(fritureCopie);
+      }
     }
   }
 

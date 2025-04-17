@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
-import { Nugget, nuggets } from "../../elements/burgers";
+import { nuggets } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
 
-function FriteuseNugget() {
+function FriteuseNugget({
+  bacFriture,
+  setBacFriture,
+  bacFritureRef,
+}: {
+  bacFriture: Friture[];
+  setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
+  bacFritureRef: React.RefObject<Friture[]>;
+}) {
   interface BoiteNugget {
     friture: string;
     nombreNugget: number;
@@ -16,23 +24,6 @@ function FriteuseNugget() {
 
   const tailleFriteuseGp: number = 5;
   let standByTimeOutFriteuseGp: number = 0;
-
-  function getFinalStockFriture(): Friture[] {
-    const tabBacFriture: Friture[] = [];
-
-    for (let i = 0; i < frituresCuisineQuantite.length; i++) {
-      const currentFriture: Friture = {
-        friture: frituresCuisineQuantite[i].friture,
-        quantiteSachet: 0,
-      };
-      tabBacFriture.push(currentFriture);
-    }
-
-    return tabBacFriture;
-  }
-
-  const tabBacFriture: Friture[] = getFinalStockFriture();
-
   const [modalActionFriteuseNugget, setModalActionFriteuseNugget] =
     useState<boolean>(false);
   const [friteuseGp, setFriteuseGp] = useState<Friture[]>([]);
@@ -42,7 +33,6 @@ function FriteuseNugget() {
     number[]
   >([]);
   const [placeVideFriteuseGp, setPlaceVideFriteuseGp] = useState<string[]>([]);
-  const [bacFriture, setBacFriture] = useState<Friture[]>(tabBacFriture);
   const [boitesNugget, setBoitesNugget] = useState<BoiteNugget[]>([
     {
       friture: nuggets[0].nom,
@@ -65,7 +55,6 @@ function FriteuseNugget() {
   const pretGpRef = useRef<Friture[]>([]);
   const grilleGpRef = useRef<Friture[]>([]);
   const timeOutPretFriteuseGpRef = useRef<number[]>([]);
-  const bacFritureRef = useRef<Friture[]>(tabBacFriture);
   const boitesNuggetRef = useRef<BoiteNugget[]>([]);
 
   useEffect(() => {
@@ -83,10 +72,6 @@ function FriteuseNugget() {
   useEffect(() => {
     timeOutPretFriteuseGpRef.current = timeOutPretFriteuseGpId;
   }, [timeOutPretFriteuseGpId]);
-
-  useEffect(() => {
-    bacFritureRef.current = bacFriture;
-  }, [bacFriture]);
 
   useEffect(() => {
     boitesNuggetRef.current = boitesNugget;

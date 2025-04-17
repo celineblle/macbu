@@ -2,31 +2,38 @@ import React, { useEffect, useState, useRef } from "react";
 import "./Grill.css";
 import close from "../../assets/close.svg";
 import { viande } from "../../elements/stocks";
+import { ViandePret } from "./Cuisine";
 
-function Grill() {
+function Grill({
+  viandePret,
+  setViandePret,
+  viandePretRef,
+}: {
+  viandePret: ViandePret[];
+  setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
+  viandePretRef: React.RefObject<ViandePret[]>;
+}) {
   const limitSizeGrill: number = 8;
   let standByTimeOut: number = 0;
   const [toggleModalGrill, setToggleModalGrill] = useState<boolean>(false);
   const [plaqueDeCuisson, setPlaqueDeCuisson] = useState<string[]>([]);
-  const [plaqueDeCuissonPret, setPlaqueDeCuissonPret] = useState<string[]>([]);
   const [plaqueDeCuissonGrille, setPlaqueDeCuissonGrille] = useState<string[]>(
     []
   );
+  const [plaqueDeCuissonPret, setPlaqueDeCuissonPret] = useState<string[]>([]);
+
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
   const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
 
   const tabCuisson = useRef<string[]>([]);
-  const tabPret = useRef<string[]>([]);
   const tabGrille = useRef<string[]>([]);
+  const tabPret = useRef<string[]>([]);
+
   const timeOutPretRef = useRef<number[]>([]);
 
   useEffect(() => {
     tabCuisson.current = plaqueDeCuisson;
   }, [plaqueDeCuisson]);
-
-  useEffect(() => {
-    tabPret.current = plaqueDeCuissonPret;
-  }, [plaqueDeCuissonPret]);
 
   useEffect(() => {
     tabGrille.current = plaqueDeCuissonGrille;
@@ -35,6 +42,10 @@ function Grill() {
   useEffect(() => {
     timeOutPretRef.current = timeOutPretId;
   }, [timeOutPretId]);
+
+  useEffect(() => {
+    tabPret.current = plaqueDeCuissonPret;
+  }, [plaqueDeCuissonPret]);
 
   function handleClickToggleModal(): void {
     setToggleModalGrill(!toggleModalGrill);
@@ -86,12 +97,21 @@ function Grill() {
 
   function handleClickAvailabilitySteak(element: string): void {
     const getReadySteak: number = tabPret.current.indexOf(element);
-    const timeOutIdCopie: number[] = timeOutPretRef.current.slice();
+    let timeOutIdCopie: number[] = timeOutPretRef.current.slice();
     const steakTimeOutId = timeOutIdCopie[getReadySteak];
     clearTimeout(steakTimeOutId);
+    timeOutIdCopie = timeOutIdCopie.filter((e) => e !== steakTimeOutId);
+    setTimeOutPretId(timeOutIdCopie);
     const tabCuissonCopie: string[] = tabPret.current.slice();
     tabCuissonCopie.splice(getReadySteak, 1);
     setPlaqueDeCuissonPret(tabCuissonCopie);
+    const viandePretCopie: ViandePret[] = viandePretRef.current.slice();
+    const indexViandePrete: number = viandePretCopie.findIndex(
+      (e) => e.nom === element
+    );
+    viandePretCopie[indexViandePrete].quantite =
+      viandePretCopie[indexViandePrete].quantite + 1;
+    setViandePret(viandePretCopie);
   }
 
   function handleClickPoubelle(element: string): void {
@@ -106,19 +126,21 @@ function Grill() {
       <button className="buttonModal" onClick={handleClickToggleModal}>
         grill
       </button>
-    <div id="pageContent">
-      <div id="stockPretPage">
-        <h3>Pret</h3>
-        <ul className="listStock">
-          {viande.map((element) => (
-            <li key={element}>{element} : X</li>
-          ))}
-        </ul>
-      </div>
-      <hr />
-      <div id="stockFrigoPage">
-        <h3>Stock</h3>
-      </div>
+      <div id="pageContent">
+        <div id="stockPretPage">
+          <h3>Pret</h3>
+          <ul className="listStock">
+            {viandePret.map((element) => (
+              <li key={element.nom}>
+                {element.nom} : {element.quantite}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <hr />
+        <div id="stockFrigoPage">
+          <h3>Stock</h3>
+        </div>
       </div>
       <div className={toggleModalGrill ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
@@ -136,8 +158,10 @@ function Grill() {
             <div id="stockPretGrill">
               <h3>Pret</h3>
               <ul>
-                {viande.map((element) => (
-                  <li key={element}>{element} : X</li>
+                {viandePret.map((element) => (
+                  <li key={element.nom}>
+                    {element.nom} : {element.quantite}
+                  </li>
                 ))}
               </ul>
             </div>
