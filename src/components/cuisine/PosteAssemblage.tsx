@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import "./PosteAssemblage.css";
 import close from "../../assets/close.svg";
 import {
   pains,
-  frituresCuisine,
   sauces,
   fromages,
-  viande,
   ingredientBurger,
   tailleProduitBurger,
   boiteBurger,
@@ -48,25 +46,11 @@ function PosteAssemblage({
     fonctionConstruction: (element: string, property: keyof Burger) => void;
   }
 
+  const limitBurgerRack: number = 4;
+
   const [modalAction, setModalAction] = useState<boolean>(false);
-  const [burgerPret, setBurgerPret] = useState<Burger[]>([
-    {
-      pain: "ex",
-      viande: "ex",
-      fromage: ["ex"],
-      ingredient: ["ex"],
-      sauce: ["ex"],
-    },
-  ]);
-  const [burgerEnAttente, setBurgerEnAttente] = useState<Burger[]>([
-    {
-      pain: "ex",
-      viande: "ex",
-      fromage: ["ex"],
-      ingredient: ["ex"],
-      sauce: ["ex"],
-    },
-  ]);
+  const [burgerPret, setBurgerPret] = useState<Burger[]>([]);
+  const [burgerEnAttente, setBurgerEnAttente] = useState<Burger[]>([]);
   const [currentBurger, setCurrentBurger] = useState<Burger>({});
 
   function getAvailableViande(): string[] {
@@ -92,6 +76,17 @@ function PosteAssemblage({
   }
 
   let viandeEtFriture: string[] = getAvailableViande();
+
+  const burgerPretRef = useRef<Burger[]>([]);
+  const burgerEnAttenteRef = useRef<Burger[]>([]);
+
+  useEffect(() => {
+    burgerPretRef.current = burgerPret;
+  }, [burgerPret]);
+
+  useEffect(() => {
+    burgerEnAttenteRef.current = burgerEnAttente;
+  }, [burgerEnAttente]);
 
   useEffect(() => {
     viandeEtFriture = getAvailableViande();
@@ -207,8 +202,10 @@ function PosteAssemblage({
   }
 
   function handleClickBurgerAttente(): void {
-    setBurgerEnAttente([...burgerEnAttente, currentBurger]);
-    setCurrentBurger({});
+    if (burgerEnAttenteRef.current.length < limitBurgerRack) {
+      setBurgerEnAttente([...burgerEnAttente, currentBurger]);
+      setCurrentBurger({});
+    }
   }
 
   function checkBurger(finalBurger: Burger, modelBurger: Burger): boolean {
@@ -244,50 +241,57 @@ function PosteAssemblage({
   }
 
   function handleClickBurgerPret(): void {
-    const finalBurger: Burger = currentBurger;
+    if (burgerPretRef.current.length < limitBurgerRack) {
+      const finalBurger: Burger = currentBurger;
 
-    function burgerSize(tailleProduitBurgerTab: string[], size: number): void {
-      if (
-        (finalBurger.pain &&
-          tailleProduitBurgerTab.includes(finalBurger.pain)) ||
-        (finalBurger.viande &&
-          tailleProduitBurgerTab.includes(finalBurger.viande))
-      ) {
-        finalBurger.tailleProduit = taille[size];
-        finalBurger.emballage = boiteBurger[size];
+      function burgerSize(
+        tailleProduitBurgerTab: string[],
+        size: number
+      ): void {
+        if (
+          (finalBurger.pain &&
+            tailleProduitBurgerTab.includes(finalBurger.pain)) ||
+          (finalBurger.viande &&
+            tailleProduitBurgerTab.includes(finalBurger.viande))
+        ) {
+          finalBurger.tailleProduit = taille[size];
+          finalBurger.emballage = boiteBurger[size];
+        }
       }
-    }
-
-    for (let i = 0; i < tailleProduitBurger.length; i++) {
+      for (let i = 0; i < tailleProduitBurger.length; i++) {
+        if (
+          !Object.prototype.hasOwnProperty.call(finalBurger, "tailleProduit")
+        ) {
+          burgerSize(tailleProduitBurger[i], i);
+        } else {
+          i = tailleProduitBurger.length;
+        }
+      }
       if (!Object.prototype.hasOwnProperty.call(finalBurger, "tailleProduit")) {
-        burgerSize(tailleProduitBurger[i], i);
-      } else {
-        i = tailleProduitBurger.length;
+        finalBurger.tailleProduit = taille[2];
+        finalBurger.emballage = boiteBurger[2];
       }
-    }
 
-    if (!Object.prototype.hasOwnProperty.call(finalBurger, "tailleProduit")) {
-      finalBurger.tailleProduit = taille[2];
-      finalBurger.emballage = boiteBurger[2];
-    }
+      finalBurger.type = "sandwich";
+      finalBurger.sousType = "burger";
+      finalBurger.nom = "";
 
-    finalBurger.type = "sandwich";
-    finalBurger.sousType = "burger";
-    finalBurger.nom = "";
+      let conforme = false;
 
-    let conforme = false;
-
-    for (let i = 0; i < burgers.length; i++) {
-      conforme = checkBurger(finalBurger, burgers[i]);
-      const nom = burgers[i].nom;
-      if (conforme === true) {
-        i = burgers.length;
-        finalBurger.nom = nom;
+      for (let i = 0; i < burgers.length; i++) {
+        conforme = checkBurger(finalBurger, burgers[i]);
+        const nom = burgers[i].nom;
+        if (conforme === true) {
+          i = burgers.length;
+          finalBurger.nom = nom;
+        } else {
+          finalBurger.nom = "Recette Personnelle";
+        }
       }
+      finalBurger.conforme = conforme;
+      setBurgerPret([...burgerPret, finalBurger]);
+      setCurrentBurger({});
     }
-    finalBurger.conforme = conforme;
-    setBurgerPret([...burgerPret, finalBurger]);
-    setCurrentBurger({});
   }
 
   function handleClickReprendreBurger(element: object): void {
@@ -446,16 +450,16 @@ function PosteAssemblage({
               <div>
                 <h3>Commande</h3>
               </div>
+              <h3>Pret</h3>
               <div id="pretBurger" className="postePosteAssemblage">
-                <h3>Pret</h3>
                 {burgerPret.map((e: Burger, index: number) => (
                   <button className="commandePret" key={index}>
-                    {e.pain}
+                    {e.nom}
                   </button>
                 ))}
               </div>
+              <h3>En attente</h3>
               <div id="standBurger" className="postePosteAssemblage">
-                <h3>En attente</h3>
                 {burgerEnAttente.map((e: Burger, index: number) => (
                   <button
                     key={index}
