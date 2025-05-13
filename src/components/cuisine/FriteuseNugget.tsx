@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
 import { nuggets } from "../../elements/burgers";
@@ -6,6 +6,7 @@ import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
+import { NuggetsContextSetter } from "../../CommandeContext";
 
 function FriteuseNugget({
   bacFriture,
@@ -21,6 +22,8 @@ function FriteuseNugget({
     nombreNugget: number;
     quantitePret: number;
   }
+
+  const setNuggets = useContext(NuggetsContextSetter);
 
   const tailleFriteuseGp: number = 5;
   let standByTimeOutFriteuseGp: number = 0;
@@ -75,6 +78,13 @@ function FriteuseNugget({
 
   useEffect(() => {
     boitesNuggetRef.current = boitesNugget;
+    if (setNuggets !== undefined) {
+      setNuggets({
+        boite18: boitesNugget[0].quantitePret,
+        boite6: boitesNugget[1].quantitePret,
+        boite3: boitesNugget[2].quantitePret,
+      });
+    }
   }, [boitesNugget]);
 
   function handleClickToggleModal(): void {

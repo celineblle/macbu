@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import * as stocks from "../../elements/stocks";
 import close from "../../assets/close.svg";
 import {
@@ -21,6 +21,11 @@ import {
 } from "../../elements/burgers";
 import { Menu, menuEnfant, MenuEnfant } from "../../elements/menus";
 import "./ComptoirAssemblage.css";
+import {
+  FritesContext,
+  NuggetsContext,
+  BurgersContext,
+} from "../../CommandeContext";
 
 function ComptoirAssemblage() {
   const burger = [
@@ -296,6 +301,12 @@ function ComptoirAssemblage() {
       maxLength: glaces.length,
     },
   ];
+
+  const fritesDispo = useContext(FritesContext);
+  const nuggetsDispo = useContext(NuggetsContext);
+  const burgersDispo = useContext(BurgersContext);
+
+  console.log(burgersDispo, nuggetsDispo);
 
   const tailleAPreparer: number = 4;
   const tailleEnCour: number = 4;
@@ -1066,15 +1077,19 @@ function ComptoirAssemblage() {
                       : "tabContenComptoirA"
                   }
                 >
-                  {frites.map((e, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleClickRemplirPlateau(e)}
-                      className="buttonNeutre"
-                    >
-                      {e.tailleProduit} {e.nom}
-                    </button>
-                  ))}
+                  {fritesDispo.length < 1 ? (
+                    <button>Vide</button>
+                  ) : (
+                    fritesDispo.map((e, i) => (
+                      <button
+                        key={i}
+                        // onClick={() => handleClickRemplirPlateau(e)}
+                        className="buttonNeutre"
+                      >
+                        {e}
+                      </button>
+                    ))
+                  )}
                 </div>
                 <div
                   className={

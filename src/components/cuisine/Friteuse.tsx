@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import "./Friteuse.css";
 import close from "../../assets/close.svg";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../elements/ingredientsQuantite";
 import { Accompagnement } from "../../elements/burgers";
 import { emballageFrite, taille } from "../../elements/stocks";
+import { FritesContextSetter, FritesContext } from "../../CommandeContext";
 
 function Friteuse() {
   interface BacTimeOut {
@@ -21,6 +22,9 @@ function Friteuse() {
     quantiteSachet: number;
     grille: boolean;
   }
+
+  const setFrites = useContext(FritesContextSetter);
+  const fritesContext = useContext(FritesContext);
 
   const tailleFriteuse: number = 6;
   const tailleRackAFrite: number = 18;
@@ -123,6 +127,11 @@ function Friteuse() {
       null,
       setPlaceVideRack
     );
+    if (setFrites !== undefined && rackAFrite.length > 0) {
+      const lastFrite: number = rackAFrite.length - 1;
+      const newFrite: string = `${rackAFrite[lastFrite].tailleProduit} ${rackAFrite[lastFrite].nom}`;
+      setFrites([...fritesContext, newFrite]);
+    }
   }, [rackAFrite]);
 
   useEffect(() => {
@@ -325,24 +334,30 @@ function Friteuse() {
       </button>
       <div id="pageContent">
         <div>
-        <h4>pret</h4>
-        {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
-                  <button
-                    key={index}
-                    className={emplacement.grille === true ? "buttonGrille bacFriteuse" : emplacement.quantiteSachet === 0 ? "buttonNeutre bacFriteuse" : "buttonPret bacFriteuse" }
-                    onClick={
-                      emplacement.grille === true
-                        ? () => handleClickPoubelleBac(emplacement)
-                        : () => choisirIngredient(emplacement)
-                    }
-                  >
-                    {emplacement.friture} : {emplacement.quantiteSachet}
-                  </button>
-                ))}
+          <h4>pret</h4>
+          {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
+            <button
+              key={index}
+              className={
+                emplacement.grille === true
+                  ? "buttonGrille bacFriteuse"
+                  : emplacement.quantiteSachet === 0
+                    ? "buttonNeutre bacFriteuse"
+                    : "buttonPret bacFriteuse"
+              }
+              onClick={
+                emplacement.grille === true
+                  ? () => handleClickPoubelleBac(emplacement)
+                  : () => choisirIngredient(emplacement)
+              }
+            >
+              {emplacement.friture} : {emplacement.quantiteSachet}
+            </button>
+          ))}
         </div>
-    <div>
-      <h4>Stock</h4>
-    </div>
+        <div>
+          <h4>Stock</h4>
+        </div>
       </div>
       <div
         className={modalActionFriteuse ? "modalOpen" : "modalClose"}
@@ -368,7 +383,13 @@ function Friteuse() {
                 {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
                   <button
                     key={index}
-                    className={emplacement.grille === true ? "buttonGrille bacFriteuse" : emplacement.quantiteSachet === 0 ? "buttonNeutre bacFriteuse" : "buttonPret bacFriteuse" }
+                    className={
+                      emplacement.grille === true
+                        ? "buttonGrille bacFriteuse"
+                        : emplacement.quantiteSachet === 0
+                          ? "buttonNeutre bacFriteuse"
+                          : "buttonPret bacFriteuse"
+                    }
                     onClick={
                       emplacement.grille === true
                         ? () => handleClickPoubelleBac(emplacement)
@@ -404,7 +425,9 @@ function Friteuse() {
                   )
                 )}
                 {placeVideRack.map((emplacement: Friture, index: number) => (
-                  <button className="buttonNeutre rackFrite" key={index}>{emplacement.friture}</button>
+                  <button className="buttonNeutre rackFrite" key={index}>
+                    {emplacement.friture}
+                  </button>
                 ))}
               </div>
             </div>
@@ -443,19 +466,25 @@ function Friteuse() {
                   <button
                     key={index}
                     onClick={() => handleClickFriteuseToBac(emplacement, index)}
-                  className="buttonPret bacFriteuse"
+                    className="buttonPret bacFriteuse"
                   >
                     {emplacement.friture}
                   </button>
                 ))}
                 {friteuse.map((emplacement: Friture, index: number) => (
-                  <button className="buttonCuisson bacFriteuse" disabled={true} key={index}>
+                  <button
+                    className="buttonCuisson bacFriteuse"
+                    disabled={true}
+                    key={index}
+                  >
                     {emplacement.friture}
                   </button>
                 ))}
                 {placeVideFriteuse.map(
                   (emplacement: Friture, index: number) => (
-                    <button className="buttonNeutre bacFriteuse" key={index}>{emplacement.friture}</button>
+                    <button className="buttonNeutre bacFriteuse" key={index}>
+                      {emplacement.friture}
+                    </button>
                   )
                 )}
               </div>
@@ -464,7 +493,7 @@ function Friteuse() {
                 <h3>Stock</h3>
               </div>
             </div>
-            <hr/>
+            <hr />
             <div id="commandeFriteuse" className="modalComponent">
               <h3 className="titreModalContent">Commande</h3>
               <br />

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import "./PosteAssemblage.css";
 import close from "../../assets/close.svg";
 import {
@@ -14,6 +13,7 @@ import {
 import { burgers } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
+import { BurgersContext, BurgersContextSetter } from "../../CommandeContext";
 
 function PosteAssemblage({
   viandePretRef,
@@ -45,6 +45,9 @@ function PosteAssemblage({
     tableau: string[];
     fonctionConstruction: (element: string, property: keyof Burger) => void;
   }
+
+  const setBurgers = useContext(BurgersContextSetter);
+  const burgersDispo = useContext(BurgersContext);
 
   const limitBurgerRack: number = 4;
 
@@ -82,6 +85,14 @@ function PosteAssemblage({
 
   useEffect(() => {
     burgerPretRef.current = burgerPret;
+    if (setBurgers !== undefined && burgerPret.length > 0) {
+      const lastBurger = burgerPret.length - 1;
+
+      const newBurger = burgerPret[lastBurger].nom;
+      if (newBurger !== undefined) {
+        setBurgers([...burgersDispo, newBurger]);
+      }
+    }
   }, [burgerPret]);
 
   useEffect(() => {
