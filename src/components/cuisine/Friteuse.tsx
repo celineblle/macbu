@@ -251,7 +251,7 @@ function Friteuse() {
 
         const finalPortion: Accompagnement = {
           nom: portionChoisie[0].base,
-          base: portionChoisie[0].base,
+          complement: portionChoisie[0].base,
           emballage: emballageFrite[emballage],
           tailleProduit: portionChoisie[0].tailleProduit,
           type: "accompagnement",

@@ -94,8 +94,6 @@ function PosteBoisson() {
     setFontainePret(fontainePretCopie);
   }
 
-  console.log(fontainePret[0]);
-
   return (
     <div id="boissonComponent" className="component">
       <button className="buttonModal" onClick={handleClickActionModal}>
