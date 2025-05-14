@@ -3,7 +3,15 @@ import close from "../../assets/close.svg";
 import { taille, boisson, gobelet } from "../../elements/stocks";
 import "./Boisson.css";
 
-function PosteBoisson() {
+function PosteBoisson({
+  fontainePret,
+  setFontainePret,
+  fontainePretRef,
+}: {
+  fontainePret: string[];
+  setFontainePret: React.Dispatch<React.SetStateAction<string[]>>;
+  fontainePretRef: React.RefObject<string[]>;
+}) {
   interface Boisson {
     nom?: string;
     base?: string;
@@ -19,19 +27,13 @@ function PosteBoisson() {
     useState<boolean>(false);
   const [currentBoisson, setCurrentBoisson] = useState<Boisson>({});
   const [fontaine, setFontaine] = useState<Boisson[]>([]);
-  const [fontainePret, setFontainePret] = useState<Boisson[]>([]);
   const [placeVideBoisson, setPlaceVideBoisson] = useState<string[]>([]);
 
   const fontaineRef = useRef<Boisson[]>([]);
-  const fontainePretRef = useRef<Boisson[]>([]);
 
   useEffect(() => {
     fontaineRef.current = fontaine;
   }, [fontaine]);
-
-  useEffect(() => {
-    fontainePretRef.current = fontainePret;
-  }, [fontainePret]);
 
   function handleClickActionModal(): void {
     setButtonActionModalBoisson(!buttonActionModalBoisson);
@@ -70,7 +72,8 @@ function PosteBoisson() {
           const tabFontaineCopie: Boisson[] = fontaineRef.current.slice();
           tabFontaineCopie.splice(oldestBoisson, 1);
           setFontaine(tabFontaineCopie);
-          setFontainePret([...fontainePretRef.current, copieCurentBoisson]);
+          const finalBoisson: string = `${copieCurentBoisson.tailleProduit} ${copieCurentBoisson.base}`;
+          setFontainePret([...fontainePretRef.current, finalBoisson]);
         }, 2000);
       }
     }
@@ -89,7 +92,7 @@ function PosteBoisson() {
   }, [fontaine, fontainePret]);
 
   function handleClickTransfertBoisson(boisson: number): void {
-    const fontainePretCopie: Boisson[] = fontainePretRef.current.slice();
+    const fontainePretCopie: string[] = fontainePretRef.current.slice();
     fontainePretCopie.splice(boisson, 1);
     setFontainePret(fontainePretCopie);
   }
@@ -102,11 +105,9 @@ function PosteBoisson() {
       <div id="pageContentBoisson">
         <h3>Fontaine</h3>
         <ul id="boissonListePage">
-          {fontainePret.map((emplacement: Boisson, index: number) => (
+          {fontainePret.map((emplacement: string, index: number) => (
             <li key={index} onClick={() => handleClickTransfertBoisson(index)}>
-              <p>
-                {emplacement.tailleProduit} {emplacement.base}
-              </p>
+              <p>{emplacement}</p>
             </li>
           ))}
           {placeVideBoisson.map((emplacement: string, index: number) => (
@@ -132,13 +133,13 @@ function PosteBoisson() {
             <div id="modalGaucheBoisson">
               <h3>Fontaine</h3>
               <div id="fontaineBoisson">
-                {fontainePret.map((emplacement: Boisson, index: number) => (
+                {fontainePret.map((emplacement: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleClickTransfertBoisson(index)}
                     className="buttonPret buttonFontaine"
                   >
-                    {emplacement.tailleProduit} {emplacement.base}
+                    {emplacement}
                   </button>
                 ))}
                 {fontaine.map((emplacement: Boisson, index: number) => (

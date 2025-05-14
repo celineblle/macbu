@@ -52,7 +52,7 @@ function PosteAssemblage({
   const limitBurgerRack: number = 4;
 
   const [modalAction, setModalAction] = useState<boolean>(false);
-  const [burgerPret, setBurgerPret] = useState<Burger[]>([]);
+  const [burgerPret, setBurgerPret] = useState<string[]>([]);
   const [burgerEnAttente, setBurgerEnAttente] = useState<Burger[]>([]);
   const [currentBurger, setCurrentBurger] = useState<Burger>({});
 
@@ -80,7 +80,7 @@ function PosteAssemblage({
 
   let viandeEtFriture: string[] = getAvailableViande();
 
-  const burgerPretRef = useRef<Burger[]>([]);
+  const burgerPretRef = useRef<string[]>([]);
   const burgerEnAttenteRef = useRef<Burger[]>([]);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ function PosteAssemblage({
     if (setBurgers !== undefined && burgerPret.length > 0) {
       const lastBurger = burgerPret.length - 1;
 
-      const newBurger = burgerPret[lastBurger].nom;
+      const newBurger = burgerPret[lastBurger];
       if (newBurger !== undefined) {
         setBurgers([...burgersDispo, newBurger]);
       }
@@ -300,7 +300,7 @@ function PosteAssemblage({
         }
       }
       finalBurger.conforme = conforme;
-      setBurgerPret([...burgerPret, finalBurger]);
+      setBurgerPret([...burgerPret, finalBurger.nom]);
       setCurrentBurger({});
     }
   }
@@ -323,9 +323,9 @@ function PosteAssemblage({
 
       <div id="pretPosteAssemblage" className="postePosteAssemblage">
         <h3>Pret</h3>
-        {burgerPret.map((e: Burger, index: number) => (
+        {burgerPret.map((e: string, index: number) => (
           <button className="commandePret" key={index}>
-            {e.pain}
+            {e}
           </button>
         ))}
       </div>
@@ -463,9 +463,9 @@ function PosteAssemblage({
               </div>
               <h3>Pret</h3>
               <div id="pretBurger" className="postePosteAssemblage">
-                {burgerPret.map((e: Burger, index: number) => (
+                {burgerPret.map((e: string, index: number) => (
                   <button className="commandePret" key={index}>
-                    {e.nom}
+                    {e}
                   </button>
                 ))}
               </div>

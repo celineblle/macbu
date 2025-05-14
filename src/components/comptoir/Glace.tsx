@@ -3,7 +3,13 @@ import "./Glace.css";
 import close from "../../assets/close.svg";
 import { gobelet, glaceToppings, taille } from "../../elements/stocks";
 
-function Glace() {
+function Glace({
+  setGlacesCommande,
+  glacesCommandeRef,
+}: {
+  setGlacesCommande: React.Dispatch<React.SetStateAction<string[]>>;
+  glacesCommandeRef: React.RefObject<string[]>;
+}) {
   interface Glace {
     nom?: string;
     base?: string;
@@ -72,6 +78,18 @@ function Glace() {
       const tabPosteGlacePretCopie: Glace[] = posteGlacePretRef.current.slice();
       tabPosteGlacePretCopie.splice(oldestGlace, 1);
       setPosteGlacePret(tabPosteGlacePretCopie);
+      let glaceComptoir: string | number =
+        `${tabPosteGlacePretCopie[oldestGlace].coulis} ${tabPosteGlacePretCopie[oldestGlace].topping}`;
+      glaceComptoir = glacesCommandeRef.current.indexOf(glaceComptoir);
+      const glacesCommandeCopie = glacesCommandeRef.current.splice(
+        glaceComptoir,
+        1
+      );
+      if (glacesCommandeCopie.length === 0) {
+        glacesCommandeCopie.push("Vide");
+      }
+
+      setGlacesCommande(glacesCommandeCopie);
     }, 10000);
     setTimeOutPretPosteGlaceId([
       ...timeOutPretPosteGlaceRef.current,
@@ -115,6 +133,8 @@ function Glace() {
           setPosteGlace(tabPosteGlaceCopie);
           setPosteGlacePret([...posteGlacePretRef.current, copieCurentGlace]);
           posteGlaceStandBy(copieCurentGlace);
+          const glaceComptoir: string = `${copieCurentGlace.coulis} ${copieCurentGlace.topping}`;
+          setGlacesCommande([...glacesCommandeRef.current, glaceComptoir]);
         }, 2000);
       }
     }

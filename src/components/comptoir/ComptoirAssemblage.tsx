@@ -27,7 +27,13 @@ import {
   BurgersContext,
 } from "../../CommandeContext";
 
-function ComptoirAssemblage() {
+function ComptoirAssemblage({
+  glacesCommande,
+  fontainePret,
+}: {
+  glacesCommande: string[];
+  fontainePret: string[];
+}) {
   const burger = [
     {
       nom: "Origin Burger",
@@ -233,49 +239,6 @@ function ComptoirAssemblage() {
       tailleProduit: stocks.taille[0],
       type: "boisson",
       sousType: "cannette",
-    },
-  ];
-
-  const glace = [
-    {
-      nom: "Glace",
-      base: "Glace au lait",
-      topping: stocks.glaceToppings[2],
-      coulis: stocks.glaceToppings[0],
-      emballage: stocks.gobelet[3],
-      tailleProduit: stocks.taille[1],
-      type: "dessert",
-      sousType: "glace",
-    },
-    {
-      nom: "Glace",
-      base: "Glace au lait",
-      topping: stocks.glaceToppings[3],
-      coulis: stocks.glaceToppings[0],
-      emballage: stocks.gobelet[3],
-      tailleProduit: stocks.taille[1],
-      type: "dessert",
-      sousType: "glace",
-    },
-    {
-      nom: "Glace",
-      base: "Glace au lait",
-      topping: stocks.glaceToppings[2],
-      coulis: stocks.glaceToppings[1],
-      emballage: stocks.gobelet[3],
-      tailleProduit: stocks.taille[1],
-      type: "dessert",
-      sousType: "glace",
-    },
-    {
-      nom: "Glace",
-      base: "Glace au lait",
-      topping: stocks.glaceToppings[3],
-      coulis: stocks.glaceToppings[1],
-      emballage: stocks.gobelet[3],
-      tailleProduit: stocks.taille[1],
-      type: "dessert",
-      sousType: "glace",
     },
   ];
 
@@ -702,9 +665,9 @@ function ComptoirAssemblage() {
     }
   }
 
-  function handleClickRemplirPlateau(plat: Produit): void {
+  function handleClickRemplirPlateau(plat: Produit | string): void {
     const allCommandeEnCourCopie: ProduitEtMenu[][] = enCourRef.current.slice();
-    let commandeCopie: ProduitEtMenu[] = [];
+    let commandeCopie: (ProduitEtMenu | string)[] = [];
     if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
       commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
     }
@@ -870,6 +833,8 @@ function ComptoirAssemblage() {
       setEnCourVide(placeVideTab);
     }
   }, [commandeEnCour]);
+
+  console.log(aPreparerAffichage);
 
   return (
     <div id="comptoirAssemblageComponent" className="component">
@@ -1098,13 +1063,13 @@ function ComptoirAssemblage() {
                       : "tabContenComptoirA"
                   }
                 >
-                  {boissonsTest.map((e, i) => (
+                  {fontainePret.map((e, i) => (
                     <button
                       key={i}
                       onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
-                      {e.tailleProduit} {e.nom}
+                      {e}
                     </button>
                   ))}
                 </div>
@@ -1115,13 +1080,13 @@ function ComptoirAssemblage() {
                       : "tabContenComptoirA"
                   }
                 >
-                  {glace.map((e, i) => (
+                  {glacesCommande.map((e, i) => (
                     <button
                       key={i}
                       onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
-                      {e.nom} {e.topping} {e.coulis}
+                      {e}
                     </button>
                   ))}
                 </div>
