@@ -11,7 +11,10 @@ import {
   NuggetContextType,
   BurgersContext,
   BurgersContextSetter,
+  CommandesAPreparerContext,
+  CommandesAPreparerContextSetter,
 } from "./CommandeContext";
+import { ProduitEtMenu } from "./elements/burgers";
 
 function App() {
   const [frites, setFrites] = useState<string[]>([]);
@@ -22,23 +25,31 @@ function App() {
   });
   const [burgers, setBurgers] = useState<string[]>(["Vide"]);
 
+  const [commandeAPreparer, setCommandeAPreparer] = useState<ProduitEtMenu[][]>(
+    []
+  );
+
   return (
     <div id="page">
       <BureauManager />
-      <FritesContext value={frites}>
-        <FritesContextSetter value={setFrites}>
-          <NuggetsContext value={nuggets}>
-            <NuggetsContextSetter value={setNuggets}>
-              <BurgersContext value={burgers}>
-                <BurgersContextSetter value={setBurgers}>
-                  <Cuisine />
-                  <Comptoir />
-                </BurgersContextSetter>
-              </BurgersContext>
-            </NuggetsContextSetter>
-          </NuggetsContext>
-        </FritesContextSetter>
-      </FritesContext>
+      <CommandesAPreparerContext value={commandeAPreparer}>
+        <CommandesAPreparerContextSetter value={setCommandeAPreparer}>
+          <FritesContext value={frites}>
+            <FritesContextSetter value={setFrites}>
+              <NuggetsContext value={nuggets}>
+                <NuggetsContextSetter value={setNuggets}>
+                  <BurgersContext value={burgers}>
+                    <BurgersContextSetter value={setBurgers}>
+                      <Cuisine />
+                      <Comptoir />
+                    </BurgersContextSetter>
+                  </BurgersContext>
+                </NuggetsContextSetter>
+              </NuggetsContext>
+            </FritesContextSetter>
+          </FritesContext>
+        </CommandesAPreparerContextSetter>
+      </CommandesAPreparerContext>
     </div>
   );
 }

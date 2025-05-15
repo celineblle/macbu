@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import "./Caisse.css";
 import close from "../../assets/close.svg";
 
-function Caisse() {
+function Caisse({
+  aPreparerAffichage,
+}: {
+  aPreparerAffichage: (string | string[])[][];
+}) {
   const [buttonActionModalCaisse, setButtonActionModalCaisse] =
     useState<boolean>(false);
 
@@ -16,9 +20,11 @@ function Caisse() {
         Caisse
       </button>
       <ul id="listeCommandePage">
-        <li className="commandeUniquePage">Commande x : xx€</li>
-        <li className="commandeUniquePage">Commande x : xx€</li>
-        <li className="commandeUniquePage">Commande x : xx€</li>
+        {aPreparerAffichage.map((tab: (string | string[])[], index: number) => (
+          <li key={index} className="commandeUniquePage">
+            Commande {index + 1} : xx€
+          </li>
+        ))}
       </ul>
 
       <div className={buttonActionModalCaisse ? "modalOpen" : "modalClose"}>

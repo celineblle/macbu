@@ -1,4 +1,5 @@
 import * as stocks from "./stocks";
+import { Menu, MenuEnfant } from "./menus";
 
 export interface Salade {
     nom: string,
@@ -272,7 +273,7 @@ export const classyWrap: Burger = {
     sousType: "wrap",
 };
 
-export interface Glace{
+export interface GlaceType{
     nom: string,
     base: string,
     topping?: string | null,
@@ -283,13 +284,13 @@ export interface Glace{
     sousType: string,
 };
 
-function glace (): Glace[] {
+function glace (): GlaceType[] {
     const toppings = [stocks.glaceToppings[2], stocks.glaceToppings[3], stocks.glaceToppings[4], stocks.glaceToppings[5]];
     const coulis = [stocks.glaceToppings[0], stocks.glaceToppings[1]];
     const allGlace = [];
     for(let i = 0; i < toppings.length; i++){
         for(let j= 0; j < coulis.length; j++){
-              const unGlace: Glace = {
+              const unGlace: GlaceType = {
                 nom: "Glace",
                 base: "Glace au lait",
                 topping: toppings[i],
@@ -305,7 +306,7 @@ function glace (): Glace[] {
     return allGlace;
 };
 
-export const glaces: Glace[] = glace();
+export const glaces: GlaceType[] = glace();
 
 
 export interface Accompagnement {
@@ -437,10 +438,13 @@ function getOnlyAdultAccompagnement(): Accompagnement[] {
 
 export const adultAccompagnement: Accompagnement[] = getOnlyAdultAccompagnement()
 
-export const enfantDessert: (Glace | Accompagnement)[] = glaces.slice()
+export const enfantDessert: (GlaceType | Accompagnement)[] = glaces.slice()
 enfantDessert.push(boissonYaourt, fruits)
 
 export const enfantBoisson: Boisson[] = boissons.slice();
 enfantBoisson.push(jusDefruit)
 
-export const allProduits: (Salade | Nugget | Burger | Glace | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
+export const allProduits: (Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
+
+export type Produit = Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson;
+export type ProduitEtMenu = Produit | Menu | MenuEnfant;

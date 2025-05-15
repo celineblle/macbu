@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { ProduitEtMenu } from "./elements/burgers";
 
 export const FritesContext = createContext<string[]>([]);
 
@@ -26,4 +27,10 @@ export const BurgersContext = createContext(["Vide"]);
 
 export const BurgersContextSetter = createContext<
   undefined | React.Dispatch<React.SetStateAction<string[]>>
+>(undefined);
+
+export const CommandesAPreparerContext = createContext<ProduitEtMenu[][]>([]);
+
+export const CommandesAPreparerContextSetter = createContext<
+  undefined | React.Dispatch<React.SetStateAction<ProduitEtMenu[][]>>
 >(undefined);

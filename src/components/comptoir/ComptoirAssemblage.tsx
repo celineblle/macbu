@@ -1,38 +1,26 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import * as stocks from "../../elements/stocks";
 import close from "../../assets/close.svg";
-import {
-  Accompagnement,
-  Boisson,
-  Burger,
-  Salade,
-  Nugget,
-  Glace,
-  boissons,
-  adultAccompagnement,
-  glaces,
-  allProduits,
-  saladeCesar,
-  salade,
-  jusDefruit,
-  fruits,
-  legume,
-  pouce,
-} from "../../elements/burgers";
-import { Menu, menuEnfant, MenuEnfant } from "../../elements/menus";
+import * as stocks from "../../elements/stocks";
+import { ProduitEtMenu, Produit, glaces } from "../../elements/burgers";
 import "./ComptoirAssemblage.css";
 import {
   FritesContext,
   NuggetsContext,
   BurgersContext,
+  CommandesAPreparerContextSetter,
 } from "../../CommandeContext";
+import { triProduit, affichageCommande } from "./gestionCommandes";
 
 function ComptoirAssemblage({
   glacesCommande,
   fontainePret,
+  aPreparerAffichage,
+  aPreparerRef,
 }: {
   glacesCommande: string[];
   fontainePret: string[];
+  aPreparerAffichage: (string | string[])[][];
+  aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
 }) {
   const burger = [
     {
@@ -265,32 +253,22 @@ function ComptoirAssemblage({
     },
   ];
 
+  const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
+
   const fritesDispo = useContext(FritesContext);
   const nuggetsDispo = useContext(NuggetsContext);
   const burgersDispo = useContext(BurgersContext);
 
   console.log(burgersDispo, nuggetsDispo);
 
-  const tailleAPreparer: number = 4;
   const tailleEnCour: number = 4;
-  const tailleMaxCommande: number = 8;
-
-  type Produit = Salade | Nugget | Burger | Glace | Accompagnement | Boisson;
-  type ProduitEtMenu = Produit | Menu | MenuEnfant;
 
   const [buttonActionModalComptoirA, setButtonActionModalComptoirA] =
     useState<boolean>(false);
   const [tabActionComptoirA, setTabActionComptoirA] = useState<string>(
     elementsCommandes[0].nom
   );
-  const [commandeAPreparer, setCommandeAPreparer] = useState<ProduitEtMenu[][]>(
-    []
-  );
-  const [aPreparerAffichage, setAPreparerAffichage] = useState<
-    (string | string[])[][]
-  >([]);
-  const [aPreparerVide, setAPreparerVide] = useState<string[]>([]);
-  const [timeAPreparer, setTimeAPreparer] = useState<number[]>([]);
+
   const [commandeEnCour, setCommandeEnCour] = useState<ProduitEtMenu[][]>([]);
   const [idPlateauPrepa, setIdPlateauPrepa] = useState<number>(0);
   const [enCourAffichage, setEnCourAffichage] = useState<
@@ -299,24 +277,9 @@ function ComptoirAssemblage({
   const [enCourVide, setEnCourVide] = useState<string[]>([]);
   const [validerPlateau, setValiderPlateau] = useState<boolean>(false);
 
-  const aPreparerRef = useRef<ProduitEtMenu[][]>([]);
-  const aPreparerAffichageRef = useRef<(string | string[])[][]>([]);
-  const timeAPreparerRef = useRef<number[]>([]);
   const enCourRef = useRef<ProduitEtMenu[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
   const idPlateauRef = useRef<number>(0);
-
-  useEffect(() => {
-    aPreparerRef.current = commandeAPreparer;
-  }, [commandeAPreparer]);
-
-  useEffect(() => {
-    aPreparerAffichageRef.current = aPreparerAffichage;
-  }, [aPreparerAffichage]);
-
-  useEffect(() => {
-    timeAPreparerRef.current = timeAPreparer;
-  }, [timeAPreparer]);
 
   useEffect(() => {
     enCourRef.current = commandeEnCour;
@@ -336,325 +299,6 @@ function ComptoirAssemblage({
 
   function handleClickTab(nom: string): void {
     setTabActionComptoirA(nom);
-  }
-
-  function triProduit(commande: ProduitEtMenu[]): Produit[][] {
-    const plat: (Salade | Nugget | Burger)[] = [];
-    const complement: Accompagnement[] = [];
-    const boissonCommande: Boisson[] = [];
-    const autreProduit: (Glace | Accompagnement | Boisson)[] = [];
-    const finalProduitTriee: Produit[][] = [];
-
-    for (let i = 0; i < commande.length; i++) {
-      const actuelProduit: ProduitEtMenu = commande[i];
-      if (
-        ("feculent" in actuelProduit ||
-          "nombreNugget" in actuelProduit ||
-          "pain" in actuelProduit) &&
-        actuelProduit.sousType !== "enfant"
-      ) {
-        plat.push(actuelProduit);
-      } else if (
-        "complement" in actuelProduit &&
-        actuelProduit.sousType !== "enfant"
-      ) {
-        complement.push(actuelProduit);
-      } else if (
-        "saveur" in actuelProduit &&
-        actuelProduit.sousType !== "enfant"
-      ) {
-        boissonCommande.push(actuelProduit);
-      } else if ("coulis" in actuelProduit) {
-        autreProduit.push(actuelProduit);
-      } else if (
-        ("complement" in actuelProduit || "saveur" in actuelProduit) &&
-        actuelProduit.sousType === "enfant"
-      ) {
-        autreProduit.push(actuelProduit);
-      }
-    }
-
-    finalProduitTriee.push(plat, complement, boissonCommande, autreProduit);
-    return finalProduitTriee;
-  }
-
-  function triProduitEnfant(tableauToutProduit: Produit[][]): Produit[][] {
-    const petitPlat: (Salade | Nugget | Burger)[] = [];
-    const petitComplement: Accompagnement[] = [];
-    const petiteBoisson: Boisson[] = [];
-    const dessert: (Glace | Accompagnement)[] = [];
-    const autreProduitEnfant: (Glace | Accompagnement | Boisson)[] = [];
-    const toutProduitEnfant: Produit[][] = [];
-
-    function triParTaille(
-      tableauProduit: Produit[],
-      tableauEnfant: Produit[]
-    ): void {
-      if (tableauProduit.length === 0) {
-        return;
-      } else {
-        for (let i = 0; i < tableauProduit.length; i++) {
-          if (
-            tableauProduit[i].tailleProduit === stocks.taille[2] &&
-            tableauProduit[i].sousType !== "salade"
-          ) {
-            tableauEnfant.push(tableauProduit[i]);
-            tableauProduit.splice(i, 1);
-            i = 0;
-          }
-        }
-      }
-    }
-
-    triParTaille(tableauToutProduit[0], petitPlat);
-    triParTaille(tableauToutProduit[1], petitComplement);
-    triParTaille(tableauToutProduit[2], petiteBoisson);
-    triParTaille(tableauToutProduit[3], autreProduitEnfant);
-
-    for (let i = 0; i < autreProduitEnfant.length; i++) {
-      const actuelProduit: Glace | Accompagnement | Boisson =
-        autreProduitEnfant[i];
-      if (
-        "coulis" in actuelProduit ||
-        ("complement" in actuelProduit && actuelProduit.type === "dessert")
-      ) {
-        dessert.push(actuelProduit);
-      } else if ("saveur" in actuelProduit) {
-        petiteBoisson.push(actuelProduit);
-      } else if (
-        "complement" in actuelProduit &&
-        actuelProduit.sousType === "enfant"
-      ) {
-        petitComplement.push(actuelProduit);
-      }
-    }
-
-    toutProduitEnfant.push(petitPlat, petitComplement, petiteBoisson, dessert);
-    return toutProduitEnfant;
-  }
-
-  function randomCommande() {
-    function getRandom(max: number): number {
-      let random: number = Math.floor(Math.random() * max);
-      if (random === 0) {
-        random = 1;
-      }
-      return random;
-    }
-
-    const tailleCommande: number = getRandom(tailleMaxCommande);
-    let commande = [];
-
-    for (let i = 0; i < tailleCommande; i++) {
-      const currentProduit: number = getRandom(allProduits.length - 1);
-      const finalCurrentProduit: Produit = allProduits[currentProduit];
-      commande.push(finalCurrentProduit);
-    }
-
-    function getAllMenu(commande: Produit[]) {
-      const finalCommande: ProduitEtMenu[] = [];
-      const commandeTrie: Produit[][] = triProduit(commande);
-      const commandeTrieEnfant: Produit[][] = triProduitEnfant(commandeTrie);
-
-      if (
-        commandeTrie[0].length !== 0 &&
-        (commandeTrie[1].length !== 0 || commandeTrie[2].length !== 0)
-      ) {
-        for (let i = 0; i < commandeTrie[0].length; i++) {
-          if (commandeTrie[1].length === 0 && commandeTrie[2].length === 0) {
-            finalCommande.push(commandeTrie[0][i]);
-          } else {
-            const currentSize: string = commandeTrie[0][i].tailleProduit;
-            const indexSize: number = stocks.taille.indexOf(currentSize);
-            const currentMenu: Menu = {
-              sandwich: saladeCesar,
-              accompagnement: salade,
-              boisson: boissons[0],
-              taille: 0,
-            };
-
-            currentMenu.sandwich = commandeTrie[0][i] as
-              | Salade
-              | Burger
-              | Nugget;
-
-            let currentAccompagnement;
-
-            if (commandeTrie[1].length !== 0) {
-              const produit: number = commandeTrie[1].findIndex(
-                (e) => e.tailleProduit === currentSize
-              );
-              if (produit === -1) {
-                currentAccompagnement = commandeTrie[1][0];
-                commandeTrie[1].shift();
-              } else {
-                currentAccompagnement = commandeTrie[1][produit];
-                commandeTrie[1].splice(produit, 1);
-              }
-            } else {
-              const randomSaveur: number = getRandom(
-                adultAccompagnement.length - 1
-              );
-              currentAccompagnement = adultAccompagnement[randomSaveur];
-            }
-
-            if (currentAccompagnement.nom !== stocks.frais[0]) {
-              currentAccompagnement.emballage =
-                stocks.emballageFrite[indexSize];
-              currentAccompagnement.tailleProduit = currentSize;
-            }
-            currentMenu.accompagnement =
-              currentAccompagnement as Accompagnement;
-
-            let currentBoisson;
-
-            if (commandeTrie[2].length !== 0) {
-              const produit: number = commandeTrie[2].findIndex(
-                (e) => e.tailleProduit === currentSize
-              );
-              if (produit === -1) {
-                currentBoisson = commandeTrie[2][0];
-                commandeTrie[2].shift();
-              } else {
-                currentBoisson = commandeTrie[2][produit];
-                commandeTrie[2].splice(produit, 1);
-              }
-            } else {
-              const randomSaveur: number = getRandom(boissons.length - 1);
-              currentBoisson = boissons[randomSaveur];
-            }
-
-            currentBoisson.emballage = stocks.gobelet[indexSize];
-            currentBoisson.tailleProduit = currentSize;
-            currentMenu.boisson = currentBoisson as Boisson;
-
-            let tailleMenu: number = currentSize === stocks.taille[0] ? 3 : 2;
-            tailleMenu = tailleMenu * 3;
-            currentMenu.taille = tailleMenu;
-            finalCommande.push(currentMenu);
-          }
-        }
-      }
-
-      if (commandeTrieEnfant[0].length !== 0) {
-        for (let i = 0; i < commandeTrieEnfant[0].length; i++) {
-          const currentMenu: MenuEnfant = {
-            sandwich: pouce,
-            accompagnement: legume,
-            boisson: jusDefruit,
-            dessert: fruits,
-            taille: 4,
-          };
-
-          currentMenu.sandwich = commandeTrieEnfant[0][i] as Nugget | Burger;
-
-          if (commandeTrieEnfant[1].length !== 0) {
-            currentMenu.accompagnement =
-              commandeTrieEnfant[1][0] as Accompagnement;
-            commandeTrieEnfant[1].shift();
-          } else {
-            const randomSaveur: number = getRandom(menuEnfant[1].length - 1);
-            currentMenu.accompagnement = menuEnfant[1][
-              randomSaveur
-            ] as Accompagnement;
-          }
-
-          if (commandeTrieEnfant[2].length !== 0) {
-            currentMenu.boisson = commandeTrieEnfant[2][0] as Boisson;
-            commandeTrieEnfant[2].shift();
-          } else {
-            const randomSaveur: number = getRandom(menuEnfant[2].length - 1);
-            currentMenu.boisson = menuEnfant[2][randomSaveur] as Boisson;
-          }
-
-          if (commandeTrieEnfant[3].length !== 0) {
-            currentMenu.dessert = commandeTrieEnfant[3][0] as
-              | Glace
-              | Accompagnement;
-            commandeTrieEnfant[3].shift();
-          } else {
-            const randomSaveur: number = getRandom(menuEnfant[3].length - 1);
-            currentMenu.dessert = menuEnfant[3][randomSaveur] as
-              | Glace
-              | Accompagnement;
-          }
-
-          finalCommande.push(currentMenu);
-        }
-      }
-
-      function finirCommande(tableauProduit: Produit[]): void {
-        for (let i = 0; i < tableauProduit.length; i++) {
-          finalCommande.push(tableauProduit[i]);
-        }
-      }
-
-      for (let i = 1; i < commandeTrie.length; i++) {
-        if (commandeTrie[i].length !== 0) {
-          finirCommande(commandeTrie[i]);
-        }
-        if (commandeTrieEnfant[i].length !== 0) {
-          finirCommande(commandeTrieEnfant[i]);
-        }
-      }
-
-      return finalCommande;
-    }
-    commande = getAllMenu(commande);
-    return commande;
-  }
-
-  function affichageCommande(
-    commandeActuelle: ProduitEtMenu[]
-  ): (string | string[])[] {
-    const newVersionCommande: (string | string[])[] = [];
-    let menuVersion: string[] = [];
-
-    for (let i = 0; i < commandeActuelle.length; i++) {
-      let finalProduct: string | string[] = "";
-      const produitEnCour = commandeActuelle[i];
-      if ("sandwich" in produitEnCour) {
-        menuVersion.push("menu");
-        menuVersion.push(produitEnCour.sandwich.nom);
-        menuVersion.push(
-          `${produitEnCour.accompagnement.tailleProduit} ${produitEnCour.accompagnement.nom}`
-        );
-        menuVersion.push(
-          `${produitEnCour.boisson.tailleProduit} ${produitEnCour.boisson.nom}`
-        );
-        if ("dessert" in produitEnCour) {
-          if ("coulis" in produitEnCour.dessert) {
-            menuVersion.push(
-              `${produitEnCour.dessert.topping} ${produitEnCour.dessert.coulis}`
-            );
-          } else {
-            menuVersion.push(produitEnCour.dessert.nom);
-          }
-        }
-        finalProduct = menuVersion;
-        menuVersion = [];
-      } else if ("feculent" in produitEnCour || "pain" in produitEnCour) {
-        finalProduct = produitEnCour.nom;
-      } else if ("nombreNugget" in produitEnCour) {
-        finalProduct = produitEnCour.nom;
-      } else if ("coulis" in produitEnCour) {
-        finalProduct = `${produitEnCour.nom} ${produitEnCour.topping} ${produitEnCour.coulis}`;
-      } else if (
-        ("saveur" in produitEnCour || "complement" in produitEnCour) &&
-        produitEnCour.sousType === "enfant"
-      ) {
-        finalProduct = produitEnCour.nom;
-      } else if (
-        ("saveur" in produitEnCour && produitEnCour.type === "boisson") ||
-        ("complement" in produitEnCour &&
-          produitEnCour.type === "accompagnement")
-      ) {
-        finalProduct = `${produitEnCour.tailleProduit} ${produitEnCour.nom}`;
-      }
-      newVersionCommande.push(finalProduct);
-      finalProduct = "";
-    }
-    return newVersionCommande;
   }
 
   function handleClickPlateau(position: number): void {
@@ -693,7 +337,9 @@ function ComptoirAssemblage({
     const commandeCopie: ProduitEtMenu[] = allCommandeEnCourCopie[commande];
     commandeCopie.splice(plat, 1);
     allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
-    setCommandeAPreparer(allCommandeEnCourCopie);
+    if (setCommandeAPreparer !== undefined) {
+      setCommandeAPreparer(allCommandeEnCourCopie);
+    }
 
     const allCommandeAffichageCopie: (string | string[])[][] =
       enCourAffichageRef.current;
@@ -798,32 +444,6 @@ function ComptoirAssemblage({
   }
 
   useEffect(() => {
-    if (aPreparerRef.current.length + 1 < tailleAPreparer) {
-      const currentTimeOut: number = setTimeout(() => {
-        const newCommande: ProduitEtMenu[] = randomCommande();
-        setCommandeAPreparer([...aPreparerRef.current, newCommande]);
-        const visuelCommande: (string | string[])[] =
-          affichageCommande(newCommande);
-        setAPreparerAffichage([
-          ...aPreparerAffichageRef.current,
-          visuelCommande,
-        ]);
-      }, 6000);
-      setTimeAPreparer([...timeAPreparerRef.current, currentTimeOut]);
-    }
-
-    const placeVide: number = tailleAPreparer - aPreparerRef.current.length;
-
-    if (placeVide <= tailleAPreparer) {
-      const placeVideTab: string[] = [];
-      for (let i = 0; i < placeVide; i++) {
-        placeVideTab.push("vide");
-      }
-      setAPreparerVide(placeVideTab);
-    }
-  }, [commandeAPreparer]);
-
-  useEffect(() => {
     const placeVide: number = tailleEnCour - enCourRef.current.length;
     if (placeVide <= tailleEnCour) {
       const placeVideTab: string[] = [];
@@ -833,8 +453,6 @@ function ComptoirAssemblage({
       setEnCourVide(placeVideTab);
     }
   }, [commandeEnCour]);
-
-  console.log(aPreparerAffichage);
 
   return (
     <div id="comptoirAssemblageComponent" className="component">
@@ -901,37 +519,39 @@ function ComptoirAssemblage({
               <h3>Commandes à prerarer</h3>
               <div className="commandesComptoir">
                 {aPreparerAffichage.map(
-                  (tab: (string | string[])[], position: number) => (
-                    <button
-                      key={position}
-                      onClick={() => handleClickValiderPlateau(position)}
-                      className="commandeModal commandeUnique"
-                    >
-                      {tab.map((commande: string | string[], index: number) => (
-                        <ul key={index}>
-                          {typeof commande === "string" ? (
-                            <li>{commande}</li>
-                          ) : (
-                            <ul>
-                              {commande.map((menu: string, i: number) => (
-                                <li key={i}>{menu}</li>
-                              ))}
+                  (tab: (string | string[])[], position: number) =>
+                    position < 4 && (
+                      <button
+                        key={position}
+                        onClick={() => handleClickValiderPlateau(position)}
+                        className="commandeModal commandeUnique"
+                      >
+                        {tab.map(
+                          (commande: string | string[], index: number) => (
+                            <ul key={index}>
+                              {typeof commande === "string" ? (
+                                <li>{commande}</li>
+                              ) : (
+                                <ul>
+                                  {commande.map((menu: string, i: number) => (
+                                    <li key={i}>{menu}</li>
+                                  ))}
+                                </ul>
+                              )}
                             </ul>
-                          )}
-                        </ul>
-                      ))}
-                    </button>
-                  )
+                          )
+                        )}
+                      </button>
+                    )
                 )}
-                {aPreparerVide.map((e: string, i: number) => (
+                {aPreparerAffichage.length === 0 && (
                   <button
-                    key={i}
                     disabled={true}
                     className="buttonNeutre commandeUnique"
                   >
-                    {e}
+                    Pas de commande
                   </button>
-                ))}
+                )}
               </div>
             </div>
             <div>
@@ -1048,7 +668,7 @@ function ComptoirAssemblage({
                     fritesDispo.map((e, i) => (
                       <button
                         key={i}
-                        // onClick={() => handleClickRemplirPlateau(e)}
+                        onClick={() => handleClickRemplirPlateau(e)}
                         className="buttonNeutre"
                       >
                         {e}
@@ -1097,13 +717,15 @@ function ComptoirAssemblage({
                       : "tabContenComptoirA"
                   }
                 >
-                  {/* {stocks.boiteBurger.map((e, i) => (
-                  <button key={i} onClick={() => handleClickRemplirPlateau(e)}
-                  className="buttonNeutre"
-                  >
-                    {e}
-                  </button>
-                ))} */}
+                  {stocks.boiteBurger.map((e, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleClickRemplirPlateau(e)}
+                      className="buttonNeutre"
+                    >
+                      {e}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
