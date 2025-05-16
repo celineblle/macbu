@@ -9,8 +9,15 @@
   height: 90%;
 }
 
-#stockPretGrill, #cuissonGrill, #stockFrigoGrill {
+#stockPretGrill,
+#cuissonGrill,
+#finModal {
   width: 20%;
+}
+
+#finModal {
+  display: flex;
+  flex-direction: column;
 }
 
 #frigoGrill {
@@ -32,7 +39,8 @@
   flex-direction: row;
 }
 
-#stockPretPage, #stockFrigoPage {
+#stockPretPage,
+#stockFrigoPage {
   width: 50%;
 }
 
@@ -40,6 +48,23 @@
   margin: 4px;
   padding: 4px;
   list-style: none;
+}
+
+#commandeFrigoGrill {
+  overflow: scroll;
+}
+
+.commandeSteak {
+  min-height: 45px;
+  max-height: 80px;
+  height: auto;
+  overflow: scroll;
+  width: 140px;
+}
+.commandeSteak ul {
+  padding-left: 15px;
+  padding-top: 5px;
+  margin: 0;
 }
 
 /*# sourceMappingURL=Grill.css.map */

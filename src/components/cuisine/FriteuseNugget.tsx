@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
-import { nuggets } from "../../elements/burgers";
+import { nuggets, Produit, ProduitEtMenu } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
-import { NuggetsContextSetter } from "../../CommandeContext";
+import {
+  NuggetsContextSetter,
+  CommandesAPreparerContext,
+} from "../../CommandeContext";
+import { frituresCuisine } from "../../elements/stocks";
 
 function FriteuseNugget({
   bacFriture,
@@ -24,6 +28,7 @@ function FriteuseNugget({
   }
 
   const setNuggets = useContext(NuggetsContextSetter);
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuseGp: number = 5;
   let standByTimeOutFriteuseGp: number = 0;
@@ -53,6 +58,9 @@ function FriteuseNugget({
       quantitePret: 0,
     },
   ]);
+  const [commandeNugget, setCommandeNugget] = useState<(string | string[])[]>(
+    []
+  );
 
   const friteuseGpRef = useRef<Friture[]>([]);
   const pretGpRef = useRef<Friture[]>([]);
@@ -179,6 +187,41 @@ function FriteuseNugget({
     }
   }
 
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+
+    function isItNugget(element: Produit) {
+      if ("nombreNugget" in element) {
+        commandeUnique.push(element.nom);
+      } else if ("pain" in element) {
+        if (frituresCuisine.includes(element.viande)) {
+          commandeUnique.push(element.viande);
+        }
+      } else if ("feculent" in element) {
+        if (frituresCuisine.includes(element.topping)) {
+          commandeUnique.push(element.topping);
+        }
+      }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement) {
+          isItNugget(currentElement.sandwich);
+        } else {
+          isItNugget(currentElement);
+        }
+        if (commandeUnique.length > 0) {
+          currentCommande.push(commandeUnique);
+          commandeUnique = [];
+        }
+      }
+    }
+    setCommandeNugget(currentCommande);
+  }, [commandeAPreparer]);
+
   return (
     <div id="friteuseNuggetComponent" className="component">
       <button className="buttonModal" onClick={handleClickToggleModal}>
@@ -294,6 +337,23 @@ function FriteuseNugget({
             <hr />
             <div className="nuggetConstructeur" id="commandeNugget">
               <h3>Commandes</h3>
+              {commandeNugget.map((nug: string | string[], index: number) => (
+                <button
+                  key={index}
+                  className="commandeUniquePage commandeNuggetButton"
+                  disabled={true}
+                >
+                  {typeof nug === "string" ? (
+                    nug
+                  ) : (
+                    <ul>
+                      {nug.map((unique: string, i: number) => (
+                        <li key={i}>{unique}</li>
+                      ))}
+                    </ul>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
         </div>

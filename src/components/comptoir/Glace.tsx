@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import "./Glace.css";
 import close from "../../assets/close.svg";
 import { gobelet, glaceToppings, taille } from "../../elements/stocks";
+import { CommandesAPreparerContext } from "../../CommandeContext";
+import { Produit, ProduitEtMenu, GlaceType } from "../../elements/burgers";
 
 function Glace({
   setGlacesCommande,
@@ -10,16 +12,7 @@ function Glace({
   setGlacesCommande: React.Dispatch<React.SetStateAction<string[]>>;
   glacesCommandeRef: React.RefObject<string[]>;
 }) {
-  interface Glace {
-    nom?: string;
-    base?: string;
-    topping?: string | null;
-    coulis?: string | null;
-    emballage?: string;
-    tailleProduit?: string;
-    type?: string;
-    sousType?: string;
-  }
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const coulis: string[] = [glaceToppings[0], glaceToppings[1]];
 
@@ -37,18 +30,28 @@ function Glace({
 
   const [buttonActionModalGlace, setButtonActionModalGlace] =
     useState<boolean>(false);
-  const [currentGlace, setCurrentGlace] = useState<Glace>({});
-  const [posteGlace, setPosteGlace] = useState<Glace[]>([]);
-  const [posteGlacePret, setPosteGlacePret] = useState<Glace[]>([]);
-  const [posteGlaceFondue, setPosteGlaceFondue] = useState<Glace[]>([]);
+  const [currentGlace, setCurrentGlace] = useState<GlaceType>({
+    nom: "Glace",
+    base: "Glace au lait",
+    topping: "initial",
+    coulis: "initial",
+    emballage: "initial",
+    tailleProduit: "initial",
+    type: "dessert",
+    sousType: "glace",
+  });
+  const [posteGlace, setPosteGlace] = useState<GlaceType[]>([]);
+  const [posteGlacePret, setPosteGlacePret] = useState<GlaceType[]>([]);
+  const [posteGlaceFondue, setPosteGlaceFondue] = useState<GlaceType[]>([]);
   const [timeOutPretPosteGlaceId, setTimeOutPretPosteGlaceId] = useState<
     number[]
   >([]);
   const [placeVidePosteGlace, setPlaceVidePosteGlace] = useState<string[]>([]);
+  const [commandeGlace, setCommandeGlace] = useState<(string | string[])[]>([]);
 
-  const posteGlaceRef = useRef<Glace[]>([]);
-  const posteGlacePretRef = useRef<Glace[]>([]);
-  const posteGlaceFondueRef = useRef<Glace[]>([]);
+  const posteGlaceRef = useRef<GlaceType[]>([]);
+  const posteGlacePretRef = useRef<GlaceType[]>([]);
+  const posteGlaceFondueRef = useRef<GlaceType[]>([]);
   const timeOutPretPosteGlaceRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -71,11 +74,12 @@ function Glace({
     setButtonActionModalGlace(!buttonActionModalGlace);
   }
 
-  function posteGlaceStandBy(element: Glace): void {
+  function posteGlaceStandBy(element: GlaceType): void {
     standByTimeOutGlace = setTimeout(() => {
       setPosteGlaceFondue([...posteGlaceFondueRef.current, element]);
       const oldestGlace: number = posteGlacePretRef.current.indexOf(element);
-      const tabPosteGlacePretCopie: Glace[] = posteGlacePretRef.current.slice();
+      const tabPosteGlacePretCopie: GlaceType[] =
+        posteGlacePretRef.current.slice();
       tabPosteGlacePretCopie.splice(oldestGlace, 1);
       setPosteGlacePret(tabPosteGlacePretCopie);
       let glaceComptoir: string | number =
@@ -98,7 +102,7 @@ function Glace({
   }
 
   function handleClickGlaceConstruction(element: string): void {
-    const copieCurentGlace: Glace = structuredClone(currentGlace);
+    const copieCurentGlace: GlaceType = structuredClone(currentGlace);
     if (coulis.includes(element)) {
       copieCurentGlace.coulis = element;
     } else {
@@ -113,7 +117,7 @@ function Glace({
       posteGlacePretRef.current.length +
       posteGlaceFondueRef.current.length;
     if (actualSizeGlace < taillePosteGlace) {
-      const copieCurentGlace: Glace = structuredClone(currentGlace);
+      const copieCurentGlace: GlaceType = structuredClone(currentGlace);
       if (
         copieCurentGlace.coulis !== undefined &&
         copieCurentGlace.topping !== undefined
@@ -128,7 +132,7 @@ function Glace({
         setTimeout(() => {
           const oldestGlace: number =
             posteGlaceRef.current.indexOf(copieCurentGlace);
-          const tabPosteGlaceCopie: Glace[] = posteGlaceRef.current.slice();
+          const tabPosteGlaceCopie: GlaceType[] = posteGlaceRef.current.slice();
           tabPosteGlaceCopie.splice(oldestGlace, 1);
           setPosteGlace(tabPosteGlaceCopie);
           setPosteGlacePret([...posteGlacePretRef.current, copieCurentGlace]);
@@ -144,13 +148,13 @@ function Glace({
     const timeOutIdCopie: number[] = timeOutPretPosteGlaceRef.current.slice();
     const glaceTimeOutId = timeOutIdCopie[element];
     clearTimeout(glaceTimeOutId);
-    const tabPosteGlaceCopie: Glace[] = posteGlacePretRef.current.slice();
+    const tabPosteGlaceCopie: GlaceType[] = posteGlacePretRef.current.slice();
     tabPosteGlaceCopie.splice(element, 1);
     setPosteGlacePret(tabPosteGlaceCopie);
   }
 
   function handleClickPoubelle(element: number): void {
-    const tabFondueCopie: Glace[] = posteGlaceFondueRef.current.slice();
+    const tabFondueCopie: GlaceType[] = posteGlaceFondueRef.current.slice();
     tabFondueCopie.splice(element, 1);
     setPosteGlaceFondue(tabFondueCopie);
   }
@@ -169,6 +173,34 @@ function Glace({
     setPlaceVidePosteGlace(placeVide);
   }, [posteGlace, posteGlacePret, posteGlaceFondue]);
 
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+
+    function isItGlace(element: Produit) {
+      if ("topping" in element && "coulis" in element) {
+        const glaceAffichageCommande: string = `${element.topping} ${element.coulis}`;
+        commandeUnique.push(glaceAffichageCommande);
+      }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement && "dessert" in currentElement) {
+          isItGlace(currentElement.dessert);
+        } else if (!("boisson" in currentElement)) {
+          isItGlace(currentElement);
+        }
+      }
+      if (commandeUnique.length > 0) {
+        currentCommande.push(commandeUnique);
+        commandeUnique = [];
+      }
+    }
+    setCommandeGlace(currentCommande);
+  }, [commandeAPreparer]);
+
   return (
     <div id="glaceComponent" className="component">
       <button className="buttonModal" onClick={handleClickActionModal}>
@@ -176,7 +208,7 @@ function Glace({
       </button>
       <h3>Pret</h3>
       <div id="boissonListePage">
-        {posteGlaceFondue.map((emplacement: Glace, index: number) => (
+        {posteGlaceFondue.map((emplacement: GlaceType, index: number) => (
           <button
             key={index}
             onClick={() => handleClickPoubelle(index)}
@@ -185,7 +217,7 @@ function Glace({
             {emplacement.coulis} {emplacement.topping}
           </button>
         ))}
-        {posteGlacePret.map((emplacement: Glace, index: number) => (
+        {posteGlacePret.map((emplacement: GlaceType, index: number) => (
           <button
             key={index}
             onClick={() => handleClickAvailabilityGlace(index)}
@@ -216,7 +248,7 @@ function Glace({
           <div id="modalContentGlace">
             <div id="posteGlace">
               <h3>Pret</h3>
-              {posteGlaceFondue.map((emplacement: Glace, index: number) => (
+              {posteGlaceFondue.map((emplacement: GlaceType, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleClickPoubelle(index)}
@@ -225,7 +257,7 @@ function Glace({
                   {emplacement.coulis} {emplacement.topping}
                 </button>
               ))}
-              {posteGlacePret.map((emplacement: Glace, index: number) => (
+              {posteGlacePret.map((emplacement: GlaceType, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleClickAvailabilityGlace(index)}
@@ -234,7 +266,7 @@ function Glace({
                   {emplacement.coulis} {emplacement.topping}
                 </button>
               ))}
-              {posteGlace.map((emplacement: Glace, index: number) => (
+              {posteGlace.map((emplacement: GlaceType, index: number) => (
                 <button
                   disabled={true}
                   key={index}
@@ -283,11 +315,30 @@ function Glace({
             </div>
             <hr />
             <div id="modalDroite">
-              <div className="finModal">
+              <div id="commandeModalGlace">
                 <h3>Commandes</h3>
+                {commandeGlace.map(
+                  (glace: string | string[], index: number) => (
+                    <button
+                      className="commandeUniquePage commandeGlace"
+                      key={index}
+                      disabled={true}
+                    >
+                      {typeof glace === "string" ? (
+                        glace
+                      ) : (
+                        <ul>
+                          {glace.map((unique: string, i: number) => (
+                            <li key={i}>{unique}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </button>
+                  )
+                )}
               </div>
               <hr />
-              <div className="finModal">
+              <div id="stockModalGlace">
                 <h3>Stock</h3>
                 <ul>
                   {glaceToppings.map((element: string, index: number) => (

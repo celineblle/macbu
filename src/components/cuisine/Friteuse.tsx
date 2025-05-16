@@ -8,7 +8,12 @@ import {
   portionFrite,
 } from "../../elements/ingredientsQuantite";
 import { taille } from "../../elements/stocks";
-import { FritesContextSetter, FritesContext } from "../../CommandeContext";
+import {
+  FritesContextSetter,
+  FritesContext,
+  CommandesAPreparerContext,
+} from "../../CommandeContext";
+import { Produit, ProduitEtMenu } from "../../elements/burgers";
 
 function Friteuse() {
   interface BacTimeOut {
@@ -24,6 +29,7 @@ function Friteuse() {
 
   const setFrites = useContext(FritesContextSetter);
   const fritesContext = useContext(FritesContext);
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuse: number = 6;
   const tailleRackAFrite: number = 18;
@@ -56,6 +62,7 @@ function Friteuse() {
   const [timeOutBac, setTimeOutBac] = useState<BacTimeOut[]>([]);
   const [placeVideFriteuse, setPlaceVideFriteuse] = useState<Friture[]>([]);
   const [placeVideRack, setPlaceVideRack] = useState<Friture[]>([]);
+  const [commandeFrite, setCommandeFrite] = useState<(string | string[])[]>([]);
 
   const friteuseRef = useRef<Friture[]>([]);
   const friteusePretRef = useRef<Friture[]>([]);
@@ -314,6 +321,34 @@ function Friteuse() {
     setRackAFrite(rackFriteCopie);
   }
 
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+
+    function isItFrite(element: Produit) {
+      if ("complement" in element && element.sousType === "frite") {
+        const friteAffichageCommande: string = `${element.tailleProduit} ${element.complement}`;
+        commandeUnique.push(friteAffichageCommande);
+      }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement) {
+          isItFrite(currentElement.accompagnement);
+        } else {
+          isItFrite(currentElement);
+        }
+      }
+      if (commandeUnique.length > 0) {
+        currentCommande.push(commandeUnique);
+        commandeUnique = [];
+      }
+    }
+    setCommandeFrite(currentCommande);
+  }, [commandeAPreparer]);
+
   return (
     <div id="friteuseComponent" className="component">
       <button onClick={handleClickToggleModal} className="buttonModal">
@@ -481,6 +516,23 @@ function Friteuse() {
             <hr />
             <div id="commandeFriteuse" className="modalComponent">
               <h3 className="titreModalContent">Commande</h3>
+              {commandeFrite.map((frite: string | string[], index: number) => (
+                <button
+                  key={index}
+                  disabled={true}
+                  className="commandeUniquePage commandeFrite"
+                >
+                  {typeof frite === "string" ? (
+                    frite
+                  ) : (
+                    <ul>
+                      {frite.map((unique: string, i: number) => (
+                        <li key={i}>{unique}</li>
+                      ))}
+                    </ul>
+                  )}
+                </button>
+              ))}
               <br />
             </div>
           </div>

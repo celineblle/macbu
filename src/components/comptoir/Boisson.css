@@ -69,12 +69,15 @@
 }
 
 #modalGaucheBoisson {
-  width: 20%;
+  width: 15%;
 }
 
-#modalCentreBoisson,
+#modalCentreBoisson {
+  width: 27%;
+}
+
 #modalDroiteBoisson {
-  width: 40%;
+  width: 53%;
 }
 
 .ensembleButton {
@@ -84,8 +87,26 @@
   margin: 4px;
 }
 
-.finModalBoisson {
-  height: 50%;
+#commandeModalBoisson {
+  height: 65%;
+  overflow: scroll;
+}
+
+#modalStockBoisson {
+  height: 35%;
+}
+
+.commandeBoisson {
+  min-height: 30px;
+  max-height: 80px;
+  height: auto;
+  overflow: scroll;
+  width: 140px;
+}
+.commandeBoisson ul {
+  padding-left: 15px;
+  padding-top: 5px;
+  margin: 0;
 }
 
 /*# sourceMappingURL=Boisson.css.map */

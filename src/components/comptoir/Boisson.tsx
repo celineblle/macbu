@@ -1,7 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import close from "../../assets/close.svg";
 import { taille, boisson, gobelet } from "../../elements/stocks";
 import "./Boisson.css";
+import { CommandesAPreparerContext } from "../../CommandeContext";
+import { Produit, ProduitEtMenu } from "../../elements/burgers";
 
 function PosteBoisson({
   fontainePret,
@@ -21,6 +23,7 @@ function PosteBoisson({
     sousType?: string;
   }
 
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
   const taillePosteBoisson: number = 10;
 
   const [buttonActionModalBoisson, setButtonActionModalBoisson] =
@@ -28,6 +31,9 @@ function PosteBoisson({
   const [currentBoisson, setCurrentBoisson] = useState<Boisson>({});
   const [fontaine, setFontaine] = useState<Boisson[]>([]);
   const [placeVideBoisson, setPlaceVideBoisson] = useState<string[]>([]);
+  const [commandeBoisson, setCommandeBoisson] = useState<(string[] | string)[]>(
+    []
+  );
 
   const fontaineRef = useRef<Boisson[]>([]);
 
@@ -96,6 +102,33 @@ function PosteBoisson({
     fontainePretCopie.splice(boisson, 1);
     setFontainePret(fontainePretCopie);
   }
+
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+    function isItBoisson(element: Produit) {
+      if ("saveur" in element) {
+        const boissonAffichageCommande: string = `${element.tailleProduit} ${element.saveur}`;
+        commandeUnique.push(boissonAffichageCommande);
+      }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement) {
+          isItBoisson(currentElement.boisson);
+        } else if (!("boisson" in currentElement)) {
+          isItBoisson(currentElement);
+        }
+      }
+      if (commandeUnique.length > 0) {
+        currentCommande.push(commandeUnique);
+        commandeUnique = [];
+      }
+    }
+    setCommandeBoisson(currentCommande);
+  }, [commandeAPreparer]);
 
   return (
     <div id="boissonComponent" className="component">
@@ -197,11 +230,30 @@ function PosteBoisson({
             </div>
             <hr />
             <div id="modalDroiteBoisson">
-              <div className="finModalBoisson">
+              <div id="commandeModalBoisson">
                 <h3>Commande</h3>
+                {commandeBoisson.map(
+                  (boisson: string | string[], index: number) => (
+                    <button
+                      className="commandeUniquePage commandeBoisson"
+                      key={index}
+                      disabled={true}
+                    >
+                      {typeof boisson === "string" ? (
+                        boisson
+                      ) : (
+                        <ul>
+                          {boisson.map((unique: string, i: number) => (
+                            <li key={i}>{unique}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </button>
+                  )
+                )}
               </div>
               <hr />
-              <div className="finModalBoisson">
+              <div id="modalStockBoisson">
                 <h3>Stock</h3>
                 <ul>
                   {boisson.map((element: string, index: number) => (

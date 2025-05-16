@@ -10,10 +10,19 @@ import {
   boiteBurger,
   taille,
 } from "../../elements/stocks";
-import { burgers } from "../../elements/burgers";
+import {
+  burgers,
+  Produit,
+  ProduitEtMenu,
+  sandwichs,
+} from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
-import { BurgersContext, BurgersContextSetter } from "../../CommandeContext";
+import {
+  BurgersContext,
+  BurgersContextSetter,
+  CommandesAPreparerContext,
+} from "../../CommandeContext";
 
 function PosteAssemblage({
   viandePretRef,
@@ -48,6 +57,7 @@ function PosteAssemblage({
 
   const setBurgers = useContext(BurgersContextSetter);
   const burgersDispo = useContext(BurgersContext);
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const limitBurgerRack: number = 4;
 
@@ -55,6 +65,9 @@ function PosteAssemblage({
   const [burgerPret, setBurgerPret] = useState<string[]>([]);
   const [burgerEnAttente, setBurgerEnAttente] = useState<Burger[]>([]);
   const [currentBurger, setCurrentBurger] = useState<Burger>({});
+  const [commandeSandwich, setCommandeSandwich] = useState<
+    (string | string[])[]
+  >([]);
 
   function getAvailableViande(): string[] {
     const viandePretBurger = [];
@@ -310,6 +323,33 @@ function PosteAssemblage({
     setBurgerEnAttente(burgerEnAttente.filter((e: object) => e != element));
   }
 
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+
+    function isItBurger(element: Produit) {
+      if ("viande" in element) {
+        commandeUnique.push(element.nom);
+      }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement) {
+          isItBurger(currentElement.sandwich);
+        } else {
+          isItBurger(currentElement);
+        }
+      }
+      if (commandeUnique.length > 0) {
+        currentCommande.push(commandeUnique);
+        commandeUnique = [];
+      }
+    }
+    setCommandeSandwich(currentCommande);
+  }, [commandeAPreparer]);
+
   return (
     <div id="posteAssemblageComponent" className="component">
       <button
@@ -458,8 +498,29 @@ function PosteAssemblage({
             </div>
             <hr />
             <div id="modalDroite">
-              <div>
+              <div id="commandeCuisine">
                 <h3>Commande</h3>
+                <div id="commandeCuisineAllButton">
+                  {commandeSandwich.map(
+                    (sandwich: string[] | string, index: number) => (
+                      <button
+                        key={index}
+                        disabled={true}
+                        className="commandeUniquePage commandeSandwich"
+                      >
+                        {typeof sandwich === "string" ? (
+                          sandwich
+                        ) : (
+                          <ul>
+                            {sandwich.map((unique: string, i: number) => (
+                              <li key={i}>{unique}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </button>
+                    )
+                  )}
+                </div>
               </div>
               <h3>Pret</h3>
               <div id="pretBurger" className="postePosteAssemblage">

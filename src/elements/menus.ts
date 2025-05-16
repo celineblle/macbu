@@ -61,7 +61,7 @@ export interface MenuEnfant {
   sandwich: burgers.Salade | burgers.Nugget | burgers.Burger;
   accompagnement: burgers.Accompagnement;
   boisson: burgers.Boisson;
-  dessert: burgers.Glace | burgers.Accompagnement;
+  dessert: burgers.GlaceType | burgers.Accompagnement;
   taille: number;
 }
 
@@ -72,7 +72,7 @@ export function getMenuEnfant() {
   const allTabMenu: (
     | ( burgers.Nugget | burgers.Burger)[]
     | burgers.Accompagnement[]
-    | burgers.Boisson[] | (burgers.Accompagnement | burgers.Glace)[]
+    | burgers.Boisson[] | (burgers.Accompagnement | burgers.GlaceType)[]
   )[] = [];
 
   getElementByTab(burgers.sandwichs, sandwich, taille[2]);
@@ -83,5 +83,5 @@ export function getMenuEnfant() {
   return allTabMenu;
 }
 
-export const menuEnfant: ( ( burgers.Nugget | burgers.Burger)[] | burgers.Accompagnement[] | burgers.Boisson[] | (burgers.Accompagnement | burgers.Glace)[]
+export const menuEnfant: ( ( burgers.Nugget | burgers.Burger)[] | burgers.Accompagnement[] | burgers.Boisson[] | (burgers.Accompagnement | burgers.GlaceType)[]
 )[] = getMenuEnfant();

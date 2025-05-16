@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import "./Grill.css";
 import close from "../../assets/close.svg";
 import { viande } from "../../elements/stocks";
 import { ViandePret } from "./Cuisine";
+import { CommandesAPreparerContext } from "../../CommandeContext";
+import { Produit, ProduitEtMenu } from "../../elements/burgers";
 
 function Grill({
   viandePret,
@@ -13,6 +15,8 @@ function Grill({
   setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
   viandePretRef: React.RefObject<ViandePret[]>;
 }) {
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
+
   const limitSizeGrill: number = 8;
   let standByTimeOut: number = 0;
   const [toggleModalGrill, setToggleModalGrill] = useState<boolean>(false);
@@ -24,6 +28,7 @@ function Grill({
 
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
   const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
+  const [commandeSteak, setCommandeSteak] = useState<(string | string[])[]>([]);
 
   const tabCuisson = useRef<string[]>([]);
   const tabGrille = useRef<string[]>([]);
@@ -120,6 +125,34 @@ function Grill({
     tabGrilleCopie.splice(oldestSteak, 1);
     setPlaqueDeCuissonGrille(tabGrilleCopie);
   }
+
+  useEffect(() => {
+    const currentCommande: string[][] = [];
+    let commandeUnique: string[] = [];
+
+    function isItSteak(element: Produit) {
+      if ("viande" in element)
+        if (viande.includes(element.viande)) {
+          commandeUnique.push(element.viande);
+        }
+    }
+
+    for (let i = 0; i < commandeAPreparer.length; i++) {
+      for (let j = 0; j < commandeAPreparer[i].length; j++) {
+        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
+        if ("boisson" in currentElement) {
+          isItSteak(currentElement.sandwich);
+        } else {
+          isItSteak(currentElement);
+        }
+      }
+      if (commandeUnique.length > 0) {
+        currentCommande.push(commandeUnique);
+        commandeUnique = [];
+      }
+    }
+    setCommandeSteak(currentCommande);
+  }, [commandeAPreparer]);
 
   return (
     <div id="grillComponent" className="component">
@@ -228,8 +261,32 @@ function Grill({
               </div>
             </div>
             <hr />
-            <div id="stockFrigoGrill">
-              <h3>Stock</h3>
+            <div id="finModal">
+              <div id="stockFrigoGrill">
+                <h3>Stock</h3>
+              </div>
+              <div id="commandeFrigoGrill">
+                <h3>Commande</h3>
+                {commandeSteak.map(
+                  (steak: string | string[], index: number) => (
+                    <button
+                      key={index}
+                      disabled={true}
+                      className="commandeUniquePage commandeSteak"
+                    >
+                      {typeof steak === "string" ? (
+                        steak
+                      ) : (
+                        <ul>
+                          {steak.map((unique: string, i: number) => (
+                            <li key={i}>{unique}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
           </div>
         </div>

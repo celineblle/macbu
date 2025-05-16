@@ -10,7 +10,8 @@
   height: calc(100% - 24px);
 }
 
-.suivantButtonHidden, .exitButtonBurgerHidden {
+.suivantButtonHidden,
+.exitButtonBurgerHidden {
   display: none;
 }
 
@@ -34,7 +35,8 @@
   height: 90%;
 }
 
-#modalGauche, #modalDroite {
+#modalGauche,
+#modalDroite {
   width: 50%;
 }
 
@@ -67,9 +69,41 @@
   height: 50%;
 }
 
-#partieRecette, #currentBurger {
+#partieRecette,
+#currentBurger {
   height: 50%;
   width: 100%;
+}
+
+.commandeSandwich {
+  min-height: 30px;
+  max-height: 80px;
+  height: auto;
+  overflow: scroll;
+  width: 140px;
+}
+.commandeSandwich ul {
+  padding-left: 15px;
+  padding-top: 5px;
+  margin: 0;
+}
+
+#commandeCuisine {
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+}
+
+#commandeCuisineAllButton {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+
+#pretBurger,
+#partieStock {
+  height: 37.5%;
 }
 
 /*# sourceMappingURL=PosteAssemblage.css.map */

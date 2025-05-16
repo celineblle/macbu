@@ -26,17 +26,24 @@
   flex-direction: row;
 }
 
-.finModal {
-  height: 50%;
+#commandeModalGlace {
+  height: 65%;
+  overflow: scroll;
+}
+
+#stockModalGlace {
+  height: 35%;
 }
 
 #posteGlace {
   width: 20%;
 }
 
-#frigoGlace,
+#frigoGlace {
+  width: 35%;
+}
 #modalDroite {
-  width: 40%;
+  width: 45%;
 }
 
 .buttonPretGlace {
@@ -60,4 +67,17 @@
 .buttonVideGlace {
   height: 30px;
   width: 70px;
+}
+
+.commandeGlace {
+  min-height: 30px;
+  max-height: 80px;
+  height: auto;
+  overflow: scroll;
+  width: 140px;
+  ul {
+    padding-left: 15px;
+    padding-top: 5px;
+    margin: 0;
+  }
 }
