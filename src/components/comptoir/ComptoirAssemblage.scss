@@ -28,17 +28,9 @@
   justify-content: flex-start;
   padding-top: 8px;
   padding-left: 12px;
-  ul,
-  ul ul {
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    li {
-      margin-left: 8px;
-    }
-  }
-  ul ul li {
-    margin-left: 24px;
+  li {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -72,10 +64,6 @@
   margin-left: 16px;
   height: 30px;
   width: 50px;
-}
-
-.commandeContruction {
-  list-style: none;
 }
 
 .buttonCommandeEnCour {

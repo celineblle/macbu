@@ -603,44 +603,41 @@ function ComptoirAssemblage({
               <div className="commandesComptoir">
                 {enCourAffichage.map(
                   (tab: (string | string[])[], position: number) => (
-                    <div
+                    <ul
                       key={position}
                       onClick={() => handleClickPlateau(position)}
                       className="commandeCuisson commandeUnique commandeEnCour"
                     >
-                      {tab.map((commande: string | string[], index: number) => (
-                        <ul key={index} className="commandeContruction">
-                          {typeof commande === "string" ? (
-                            <li>
-                              <button
-                                onClick={() =>
-                                  handleClickSupprimerPlat(position, index)
-                                }
-                                className="buttonNeutre buttonCommandeEnCour"
-                              >
-                                {commande}
-                              </button>
+                      {tab.map((commande: string | string[], index: number) =>
+                        typeof commande === "string" ? (
+                          <li key={index}>
+                            <button
+                              onClick={() =>
+                                handleClickSupprimerPlat(position, index)
+                              }
+                              className="buttonNeutre buttonCommandeEnCour"
+                            >
+                              {commande}
+                            </button>
+                          </li>
+                        ) : (
+                          commande.map((menu: string, i: number) => (
+                            <li key={i}>
+                              {menu !== "menu" && (
+                                <button
+                                  onClick={() =>
+                                    handleClickSupprimerPlat(position, i)
+                                  }
+                                  className="buttonNeutre buttonCommandeEnCour"
+                                >
+                                  {menu}
+                                </button>
+                              )}
                             </li>
-                          ) : (
-                            <ul className="commandeContruction">
-                              {commande.map((menu: string, i: number) => (
-                                <li key={i}>
-                                  {menu !== "menu" && (
-                                    <button
-                                      onClick={() =>
-                                        handleClickSupprimerPlat(position, i)
-                                      }
-                                      className="buttonNeutre buttonCommandeEnCour"
-                                    >
-                                      {menu}
-                                    </button>
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </ul>
-                      ))}
+                          ))
+                        )
+                      )}
+
                       <button
                         onClick={() => handleClickFinirPlateau(position)}
                         className="buttonNeutre"
@@ -648,7 +645,7 @@ function ComptoirAssemblage({
                       >
                         Finir
                       </button>
-                    </div>
+                    </ul>
                   )
                 )}
                 {enCourVide.map((e: string, i: number) => (

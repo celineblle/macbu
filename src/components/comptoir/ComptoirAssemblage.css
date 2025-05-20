@@ -31,18 +31,9 @@
   padding-top: 8px;
   padding-left: 12px;
 }
-.commandeUnique ul,
-.commandeUnique ul ul {
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-.commandeUnique ul li,
-.commandeUnique ul ul li {
-  margin-left: 8px;
-}
-.commandeUnique ul ul li {
-  margin-left: 24px;
+.commandeUnique li {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .visuelPage {
@@ -75,10 +66,6 @@
   margin-left: 16px;
   height: 30px;
   width: 50px;
-}
-
-.commandeContruction {
-  list-style: none;
 }
 
 .buttonCommandeEnCour {
