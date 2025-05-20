@@ -39,7 +39,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
         autreProduit.push(actuelProduit);
       }
     }
-
     finalProduitTriee.push(plat, complement, boissonCommande, autreProduit);
     return finalProduitTriee;
   }
@@ -116,20 +115,27 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           const finalCurrentProduit: Produit = allProduits[currentProduit];
           commande.push(finalCurrentProduit);
         }
-    
+            
         function getAllMenu(commande: Produit[]) {
+
           const finalCommande: ProduitEtMenu[] = [];
+          console.log("ini", commande)
           const commandeTrie: Produit[][] = triProduit(commande);
           const commandeTrieEnfant: Produit[][] = triProduitEnfant(commandeTrie);
     
+          console.log("debut", commandeTrie)
+          const resteBurger: Produit[] = commandeTrie[0].slice();
+
           if (
             commandeTrie[0].length !== 0 &&
             (commandeTrie[1].length !== 0 || commandeTrie[2].length !== 0)
           ) {
             for (let i = 0; i < commandeTrie[0].length; i++) {
-              if (commandeTrie[1].length === 0 && commandeTrie[2].length === 0) {
-                finalCommande.push(commandeTrie[0][i]);
-              } else {
+              if (!(commandeTrie[1].length === 0 && commandeTrie[2].length === 0)) {
+                console.log("commT1", commandeTrie[1].length)
+                console.log("commT2", commandeTrie[2].length)
+                console.log(!(commandeTrie[1].length === 0 && commandeTrie[2].length === 0))
+
                 const currentSize: string = commandeTrie[0][i].tailleProduit;
                 const currentMenu: Menu = {
                   sandwich: saladeCesar,
@@ -142,7 +148,9 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                   | Salade
                   | Burger
                   | Nugget;
-    
+                
+                 resteBurger.splice(i, 1)
+                console.log("restBur", resteBurger)
                 let currentAccompagnement;
     
                 if (commandeTrie[1].length !== 0) {
@@ -199,6 +207,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           }
     
           if (commandeTrieEnfant[0].length !== 0) {
+            console.log("enf", commandeTrieEnfant.length, commandeTrieEnfant)
             for (let i = 0; i < commandeTrieEnfant[0].length; i++) {
               const currentMenu: MenuEnfant = {
                 sandwich: pouce,
@@ -252,17 +261,23 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           }
     
           for (let i = 1; i < commandeTrie.length; i++) {
-            if (commandeTrie[i].length !== 0) {
+            if (commandeTrie[i].length > 0) {
               finirCommande(commandeTrie[i]);
             }
             if (commandeTrieEnfant[i].length !== 0) {
               finirCommande(commandeTrieEnfant[i]);
             }
           }
-    
+
+          if(resteBurger.length > 0) {
+            finirCommande(resteBurger)
+          }
+
           return finalCommande;
         }
         commande = getAllMenu(commande);
+        console.log("fin", commande)
+
         return commande;
       }
 

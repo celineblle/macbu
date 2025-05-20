@@ -243,7 +243,7 @@ function ComptoirAssemblage({
   const nuggetsDispo = useContext(NuggetsContext);
   const burgersDispo = useContext(BurgersContext);
 
-  console.log(burgersDispo, nuggetsDispo);
+  // console.log(burgersDispo, nuggetsDispo);
 
   const tailleEnCour: number = 4;
 
