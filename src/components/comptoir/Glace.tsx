@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./Glace.css";
 import close from "../../assets/close.svg";
-import { gobelet, glaceToppings, taille } from "../../elements/stocks";
+import { glaceToppings, taille } from "../../elements/stocks";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { Produit, ProduitEtMenu, GlaceType } from "../../elements/burgers";
 
@@ -35,7 +35,6 @@ function Glace({
     base: "Glace au lait",
     topping: "initial",
     coulis: "initial",
-    emballage: "initial",
     tailleProduit: "initial",
     type: "dessert",
     sousType: "glace",
@@ -124,7 +123,6 @@ function Glace({
       ) {
         copieCurentGlace.nom = "Glace";
         copieCurentGlace.base = "Glace au lait";
-        copieCurentGlace.emballage = gobelet[3];
         copieCurentGlace.type = "dessert";
         copieCurentGlace.sousType = "glace";
         copieCurentGlace.tailleProduit = taille[1];

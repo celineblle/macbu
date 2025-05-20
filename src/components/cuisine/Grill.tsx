@@ -246,17 +246,16 @@ function Grill({
               <h3>Frigo</h3>
               <br />
               <div id="buttonFrigoGrill">
-                {viande.map((element) => (
-                  <>
+                {viande.map((element, i) => (
+                  <div key={i}>
                     <button
-                      key={element}
                       onClick={() => handleClickFrigoToGrill(element)}
                       className="buttonNeutre buttonGrill"
                     >
                       {element}
                     </button>
                     <p>quantité : x</p>
-                  </>
+                  </div>
                 ))}
               </div>
             </div>

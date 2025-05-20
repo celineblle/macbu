@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import close from "../../assets/close.svg";
-import { taille, boisson, gobelet } from "../../elements/stocks";
+import { taille, boisson } from "../../elements/stocks";
 import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { Produit, ProduitEtMenu } from "../../elements/burgers";
@@ -17,7 +17,6 @@ function PosteBoisson({
   interface Boisson {
     nom?: string;
     base?: string;
-    emballage?: string;
     tailleProduit?: string;
     type?: string;
     sousType?: string;
@@ -64,11 +63,7 @@ function PosteBoisson({
         copieCurentBoisson.tailleProduit !== undefined &&
         copieCurentBoisson.base !== undefined
       ) {
-        const tailleCurrentBoisson: number = taille.indexOf(
-          copieCurentBoisson.tailleProduit
-        );
         copieCurentBoisson.nom = copieCurentBoisson.base;
-        copieCurentBoisson.emballage = gobelet[tailleCurrentBoisson];
         copieCurentBoisson.type = "boisson";
         copieCurentBoisson.sousType = "cannette";
         setFontaine([...fontaineRef.current, copieCurentBoisson]);

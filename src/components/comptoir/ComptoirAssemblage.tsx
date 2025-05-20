@@ -8,6 +8,7 @@ import {
   NuggetsContext,
   BurgersContext,
   CommandesAPreparerContextSetter,
+  CommandesAPreparerContext,
 } from "../../CommandeContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
 
@@ -29,7 +30,6 @@ function ComptoirAssemblage({
       viande: stocks.viande[3],
       ingredient: [stocks.ingredientBurger[2], stocks.ingredientBurger[5]],
       sauce: [stocks.sauces[5], stocks.sauces[7]],
-      emballage: stocks.boiteBurger[2],
       tailleProduit: stocks.taille[2],
       type: "sandwich",
       sousType: "burger",
@@ -46,7 +46,6 @@ function ComptoirAssemblage({
         stocks.ingredientBurger[2],
       ],
       sauce: [stocks.sauces[5], stocks.sauces[7]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -63,7 +62,6 @@ function ComptoirAssemblage({
         stocks.ingredientBurger[2],
       ],
       sauce: [stocks.sauces[4]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -76,7 +74,6 @@ function ComptoirAssemblage({
       fromage: [stocks.fromages[1]],
       ingredient: [stocks.ingredientBurger[0], stocks.ingredientBurger[1]],
       sauce: [stocks.sauces[2]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -93,7 +90,6 @@ function ComptoirAssemblage({
         stocks.ingredientBurger[3],
       ],
       sauce: [stocks.sauces[3]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -106,7 +102,6 @@ function ComptoirAssemblage({
       fromage: [stocks.fromages[1]],
       ingredient: [stocks.ingredientBurger[5], stocks.ingredientBurger[2]],
       sauce: [stocks.sauces[5], stocks.sauces[3]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -119,7 +114,6 @@ function ComptoirAssemblage({
       fromage: [stocks.fromages[3], stocks.fromages[2]],
       ingredient: [stocks.ingredientBurger[1]],
       sauce: [stocks.sauces[0]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -136,7 +130,6 @@ function ComptoirAssemblage({
         stocks.ingredientBurger[6],
       ],
       sauce: [stocks.sauces[1]],
-      emballage: stocks.boiteBurger[0],
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
@@ -148,7 +141,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.frite[1],
       complement: stocks.frite[1],
-      emballage: stocks.emballageFrite[0],
       tailleProduit: stocks.taille[0],
       type: "accompagnement",
       sousType: "frite",
@@ -156,7 +148,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.frite[1],
       complement: stocks.frite[1],
-      emballage: stocks.emballageFrite[1],
       tailleProduit: stocks.taille[1],
       type: "accompagnement",
       sousType: "frite",
@@ -164,7 +155,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.frite[0],
       complement: stocks.frite[0],
-      emballage: stocks.emballageFrite[2],
       tailleProduit: stocks.taille[2],
       type: "accompagnement",
       sousType: "frite",
@@ -172,7 +162,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.frite[0],
       complement: stocks.frite[0],
-      emballage: stocks.emballageFrite[0],
       tailleProduit: stocks.taille[0],
       type: "accompagnement",
       sousType: "frite",
@@ -183,7 +172,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[5],
       saveur: stocks.boisson[5],
-      emballage: stocks.gobelet[2],
       tailleProduit: stocks.taille[2],
       type: "boisson",
       sousType: "cannette",
@@ -191,7 +179,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[6],
       saveur: stocks.boisson[6],
-      emballage: stocks.gobelet[2],
       tailleProduit: stocks.taille[2],
       type: "boisson",
       sousType: "cannette",
@@ -199,7 +186,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[4],
       saveur: stocks.boisson[4],
-      emballage: stocks.gobelet[1],
       tailleProduit: stocks.taille[1],
       type: "boisson",
       sousType: "cannette",
@@ -207,7 +193,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[2],
       saveur: stocks.boisson[2],
-      emballage: stocks.gobelet[1],
       tailleProduit: stocks.taille[1],
       type: "boisson",
       sousType: "cannette",
@@ -215,7 +200,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[0],
       saveur: stocks.boisson[0],
-      emballage: stocks.gobelet[0],
       tailleProduit: stocks.taille[0],
       type: "boisson",
       sousType: "cannette",
@@ -223,7 +207,6 @@ function ComptoirAssemblage({
     {
       nom: stocks.boisson[3],
       saveur: stocks.boisson[3],
-      emballage: stocks.gobelet[0],
       tailleProduit: stocks.taille[0],
       type: "boisson",
       sousType: "cannette",
@@ -254,6 +237,7 @@ function ComptoirAssemblage({
   ];
 
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const fritesDispo = useContext(FritesContext);
   const nuggetsDispo = useContext(NuggetsContext);
@@ -276,10 +260,15 @@ function ComptoirAssemblage({
   >([]);
   const [enCourVide, setEnCourVide] = useState<string[]>([]);
   const [validerPlateau, setValiderPlateau] = useState<boolean>(false);
+  const [tailleCommande, setTailleCommande] = useState<number[]>([]);
+  const [capaciteSac, setCapaciteSac] = useState<
+    [[string, number][], number][]
+  >([]);
 
   const enCourRef = useRef<ProduitEtMenu[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
   const idPlateauRef = useRef<number>(0);
+  const capaciteSacRef = useRef<[[string, number][], number][]>([]);
 
   useEffect(() => {
     enCourRef.current = commandeEnCour;
@@ -292,6 +281,10 @@ function ComptoirAssemblage({
   useEffect(() => {
     idPlateauRef.current = idPlateauPrepa;
   }, [idPlateauPrepa]);
+
+  useEffect(() => {
+    capaciteSacRef.current = capaciteSac;
+  }, [capaciteSac]);
 
   function handleClickActionModal(): void {
     setButtonActionModalComptoirA(!buttonActionModalComptoirA);
@@ -309,9 +302,9 @@ function ComptoirAssemblage({
     }
   }
 
-  function handleClickRemplirPlateau(plat: Produit | string): void {
+  function handleClickRemplirPlateau(plat: Produit): void {
     const allCommandeEnCourCopie: ProduitEtMenu[][] = enCourRef.current.slice();
-    let commandeCopie: (ProduitEtMenu | string)[] = [];
+    let commandeCopie: ProduitEtMenu[] = [];
     if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
       commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
     }
@@ -319,7 +312,6 @@ function ComptoirAssemblage({
     commandeCopie.push(plat);
     allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
-
     const commandeAffichageCopie: (string | string[])[] =
       affichageCommande(commandeCopie);
     const enCourTabAffichageCopie: (string | string[])[][] =
@@ -331,6 +323,16 @@ function ComptoirAssemblage({
     );
     setEnCourAffichage(enCourTabAffichageCopie);
   }
+
+  useEffect(() => {
+    if (enCourRef.current.length > capaciteSacRef.current.length) {
+      const currentCapaciteSac: [[string, number][], number][] =
+        capaciteSacRef.current.slice();
+      const newSac: [[string, number][], number] = [[["Aucun sac", 0]], 0];
+      currentCapaciteSac.push(newSac);
+      setCapaciteSac(currentCapaciteSac);
+    }
+  }, [commandeEnCour]);
 
   function handleClickSupprimerPlat(commande: number, plat: number): void {
     const allCommandeEnCourCopie: ProduitEtMenu[][] = enCourRef.current.slice();
@@ -353,6 +355,18 @@ function ComptoirAssemblage({
   function handleClickFinirPlateau(plateau: number): void {
     setIdPlateauPrepa(plateau);
     setValiderPlateau(true);
+  }
+
+  function handleClickGetSac(sac: [string, number]) {
+    let currentCommandeSac: [[string, number][], number] =
+      capaciteSacRef.current[idPlateauPrepa];
+    currentCommandeSac[0].push(sac);
+    let currentSac: number = currentCommandeSac[1];
+    currentSac = currentSac + sac[1];
+    currentCommandeSac = [currentCommandeSac[0], currentSac];
+    const capaciteSacCopie = capaciteSacRef.current.slice();
+    capaciteSacCopie.splice(idPlateauPrepa, 1, currentCommandeSac);
+    setCapaciteSac(capaciteSacCopie);
   }
 
   function handleClickValiderPlateau(commande: number): boolean {
@@ -454,6 +468,35 @@ function ComptoirAssemblage({
     }
   }, [commandeEnCour]);
 
+  useEffect(() => {
+    if (commandeAPreparer.length > 0) {
+      const allFinalTailleCommande: number[] = [];
+      for (let i = 0; i < commandeAPreparer.length; i++) {
+        let finalTailleCommande: number = 0;
+        for (let j = 0; j < commandeAPreparer[i].length; j++) {
+          const currentProduit = commandeAPreparer[i][j];
+          if ("boisson" in currentProduit) {
+            finalTailleCommande = finalTailleCommande + currentProduit.taille;
+          } else {
+            switch (currentProduit.tailleProduit) {
+              case stocks.taille[0]:
+                finalTailleCommande = finalTailleCommande + 3;
+                break;
+              case stocks.taille[1]:
+                finalTailleCommande = finalTailleCommande + 2;
+                break;
+              case stocks.taille[2]:
+                finalTailleCommande = finalTailleCommande + 1;
+                break;
+            }
+          }
+        }
+        allFinalTailleCommande.push(finalTailleCommande);
+      }
+      setTailleCommande(allFinalTailleCommande);
+    }
+  }, [commandeAPreparer]);
+
   return (
     <div id="comptoirAssemblageComponent" className="component">
       <div id="headerPage">
@@ -541,6 +584,7 @@ function ComptoirAssemblage({
                             </ul>
                           )
                         )}
+                        <p>Taille commande : {tailleCommande[position]}</p>
                       </button>
                     )
                 )}
@@ -717,13 +761,13 @@ function ComptoirAssemblage({
                       : "tabContenComptoirA"
                   }
                 >
-                  {stocks.boiteBurger.map((e, i) => (
+                  {stocks.sac.map((e: [string, number], i: number) => (
                     <button
                       key={i}
-                      onClick={() => handleClickRemplirPlateau(e)}
+                      onClick={() => handleClickGetSac(e)}
                       className="buttonNeutre"
                     >
-                      {e}
+                      {e[0]} capacité {e[1]}
                     </button>
                   ))}
                 </div>

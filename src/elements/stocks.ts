@@ -22,15 +22,7 @@ export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Ora
 
 export const taille: string[] = ["Grand", "Moyen", "Petit"];
 
-export const sac: string[] = ["Grand sac", "Grand sachet", "Petit sachet", "Boite enfant"];
-
-export const boiteBurger: string[] = ["Grande boite", "Moyenne boite", "Papier burger", "Grand papier wrap"];
-
-export const autresEmballage: string[] = [ "Boite 18 nuggets","Boite 6 nuggets", "Boite 3 nuggets", "Boite salade", "Serviette"];
-
-export const gobelet: string[] = ["Grand gobelet", "Moyen gobelet", "Petit gobelet", "Pot"];
-
-export const emballageFrite: string[] = ["Grande boite", "Boite moyenne", "Petit sachet"];
+export const sac: [string, number][] = [["Grand sac", 12], ["Grand sachet", 6], ["Petit sachet", 3]];
 
 export const grandProduitBurger: string[] = [pains[0], pains[1], pains[3], pains[4], viande[2], viande[4], frituresCuisine[4]];
 

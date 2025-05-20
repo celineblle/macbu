@@ -7,15 +7,9 @@ import {
   fromages,
   ingredientBurger,
   tailleProduitBurger,
-  boiteBurger,
   taille,
 } from "../../elements/stocks";
-import {
-  burgers,
-  Produit,
-  ProduitEtMenu,
-  sandwichs,
-} from "../../elements/burgers";
+import { burgers, Produit, ProduitEtMenu } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
 import {
@@ -23,6 +17,7 @@ import {
   BurgersContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
+import { sac } from "../../elements/stocks";
 
 function PosteAssemblage({
   viandePretRef,

@@ -110,7 +110,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
     
         const tailleCommande: number = getRandom(tailleMaxCommande);
         let commande = [];
-    
+ 
         for (let i = 0; i < tailleCommande; i++) {
           const currentProduit: number = getRandom(allProduits.length - 1);
           const finalCurrentProduit: Produit = allProduits[currentProduit];
@@ -131,7 +131,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                 finalCommande.push(commandeTrie[0][i]);
               } else {
                 const currentSize: string = commandeTrie[0][i].tailleProduit;
-                const indexSize: number = stocks.taille.indexOf(currentSize);
                 const currentMenu: Menu = {
                   sandwich: saladeCesar,
                   accompagnement: salade,
@@ -165,8 +164,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                 }
     
                 if (currentAccompagnement.nom !== stocks.frais[0]) {
-                  currentAccompagnement.emballage =
-                    stocks.emballageFrite[indexSize];
                   currentAccompagnement.tailleProduit = currentSize;
                 }
                 currentMenu.accompagnement =
@@ -190,7 +187,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                   currentBoisson = boissons[randomSaveur];
                 }
     
-                currentBoisson.emballage = stocks.gobelet[indexSize];
                 currentBoisson.tailleProduit = currentSize;
                 currentMenu.boisson = currentBoisson as Boisson;
     

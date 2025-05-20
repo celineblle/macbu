@@ -72,7 +72,7 @@ function Comptoir() {
     }
   }, [commandeAPreparer]);
 
-  console.log(commandeAPreparer);
+  console.log("ese", commandeAPreparer);
 
   return (
     <div id="comptoirComponent">
