@@ -94,4 +94,9 @@
   margin-top: 8px;
 }
 
+.buttonNuggetVide:hover {
+  background-color: #d7d3d2;
+  cursor: default;
+}
+
 /*# sourceMappingURL=ComptoirAssemblage.css.map */

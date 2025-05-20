@@ -23,6 +23,12 @@ function ComptoirAssemblage({
   aPreparerAffichage: (string | string[])[][];
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
 }) {
+  const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
+  const commandeAPreparer = useContext(CommandesAPreparerContext);
+
+  const fritesDispo = useContext(FritesContext);
+  const nuggetsDispo = useContext(NuggetsContext);
+  const burgersDispo = useContext(BurgersContext);
   const burger = [
     {
       nom: "Origin Burger",
@@ -217,33 +223,27 @@ function ComptoirAssemblage({
     {
       nom: "Burgers",
       produit: burger,
-      maxLength: burger.length,
     },
     {
       nom: "Frites",
       produit: frites,
-      maxLength: frites.length,
+    },
+    {
+      nom: "Nuggets",
+      produit: nuggetsDispo,
     },
     {
       nom: "Boisson",
       produit: boissonsTest,
-      maxLength: boissonsTest.length,
     },
     {
       nom: "Glaces",
       produit: glaces,
-      maxLength: glaces.length,
     },
   ];
 
-  const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
-  const commandeAPreparer = useContext(CommandesAPreparerContext);
-
-  const fritesDispo = useContext(FritesContext);
-  const nuggetsDispo = useContext(NuggetsContext);
-  const burgersDispo = useContext(BurgersContext);
-
-  // console.log(burgersDispo, nuggetsDispo);
+  // console.log(burgersDispo);
+  console.log(nuggetsDispo);
 
   const tailleEnCour: number = 4;
 
@@ -724,6 +724,50 @@ function ComptoirAssemblage({
                       : "tabContenComptoirA"
                   }
                 >
+                  <button
+                    onClick={() => handleClickRemplirPlateau()}
+                    disabled={nuggetsDispo.boite18 === 0 ? true : false}
+                    className={
+                      nuggetsDispo.boite18 === 0
+                        ? "buttonNeutre buttonNuggetVide"
+                        : "buttonNeutre"
+                    }
+                  >
+                    Boite de 18 <br />
+                    disponible : {nuggetsDispo.boite18}
+                  </button>
+                  <button
+                    onClick={() => handleClickRemplirPlateau()}
+                    disabled={nuggetsDispo.boite6 === 0 ? true : false}
+                    className={
+                      nuggetsDispo.boite6 === 0
+                        ? "buttonNeutre buttonNuggetVide"
+                        : "buttonNeutre"
+                    }
+                  >
+                    Boite de 6 <br />
+                    disponible : {nuggetsDispo.boite6}
+                  </button>
+                  <button
+                    onClick={() => handleClickRemplirPlateau()}
+                    disabled={nuggetsDispo.boite3 === 0 ? true : false}
+                    className={
+                      nuggetsDispo.boite3 === 0
+                        ? "buttonNeutre buttonNuggetVide"
+                        : "buttonNeutre"
+                    }
+                  >
+                    Boite de 3 <br />
+                    disponible : {nuggetsDispo.boite3}
+                  </button>
+                </div>
+                <div
+                  className={
+                    elementsCommandes[3].nom != tabActionComptoirA
+                      ? "tabContentHidden"
+                      : "tabContenComptoirA"
+                  }
+                >
                   {fontainePret.map((e, i) => (
                     <button
                       key={i}
@@ -736,7 +780,7 @@ function ComptoirAssemblage({
                 </div>
                 <div
                   className={
-                    elementsCommandes[3].nom != tabActionComptoirA
+                    elementsCommandes[4].nom != tabActionComptoirA
                       ? "tabContentHidden"
                       : "tabContenComptoirA"
                   }

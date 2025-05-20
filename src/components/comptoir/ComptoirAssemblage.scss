@@ -91,3 +91,8 @@
   margin: auto;
   margin-top: 8px;
 }
+
+.buttonNuggetVide:hover {
+  background-color: style.$gris;
+  cursor: default;
+}
