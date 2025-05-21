@@ -339,9 +339,7 @@ function ComptoirAssemblage({
     const commandeCopie: ProduitEtMenu[] = allCommandeEnCourCopie[commande];
     commandeCopie.splice(plat, 1);
     allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
-    if (setCommandeAPreparer !== undefined) {
-      setCommandeAPreparer(allCommandeEnCourCopie);
-    }
+    setCommandeEnCour(allCommandeEnCourCopie);
 
     const allCommandeAffichageCopie: (string | string[])[][] =
       enCourAffichageRef.current;

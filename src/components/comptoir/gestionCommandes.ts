@@ -119,11 +119,9 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
         function getAllMenu(commande: Produit[]) {
 
           const finalCommande: ProduitEtMenu[] = [];
-          console.log("ini", commande)
           const commandeTrie: Produit[][] = triProduit(commande);
           const commandeTrieEnfant: Produit[][] = triProduitEnfant(commandeTrie);
     
-          console.log("debut", commandeTrie)
           const resteBurger: Produit[] = commandeTrie[0].slice();
 
           if (
@@ -132,9 +130,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           ) {
             for (let i = 0; i < commandeTrie[0].length; i++) {
               if (!(commandeTrie[1].length === 0 && commandeTrie[2].length === 0)) {
-                console.log("commT1", commandeTrie[1].length)
-                console.log("commT2", commandeTrie[2].length)
-                console.log(!(commandeTrie[1].length === 0 && commandeTrie[2].length === 0))
 
                 const currentSize: string = commandeTrie[0][i].tailleProduit;
                 const currentMenu: Menu = {
@@ -150,7 +145,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                   | Nugget;
                 
                  resteBurger.splice(i, 1)
-                console.log("restBur", resteBurger)
                 let currentAccompagnement;
     
                 if (commandeTrie[1].length !== 0) {
@@ -207,7 +201,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           }
     
           if (commandeTrieEnfant[0].length !== 0) {
-            console.log("enf", commandeTrieEnfant.length, commandeTrieEnfant)
             for (let i = 0; i < commandeTrieEnfant[0].length; i++) {
               const currentMenu: MenuEnfant = {
                 sandwich: pouce,
@@ -276,7 +269,6 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
           return finalCommande;
         }
         commande = getAllMenu(commande);
-        console.log("fin", commande)
 
         return commande;
       }
