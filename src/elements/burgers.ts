@@ -409,9 +409,6 @@ export const adultAccompagnement: Accompagnement[] = getOnlyAdultAccompagnement(
 export const enfantDessert: (GlaceType | Accompagnement)[] = glaces.slice()
 enfantDessert.push(boissonYaourt, fruits)
 
-export const enfantBoisson: Boisson[] = boissons.slice();
-enfantBoisson.push(jusDefruit)
-
 export const allProduits: (Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
 
 export type Produit = Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson;

@@ -28,35 +28,6 @@ function getElementByTab(
   }
 }
 
-function getSizeMenu(taille: string) {
-  const sandwich: (burgers.Salade | burgers.Nugget | burgers.Burger)[] = [];
-  const accompagnement: burgers.Accompagnement[] = [];
-  const boisson: burgers.Boisson[] = [];
-  const allTabMenu: (
-    | (burgers.Salade | burgers.Nugget | burgers.Burger)[]
-    | burgers.Accompagnement[]
-    | burgers.Boisson[]
-  )[] = [];
-
-  getElementByTab(burgers.sandwichs, sandwich, taille);
-  getElementByTab(burgers.adultAccompagnement, accompagnement, taille);
-  accompagnement.push(burgers.salade);
-  getElementByTab(burgers.boissons, boisson, taille);
-  allTabMenu.push(sandwich, accompagnement, boisson);
-  return allTabMenu;
-}
-
-export const grandMenu: (
-  | (burgers.Salade | burgers.Nugget | burgers.Burger)[]
-  | burgers.Accompagnement[]
-  | burgers.Boisson[]
-)[] = getSizeMenu(taille[0]);
-export const moyenMenu: (
-  | (burgers.Salade | burgers.Nugget | burgers.Burger)[]
-  | burgers.Accompagnement[]
-  | burgers.Boisson[]
-)[] = getSizeMenu(taille[1]);
-
 export interface MenuEnfant {
   sandwich: burgers.Salade | burgers.Nugget | burgers.Burger;
   accompagnement: burgers.Accompagnement;

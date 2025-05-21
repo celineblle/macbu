@@ -5,6 +5,23 @@ export interface Friture {
   quantiteSachet: number;
 }
 
+export interface PortionFrite {
+  base: string;
+  quantite: number;
+  tailleProduit: string;
+}
+
+export interface BacTimeOut {
+  timeout?: number;
+  bac?: string;
+}
+
+export interface EtatBacAFrite {
+  friture: string;
+  quantiteSachet: number;
+  grille: boolean;
+}
+
 export const frituresCuisineQuantite: Friture[] = [
   {
     friture: frituresCuisine[0],
@@ -38,12 +55,6 @@ export const frites: Friture[] = [
     quantiteSachet: 20,
   },
 ];
-
-export interface PortionFrite {
-  base: string;
-  quantite: number;
-  tailleProduit: string;
-}
 
 function getPortionFrite(): PortionFrite[] {
   const allFrites: PortionFrite[] = [];

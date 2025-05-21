@@ -6,6 +6,8 @@ import {
   PortionFrite,
   frites,
   portionFrite,
+  BacTimeOut,
+  EtatBacAFrite,
 } from "../../elements/ingredientsQuantite";
 import { taille } from "../../elements/stocks";
 import {
@@ -15,17 +17,6 @@ import {
 import { Accompagnement, Produit, ProduitEtMenu } from "../../elements/burgers";
 
 function Friteuse() {
-  interface BacTimeOut {
-    timeout?: number;
-    bac?: string;
-  }
-
-  interface EtatBacAFrite {
-    friture: string;
-    quantiteSachet: number;
-    grille: boolean;
-  }
-
   const setFrites = useContext(FritesContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
