@@ -14,16 +14,33 @@ import {
   CommandesAPreparerContext,
   CommandesAPreparerContextSetter,
 } from "./CommandeContext";
-import { ProduitEtMenu } from "./elements/burgers";
+import { Accompagnement, Burger, ProduitEtMenu } from "./elements/burgers";
 
 function App() {
-  const [frites, setFrites] = useState<string[]>([]);
+  const [frites, setFrites] = useState<Accompagnement[]>([
+    {
+      nom: "Vide",
+      complement: "Vide",
+      tailleProduit: "Vide",
+      type: "Vide",
+      sousType: "Vide",
+    },
+  ]);
   const [nuggets, setNuggets] = useState<NuggetContextType>({
     boite18: 0,
     boite6: 0,
     boite3: 0,
   });
-  const [burgers, setBurgers] = useState<string[]>(["Vide"]);
+  const [burgers, setBurgers] = useState<Burger[]>([
+    {
+      nom: "Vide",
+      pain: "Vide",
+      viande: "Vide",
+      tailleProduit: "Vide",
+      type: "Vide",
+      sousType: "Vide",
+    },
+  ]);
 
   const [commandeAPreparer, setCommandeAPreparer] = useState<ProduitEtMenu[][]>(
     []

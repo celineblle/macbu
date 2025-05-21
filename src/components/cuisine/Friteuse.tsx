@@ -10,10 +10,9 @@ import {
 import { taille } from "../../elements/stocks";
 import {
   FritesContextSetter,
-  FritesContext,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { Produit, ProduitEtMenu } from "../../elements/burgers";
+import { Accompagnement, Produit, ProduitEtMenu } from "../../elements/burgers";
 
 function Friteuse() {
   interface BacTimeOut {
@@ -28,7 +27,6 @@ function Friteuse() {
   }
 
   const setFrites = useContext(FritesContextSetter);
-  const fritesContext = useContext(FritesContext);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuse: number = 6;
@@ -57,7 +55,7 @@ function Friteuse() {
     },
   ]);
   const [portion, setPortion] = useState<string>("");
-  const [rackAFrite, setRackAFrite] = useState<string[]>([]);
+  const [rackAFrite, setRackAFrite] = useState<Accompagnement[]>([]);
   const [timeOutFriteuse, setTimeOutFriteuse] = useState<number[]>([]);
   const [timeOutBac, setTimeOutBac] = useState<BacTimeOut[]>([]);
   const [placeVideFriteuse, setPlaceVideFriteuse] = useState<Friture[]>([]);
@@ -69,7 +67,7 @@ function Friteuse() {
   const friteuseGrilleRef = useRef<Friture[]>([]);
   const bacAFriteRef = useRef<EtatBacAFrite[]>([]);
   const portionRef = useRef<string>("");
-  const rackAFriteRef = useRef<string[]>([]);
+  const rackAFriteRef = useRef<Accompagnement[]>([]);
   const timeOutFriteuseRef = useRef<number[]>([]);
   const timeOutBacRef = useRef<BacTimeOut[]>([]);
 
@@ -79,7 +77,9 @@ function Friteuse() {
 
   function emplacementVide(
     taille: number,
-    tableauActuel: React.RefObject<Friture[]> | React.RefObject<string[]>,
+    tableauActuel:
+      | React.RefObject<Friture[]>
+      | React.RefObject<Accompagnement[]>,
     tableauActuelPret: React.RefObject<Friture[]> | null,
     tableauActuelGrille: React.RefObject<Friture[]> | null,
     setterTableau: React.Dispatch<React.SetStateAction<Friture[]>>
@@ -132,9 +132,8 @@ function Friteuse() {
       setPlaceVideRack
     );
     if (setFrites !== undefined && rackAFrite.length > 0) {
-      const lastFrite: number = rackAFrite.length - 1;
-      const newFrite: string = rackAFrite[lastFrite];
-      setFrites([...fritesContext, newFrite]);
+      const newFrite: Accompagnement[] = rackAFrite.slice();
+      setFrites(newFrite);
     }
   }, [rackAFrite]);
 
@@ -250,7 +249,13 @@ function Friteuse() {
         bac[0].quantiteSachet =
           bac[0].quantiteSachet - portionChoisie[0].quantite;
 
-        const finalPortion: string = `${portionChoisie[0].tailleProduit} ${portionChoisie[0].base}`;
+        const finalPortion: Accompagnement = {
+          nom: portionChoisie[0].base,
+          complement: portionChoisie[0].base,
+          tailleProduit: portionChoisie[0].tailleProduit,
+          type: "accompagnement",
+          sousType: "frite",
+        };
 
         setRackAFrite([...rackAFriteRef.current, finalPortion]);
 
@@ -311,10 +316,10 @@ function Friteuse() {
     }
   }
 
-  function handleClickAvailabilityFrite(element: string): void {
-    const rackFriteCopie: string[] = rackAFriteRef.current.slice();
+  function handleClickAvailabilityFrite(element: Accompagnement): void {
+    const rackFriteCopie: Accompagnement[] = rackAFriteRef.current.slice();
     const indexfrite: number = rackAFriteRef.current.findIndex(
-      (e) => e === element
+      (e) => e.nom === element.nom && e.tailleProduit === element.tailleProduit
     );
 
     rackFriteCopie.splice(indexfrite, 1);
@@ -435,15 +440,17 @@ function Friteuse() {
               </div>
               <br />
               <div className="fritureConstructeur">
-                {rackAFrite.map((emplacement: string, index: number) => (
-                  <button
-                    key={index}
-                    onClick={() => handleClickAvailabilityFrite(emplacement)}
-                    className="buttonPret rackFrite"
-                  >
-                    {emplacement}
-                  </button>
-                ))}
+                {rackAFrite.map(
+                  (emplacement: Accompagnement, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => handleClickAvailabilityFrite(emplacement)}
+                      className="buttonPret rackFrite"
+                    >
+                      {emplacement.tailleProduit} {emplacement.nom}
+                    </button>
+                  )
+                )}
                 {placeVideRack.map((emplacement: Friture, index: number) => (
                   <button className="buttonNeutre rackFrite" key={index}>
                     {emplacement.friture}

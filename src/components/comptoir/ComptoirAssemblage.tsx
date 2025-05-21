@@ -242,8 +242,9 @@ function ComptoirAssemblage({
     },
   ];
 
-  // console.log(burgersDispo);
-  console.log(nuggetsDispo);
+  // console.log("bu", burgersDispo);
+  // console.log("nu", nuggetsDispo);
+  // console.log("fr", fritesDispo);
 
   const tailleEnCour: number = 4;
 

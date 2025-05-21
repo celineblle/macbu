@@ -1,10 +1,18 @@
 import { createContext } from "react";
-import { ProduitEtMenu } from "./elements/burgers";
+import { ProduitEtMenu, Burger, Accompagnement } from "./elements/burgers";
 
-export const FritesContext = createContext<string[]>([]);
+export const FritesContext = createContext<Accompagnement[]>([
+  {
+    nom: "Vide",
+    complement: "Vide",
+    tailleProduit: "Vide",
+    type: "Vide",
+    sousType: "Vide",
+  },
+]);
 
 export const FritesContextSetter = createContext<
-  undefined | React.Dispatch<React.SetStateAction<string[]>>
+  undefined | React.Dispatch<React.SetStateAction<Accompagnement[]>>
 >(undefined);
 
 export type NuggetContextType = {
@@ -23,10 +31,19 @@ export const NuggetsContextSetter = createContext<
   undefined | React.Dispatch<React.SetStateAction<NuggetContextType>>
 >(undefined);
 
-export const BurgersContext = createContext(["Vide"]);
+export const BurgersContext = createContext<Burger[]>([
+  {
+    nom: "Vide",
+    pain: "Vide",
+    viande: "Vide",
+    tailleProduit: "Vide",
+    type: "Vide",
+    sousType: "Vide",
+  },
+]);
 
 export const BurgersContextSetter = createContext<
-  undefined | React.Dispatch<React.SetStateAction<string[]>>
+  undefined | React.Dispatch<React.SetStateAction<Burger[]>>
 >(undefined);
 
 export const CommandesAPreparerContext = createContext<ProduitEtMenu[][]>([]);

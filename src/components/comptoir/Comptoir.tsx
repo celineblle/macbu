@@ -72,7 +72,6 @@ function Comptoir() {
     }
   }, [commandeAPreparer]);
 
-  console.log("allCOmm", commandeAPreparer);
   return (
     <div id="comptoirComponent">
       <Caisse aPreparerAffichage={aPreparerAffichage} />
