@@ -711,7 +711,7 @@ function ComptoirAssemblage({
                         onClick={() => handleClickRemplirPlateau(e)}
                         className="buttonNeutre"
                       >
-                        {e}
+                        {e.tailleProduit} {e.nom}
                       </button>
                     ))
                   )}
@@ -724,7 +724,7 @@ function ComptoirAssemblage({
                   }
                 >
                   <button
-                    onClick={() => handleClickRemplirPlateau()}
+                    //onClick={() => handleClickRemplirPlateau()}
                     disabled={nuggetsDispo.boite18 === 0 ? true : false}
                     className={
                       nuggetsDispo.boite18 === 0
@@ -736,7 +736,7 @@ function ComptoirAssemblage({
                     disponible : {nuggetsDispo.boite18}
                   </button>
                   <button
-                    onClick={() => handleClickRemplirPlateau()}
+                    //onClick={() => handleClickRemplirPlateau()}
                     disabled={nuggetsDispo.boite6 === 0 ? true : false}
                     className={
                       nuggetsDispo.boite6 === 0
@@ -748,7 +748,7 @@ function ComptoirAssemblage({
                     disponible : {nuggetsDispo.boite6}
                   </button>
                   <button
-                    onClick={() => handleClickRemplirPlateau()}
+                    //onClick={() => handleClickRemplirPlateau()}
                     disabled={nuggetsDispo.boite3 === 0 ? true : false}
                     className={
                       nuggetsDispo.boite3 === 0
@@ -770,7 +770,7 @@ function ComptoirAssemblage({
                   {fontainePret.map((e, i) => (
                     <button
                       key={i}
-                      onClick={() => handleClickRemplirPlateau(e)}
+                      //onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
                       {e}
@@ -787,7 +787,7 @@ function ComptoirAssemblage({
                   {glacesCommande.map((e, i) => (
                     <button
                       key={i}
-                      onClick={() => handleClickRemplirPlateau(e)}
+                      // onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
                       {e}
