@@ -4,12 +4,11 @@ import * as stocks from "../../elements/stocks";
 
 const tailleMaxCommande: number = 8;
 
-export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
+export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] {
     const plat: (Salade | Nugget | Burger)[] = [];
     const complement: Accompagnement[] = [];
     const boissonCommande: Boisson[] = [];
     const autreProduit: (GlaceType | Accompagnement | Boisson)[] = [];
-    const finalProduitTriee: Produit[][] = [];
 
     for (let i = 0; i < commande.length; i++) {
       const actuelProduit: ProduitEtMenu = commande[i];
@@ -39,18 +38,18 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
         autreProduit.push(actuelProduit);
       }
     }
-    finalProduitTriee.push(plat, complement, boissonCommande, autreProduit);
+
+    const finalProduitTriee: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = [plat, complement, boissonCommande, autreProduit];
     return finalProduitTriee;
   }
 
-  export function triProduitEnfant(tableauToutProduit: Produit[][]): Produit[][] {
+  export function triProduitEnfant(tableauToutProduit: Produit[][]): [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] {
       const petitPlat: (Salade | Nugget | Burger)[] = [];
       const petitComplement: Accompagnement[] = [];
       const petiteBoisson: Boisson[] = [];
       const dessert: (GlaceType | Accompagnement)[] = [];
-      const autreProduitEnfant: (GlaceType | Accompagnement | Boisson)[] = [];
-      const toutProduitEnfant: Produit[][] = [];
-  
+      const autreProduitEnfant: (GlaceType | Accompagnement | Boisson)[] = [];  
+
       function triParTaille(
         tableauProduit: Produit[],
         tableauEnfant: Produit[]
@@ -94,7 +93,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
         }
       }
   
-      toutProduitEnfant.push(petitPlat, petitComplement, petiteBoisson, dessert);
+      const toutProduitEnfant:  [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = [petitPlat, petitComplement, petiteBoisson, dessert];
       return toutProduitEnfant;
     }
   
@@ -119,8 +118,8 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
         function getAllMenu(commande: Produit[]) {
 
           const finalCommande: ProduitEtMenu[] = [];
-          const commandeTrie: Produit[][] = triProduit(commande);
-          const commandeTrieEnfant: Produit[][] = triProduitEnfant(commandeTrie);
+          const commandeTrie: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = triProduit(commande);
+          const commandeTrieEnfant: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = triProduitEnfant(commandeTrie);
     
           const resteBurger: Produit[] = commandeTrie[0].slice();
 
@@ -139,10 +138,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                   taille: 0,
                 };
     
-                currentMenu.sandwich = commandeTrie[0][i] as
-                  | Salade
-                  | Burger
-                  | Nugget;
+                currentMenu.sandwich = commandeTrie[0][i];
                 
                  resteBurger.splice(i, 1)
                 let currentAccompagnement;
@@ -169,7 +165,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                   currentAccompagnement.tailleProduit = currentSize;
                 }
                 currentMenu.accompagnement =
-                  currentAccompagnement as Accompagnement;
+                  currentAccompagnement;
     
                 let currentBoisson;
     
@@ -190,7 +186,7 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                 }
     
                 currentBoisson.tailleProduit = currentSize;
-                currentMenu.boisson = currentBoisson as Boisson;
+                currentMenu.boisson = currentBoisson;
     
                 let tailleMenu: number = currentSize === stocks.taille[0] ? 3 : 2;
                 tailleMenu = tailleMenu * 3;
@@ -210,37 +206,33 @@ export function triProduit(commande: ProduitEtMenu[]): Produit[][] {
                 taille: 4,
               };
     
-              currentMenu.sandwich = commandeTrieEnfant[0][i] as Nugget | Burger;
+              currentMenu.sandwich = commandeTrieEnfant[0][i];
     
               if (commandeTrieEnfant[1].length !== 0) {
                 currentMenu.accompagnement =
-                  commandeTrieEnfant[1][0] as Accompagnement;
+                  commandeTrieEnfant[1][0];
                 commandeTrieEnfant[1].shift();
               } else {
-                const randomSaveur: number = getRandom(menuEnfant[1].length - 1);
+                const randomSaveur: number = getRandom([1].length - 1);
                 currentMenu.accompagnement = menuEnfant[1][
                   randomSaveur
-                ] as Accompagnement;
+                ];
               }
     
               if (commandeTrieEnfant[2].length !== 0) {
-                currentMenu.boisson = commandeTrieEnfant[2][0] as Boisson;
+                currentMenu.boisson = commandeTrieEnfant[2][0];
                 commandeTrieEnfant[2].shift();
               } else {
                 const randomSaveur: number = getRandom(menuEnfant[2].length - 1);
-                currentMenu.boisson = menuEnfant[2][randomSaveur] as Boisson;
+                currentMenu.boisson = menuEnfant[2][randomSaveur];
               }
     
               if (commandeTrieEnfant[3].length !== 0) {
-                currentMenu.dessert = commandeTrieEnfant[3][0] as
-                  | GlaceType
-                  | Accompagnement;
+                currentMenu.dessert = commandeTrieEnfant[3][0];
                 commandeTrieEnfant[3].shift();
               } else {
                 const randomSaveur: number = getRandom(menuEnfant[3].length - 1);
-                currentMenu.dessert = menuEnfant[3][randomSaveur] as
-                  | GlaceType
-                  | Accompagnement;
+                currentMenu.dessert = menuEnfant[3][randomSaveur];
               }
     
               finalCommande.push(currentMenu);
