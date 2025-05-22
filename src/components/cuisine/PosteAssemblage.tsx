@@ -9,19 +9,14 @@ import {
   tailleProduitBurger,
   taille,
 } from "../../elements/stocks";
-import {
-  burgers,
-  Produit,
-  ProduitEtMenu,
-  Burger,
-} from "../../elements/burgers";
+import { burgers, Produit, Burger } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
 import {
   BurgersContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { sac } from "../../elements/stocks";
+import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function PosteAssemblage({
   viandePretRef,
@@ -259,16 +254,6 @@ function PosteAssemblage({
     return true;
   }
 
-  // nom: string,
-  // pain: string,
-  // viande: string,
-  // fromage?: string[],
-  // ingredient?: string[],
-  // sauce?: string[],
-  // tailleProduit: string,
-  // type: "sandwich",
-  // sousType: "burger",
-
   function handleClickBurgerPret(): void {
     if (burgerPretRef.current.length < limitBurgerRack) {
       const finalBurger: Burger = {
@@ -355,30 +340,13 @@ function PosteAssemblage({
   }
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
 
-    function isItBurger(element: Produit) {
-      if ("viande" in element) {
-        commandeUnique.push(element.nom);
-      }
-    }
-
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement) {
-          isItBurger(currentElement.sandwich);
-        } else {
-          isItBurger(currentElement);
-        }
-      }
-      if (commandeUnique.length > 0) {
-        currentCommande.push(commandeUnique);
-        commandeUnique = [];
-      }
-    }
-    setCommandeSandwich(currentCommande);
+    const commandesDuPoste: string[][] = quiEstQuoi(
+      "burger",
+      commandesSansMenu
+    );
+    setCommandeSandwich(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (

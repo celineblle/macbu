@@ -3,7 +3,8 @@ import close from "../../assets/close.svg";
 import { taille, boisson } from "../../elements/stocks";
 import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
-import { Produit, ProduitEtMenu } from "../../elements/burgers";
+import { quiEstQuoi, demantelerMenu } from "../../elements/function";
+import { Produit } from "../../elements/burgers";
 
 function PosteBoisson({
   fontainePret,
@@ -99,30 +100,14 @@ function PosteBoisson({
   }
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
-    function isItBoisson(element: Produit) {
-      if ("saveur" in element) {
-        const boissonAffichageCommande: string = `${element.tailleProduit} ${element.saveur}`;
-        commandeUnique.push(boissonAffichageCommande);
-      }
-    }
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
 
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement) {
-          isItBoisson(currentElement.boisson);
-        } else if (!("boisson" in currentElement)) {
-          isItBoisson(currentElement);
-        }
-      }
-      if (commandeUnique.length > 0) {
-        currentCommande.push(commandeUnique);
-        commandeUnique = [];
-      }
-    }
-    setCommandeBoisson(currentCommande);
+    const commandesDuPoste: string[][] = quiEstQuoi(
+      "boisson",
+      commandesSansMenu
+    );
+
+    setCommandeBoisson(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (

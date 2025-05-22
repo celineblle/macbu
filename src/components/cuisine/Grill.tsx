@@ -4,7 +4,8 @@ import close from "../../assets/close.svg";
 import { viande } from "../../elements/stocks";
 import { ViandePret } from "./Cuisine";
 import { CommandesAPreparerContext } from "../../CommandeContext";
-import { Produit, ProduitEtMenu } from "../../elements/burgers";
+import { Produit } from "../../elements/burgers";
+import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function Grill({
   viandePret,
@@ -127,31 +128,9 @@ function Grill({
   }
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
-
-    function isItSteak(element: Produit) {
-      if ("viande" in element)
-        if (viande.includes(element.viande)) {
-          commandeUnique.push(element.viande);
-        }
-    }
-
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement) {
-          isItSteak(currentElement.sandwich);
-        } else {
-          isItSteak(currentElement);
-        }
-      }
-      if (commandeUnique.length > 0) {
-        currentCommande.push(commandeUnique);
-        commandeUnique = [];
-      }
-    }
-    setCommandeSteak(currentCommande);
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
+    const commandesDuPoste: string[][] = quiEstQuoi("steak", commandesSansMenu);
+    setCommandeSteak(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (

@@ -14,7 +14,8 @@ import {
   FritesContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { Accompagnement, Produit, ProduitEtMenu } from "../../elements/burgers";
+import { Accompagnement, Produit } from "../../elements/burgers";
+import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function Friteuse() {
   const setFrites = useContext(FritesContextSetter);
@@ -318,31 +319,10 @@ function Friteuse() {
   }
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
 
-    function isItFrite(element: Produit) {
-      if ("complement" in element && element.sousType === "frite") {
-        const friteAffichageCommande: string = `${element.tailleProduit} ${element.complement}`;
-        commandeUnique.push(friteAffichageCommande);
-      }
-    }
-
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement) {
-          isItFrite(currentElement.accompagnement);
-        } else {
-          isItFrite(currentElement);
-        }
-      }
-      if (commandeUnique.length > 0) {
-        currentCommande.push(commandeUnique);
-        commandeUnique = [];
-      }
-    }
-    setCommandeFrite(currentCommande);
+    const commandesDuPoste: string[][] = quiEstQuoi("frite", commandesSansMenu);
+    setCommandeFrite(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (

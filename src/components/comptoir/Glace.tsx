@@ -3,7 +3,8 @@ import "./Glace.css";
 import close from "../../assets/close.svg";
 import { glaceToppings, taille } from "../../elements/stocks";
 import { CommandesAPreparerContext } from "../../CommandeContext";
-import { Produit, ProduitEtMenu, GlaceType } from "../../elements/burgers";
+import { Produit, GlaceType } from "../../elements/burgers";
+import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function Glace({
   setGlacesCommande,
@@ -172,31 +173,10 @@ function Glace({
   }, [posteGlace, posteGlacePret, posteGlaceFondue]);
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
 
-    function isItGlace(element: Produit) {
-      if ("topping" in element && "coulis" in element) {
-        const glaceAffichageCommande: string = `${element.topping} ${element.coulis}`;
-        commandeUnique.push(glaceAffichageCommande);
-      }
-    }
-
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement && "dessert" in currentElement) {
-          isItGlace(currentElement.dessert);
-        } else if (!("boisson" in currentElement)) {
-          isItGlace(currentElement);
-        }
-      }
-      if (commandeUnique.length > 0) {
-        currentCommande.push(commandeUnique);
-        commandeUnique = [];
-      }
-    }
-    setCommandeGlace(currentCommande);
+    const commandesDuPoste: string[][] = quiEstQuoi("glace", commandesSansMenu);
+    setCommandeGlace(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (

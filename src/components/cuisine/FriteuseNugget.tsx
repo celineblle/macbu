@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
-import { nuggets, Produit, ProduitEtMenu } from "../../elements/burgers";
+import { nuggets, Produit } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
@@ -10,7 +10,7 @@ import {
   NuggetsContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { frituresCuisine } from "../../elements/stocks";
+import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function FriteuseNugget({
   bacFriture,
@@ -188,38 +188,13 @@ function FriteuseNugget({
   }
 
   useEffect(() => {
-    const currentCommande: string[][] = [];
-    let commandeUnique: string[] = [];
+    const commandesSansMenu: Produit[][] = demantelerMenu(commandeAPreparer);
 
-    function isItNugget(element: Produit) {
-      if ("nombreNugget" in element) {
-        commandeUnique.push(element.nom);
-      } else if ("pain" in element) {
-        if (frituresCuisine.includes(element.viande)) {
-          commandeUnique.push(element.viande);
-        }
-      } else if ("feculent" in element) {
-        if (frituresCuisine.includes(element.topping)) {
-          commandeUnique.push(element.topping);
-        }
-      }
-    }
-
-    for (let i = 0; i < commandeAPreparer.length; i++) {
-      for (let j = 0; j < commandeAPreparer[i].length; j++) {
-        const currentElement: ProduitEtMenu = commandeAPreparer[i][j];
-        if ("boisson" in currentElement) {
-          isItNugget(currentElement.sandwich);
-        } else {
-          isItNugget(currentElement);
-        }
-        if (commandeUnique.length > 0) {
-          currentCommande.push(commandeUnique);
-          commandeUnique = [];
-        }
-      }
-    }
-    setCommandeNugget(currentCommande);
+    const commandesDuPoste: string[][] = quiEstQuoi(
+      "nugget",
+      commandesSansMenu
+    );
+    setCommandeNugget(commandesDuPoste);
   }, [commandeAPreparer]);
 
   return (
