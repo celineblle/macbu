@@ -13,6 +13,7 @@ import { burgers, Produit, Burger } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
 import {
+  BurgersContext,
   BurgersContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
@@ -48,13 +49,13 @@ function PosteAssemblage({
     fonctionConstruction: (element: string, property: keyof Burger) => void;
   }
 
-  const setBurgers = useContext(BurgersContextSetter);
+  const burgersContext = useContext(BurgersContext);
+  const setBurgersContext = useContext(BurgersContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const limitBurgerRack: number = 4;
 
   const [modalAction, setModalAction] = useState<boolean>(false);
-  const [burgerPret, setBurgerPret] = useState<Burger[]>([]);
   const [burgerEnAttente, setBurgerEnAttente] = useState<BurgerAllOptional[]>(
     []
   );
@@ -91,12 +92,8 @@ function PosteAssemblage({
   const burgerEnAttenteRef = useRef<BurgerAllOptional[]>([]);
 
   useEffect(() => {
-    burgerPretRef.current = burgerPret;
-    if (setBurgers !== undefined && burgerPret.length > 0) {
-      const newBurger: Burger[] = burgerPret.slice();
-      setBurgers(newBurger);
-    }
-  }, [burgerPret]);
+    burgerPretRef.current = burgersContext;
+  }, [burgersContext]);
 
   useEffect(() => {
     burgerEnAttenteRef.current = burgerEnAttente;
@@ -329,7 +326,9 @@ function PosteAssemblage({
           finalBurger.nom = "Recette Personnelle";
         }
       }
-      setBurgerPret([...burgerPret, finalBurger]);
+      if (setBurgersContext !== undefined) {
+        setBurgersContext([...burgersContext, finalBurger]);
+      }
       setCurrentBurger({});
     }
   }
@@ -362,7 +361,7 @@ function PosteAssemblage({
 
       <div id="pretPosteAssemblage" className="postePosteAssemblage">
         <h3>Pret</h3>
-        {burgerPret.map((e: Burger, index: number) => (
+        {burgersContext.map((e: Burger, index: number) => (
           <button className="commandePret" key={index}>
             {e.nom}
           </button>
@@ -523,7 +522,7 @@ function PosteAssemblage({
               </div>
               <h3>Pret</h3>
               <div id="pretBurger" className="postePosteAssemblage">
-                {burgerPret.map((e: Burger, index: number) => (
+                {burgersContext.map((e: Burger, index: number) => (
                   <button className="commandePret" key={index}>
                     {e.nom}
                   </button>

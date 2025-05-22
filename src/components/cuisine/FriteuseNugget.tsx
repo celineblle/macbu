@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
-import { nuggets, Produit } from "../../elements/burgers";
+import { Produit } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
@@ -9,6 +9,8 @@ import {
 import {
   NuggetsContextSetter,
   CommandesAPreparerContext,
+  BoiteNugget,
+  NuggetsContext,
 } from "../../CommandeContext";
 import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
@@ -21,13 +23,8 @@ function FriteuseNugget({
   setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
   bacFritureRef: React.RefObject<Friture[]>;
 }) {
-  interface BoiteNugget {
-    friture: string;
-    nombreNugget: number;
-    quantitePret: number;
-  }
-
-  const setNuggets = useContext(NuggetsContextSetter);
+  const nuggetsStateContext = useContext(NuggetsContext);
+  const setNuggetsStateContext = useContext(NuggetsContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuseGp: number = 5;
@@ -41,23 +38,6 @@ function FriteuseNugget({
     number[]
   >([]);
   const [placeVideFriteuseGp, setPlaceVideFriteuseGp] = useState<string[]>([]);
-  const [boitesNugget, setBoitesNugget] = useState<BoiteNugget[]>([
-    {
-      friture: nuggets[0].nom,
-      nombreNugget: nuggets[0].nombreNugget,
-      quantitePret: 0,
-    },
-    {
-      friture: nuggets[1].nom,
-      nombreNugget: nuggets[1].nombreNugget,
-      quantitePret: 0,
-    },
-    {
-      friture: nuggets[2].nom,
-      nombreNugget: nuggets[2].nombreNugget,
-      quantitePret: 0,
-    },
-  ]);
   const [commandeNugget, setCommandeNugget] = useState<(string | string[])[]>(
     []
   );
@@ -66,7 +46,7 @@ function FriteuseNugget({
   const pretGpRef = useRef<Friture[]>([]);
   const grilleGpRef = useRef<Friture[]>([]);
   const timeOutPretFriteuseGpRef = useRef<number[]>([]);
-  const boitesNuggetRef = useRef<BoiteNugget[]>([]);
+  const boitesNuggetRef = useRef<BoiteNugget[]>(nuggetsStateContext);
 
   useEffect(() => {
     friteuseGpRef.current = friteuseGp;
@@ -85,15 +65,8 @@ function FriteuseNugget({
   }, [timeOutPretFriteuseGpId]);
 
   useEffect(() => {
-    boitesNuggetRef.current = boitesNugget;
-    if (setNuggets !== undefined) {
-      setNuggets({
-        boite18: boitesNugget[0].quantitePret,
-        boite6: boitesNugget[1].quantitePret,
-        boite3: boitesNugget[2].quantitePret,
-      });
-    }
-  }, [boitesNugget]);
+    boitesNuggetRef.current = nuggetsStateContext;
+  }, [nuggetsStateContext]);
 
   function handleClickToggleModal(): void {
     setModalActionFriteuseNugget(!modalActionFriteuseNugget);
@@ -179,7 +152,9 @@ function FriteuseNugget({
     if (bacFritureRef.current[0].quantiteSachet > nugget.nombreNugget) {
       const allBoite: BoiteNugget[] = boitesNuggetRef.current.slice();
       allBoite[indexBoite].quantitePret = allBoite[indexBoite].quantitePret + 1;
-      setBoitesNugget(allBoite);
+      if (setNuggetsStateContext !== undefined) {
+        setNuggetsStateContext(allBoite);
+      }
       const copieBacFriture = bacFritureRef.current.slice();
       copieBacFriture[0].quantiteSachet =
         copieBacFriture[0].quantiteSachet - nugget.nombreNugget;
@@ -239,7 +214,7 @@ function FriteuseNugget({
               </div>
               <div>
                 <h3>Boite à nugget</h3>
-                {boitesNugget.map((nugget, index) => (
+                {nuggetsStateContext.map((nugget, index) => (
                   <div key={index}>
                     <button
                       className="buttonNeutre buttonFrigo"

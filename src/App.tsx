@@ -8,13 +8,18 @@ import {
   FritesContextSetter,
   NuggetsContext,
   NuggetsContextSetter,
-  NuggetContextType,
   BurgersContext,
   BurgersContextSetter,
   CommandesAPreparerContext,
   CommandesAPreparerContextSetter,
+  BoiteNugget,
 } from "./CommandeContext";
-import { Accompagnement, Burger, ProduitEtMenu } from "./elements/burgers";
+import {
+  Accompagnement,
+  Burger,
+  ProduitEtMenu,
+  nuggets,
+} from "./elements/burgers";
 
 function App() {
   const [frites, setFrites] = useState<Accompagnement[]>([
@@ -26,11 +31,25 @@ function App() {
       sousType: "Vide",
     },
   ]);
-  const [nuggets, setNuggets] = useState<NuggetContextType>({
-    boite18: 0,
-    boite6: 0,
-    boite3: 0,
-  });
+  const [nuggetsStateContext, setNuggetsStateContext] = useState<BoiteNugget[]>(
+    [
+      {
+        friture: nuggets[0].nom,
+        nombreNugget: nuggets[0].nombreNugget,
+        quantitePret: 0,
+      },
+      {
+        friture: nuggets[1].nom,
+        nombreNugget: nuggets[1].nombreNugget,
+        quantitePret: 0,
+      },
+      {
+        friture: nuggets[2].nom,
+        nombreNugget: nuggets[2].nombreNugget,
+        quantitePret: 0,
+      },
+    ]
+  );
   const [burgers, setBurgers] = useState<Burger[]>([
     {
       nom: "Vide",
@@ -53,8 +72,8 @@ function App() {
         <CommandesAPreparerContextSetter value={setCommandeAPreparer}>
           <FritesContext value={frites}>
             <FritesContextSetter value={setFrites}>
-              <NuggetsContext value={nuggets}>
-                <NuggetsContextSetter value={setNuggets}>
+              <NuggetsContext value={nuggetsStateContext}>
+                <NuggetsContextSetter value={setNuggetsStateContext}>
                   <BurgersContext value={burgers}>
                     <BurgersContextSetter value={setBurgers}>
                       <Cuisine />

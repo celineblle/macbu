@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import close from "../../assets/close.svg";
 import * as stocks from "../../elements/stocks";
-import { ProduitEtMenu, Produit, glaces } from "../../elements/burgers";
+import {
+  ProduitEtMenu,
+  Produit,
+  glaces,
+  nuggets,
+  Boisson,
+  GlaceType,
+} from "../../elements/burgers";
 import "./ComptoirAssemblage.css";
 import {
   FritesContext,
   NuggetsContext,
-  BurgersContext,
-  CommandesAPreparerContextSetter,
   CommandesAPreparerContext,
+  BoiteNugget,
 } from "../../CommandeContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
 
@@ -18,17 +24,15 @@ function ComptoirAssemblage({
   aPreparerAffichage,
   aPreparerRef,
 }: {
-  glacesCommande: string[];
-  fontainePret: string[];
+  glacesCommande: GlaceType[];
+  fontainePret: Boisson[];
   aPreparerAffichage: (string | string[])[][];
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
 }) {
-  const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const fritesDispo = useContext(FritesContext);
   const nuggetsDispo = useContext(NuggetsContext);
-  const burgersDispo = useContext(BurgersContext);
   const burger = [
     {
       nom: "Origin Burger",
@@ -254,7 +258,7 @@ function ComptoirAssemblage({
     elementsCommandes[0].nom
   );
 
-  const [commandeEnCour, setCommandeEnCour] = useState<ProduitEtMenu[][]>([]);
+  const [commandeEnCour, setCommandeEnCour] = useState<Produit[][]>([]);
   const [idPlateauPrepa, setIdPlateauPrepa] = useState<number>(0);
   const [enCourAffichage, setEnCourAffichage] = useState<
     (string | string[])[][]
@@ -266,7 +270,7 @@ function ComptoirAssemblage({
     [[string, number][], number][]
   >([]);
 
-  const enCourRef = useRef<ProduitEtMenu[][]>([]);
+  const enCourRef = useRef<Produit[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
   const idPlateauRef = useRef<number>(0);
   const capaciteSacRef = useRef<[[string, number][], number][]>([]);
@@ -303,16 +307,25 @@ function ComptoirAssemblage({
     }
   }
 
-  function handleClickRemplirPlateau(plat: Produit): void {
-    const allCommandeEnCourCopie: ProduitEtMenu[][] = enCourRef.current.slice();
-    let commandeCopie: ProduitEtMenu[] = [];
+  function handleClickRemplirPlateau(plat: Produit | BoiteNugget): void {
+    const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+    let commandeCopie: Produit[] = [];
     if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
       commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
     }
-
-    commandeCopie.push(plat);
+    if ("friture" in plat) {
+      const nuggetProduit: Produit | undefined = nuggets.find(
+        (e) => (e.nom = plat.friture)
+      );
+      if (nuggetProduit !== undefined) {
+        commandeCopie.push(nuggetProduit);
+      }
+    } else {
+      commandeCopie.push(plat);
+    }
     allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
+
     const commandeAffichageCopie: (string | string[])[] =
       affichageCommande(commandeCopie);
     const enCourTabAffichageCopie: (string | string[])[][] =
@@ -336,8 +349,8 @@ function ComptoirAssemblage({
   }, [commandeEnCour]);
 
   function handleClickSupprimerPlat(commande: number, plat: number): void {
-    const allCommandeEnCourCopie: ProduitEtMenu[][] = enCourRef.current.slice();
-    const commandeCopie: ProduitEtMenu[] = allCommandeEnCourCopie[commande];
+    const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+    const commandeCopie: Produit[] = allCommandeEnCourCopie[commande];
     commandeCopie.splice(plat, 1);
     allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
@@ -724,40 +737,40 @@ function ComptoirAssemblage({
                   }
                 >
                   <button
-                    //onClick={() => handleClickRemplirPlateau()}
-                    disabled={nuggetsDispo.boite18 === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[1])}
+                    disabled={nuggetsDispo[0].quantitePret === 0 ? true : false}
                     className={
-                      nuggetsDispo.boite18 === 0
+                      nuggetsDispo[0].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    Boite de 18 <br />
-                    disponible : {nuggetsDispo.boite18}
+                    {nuggetsDispo[0].friture} <br />
+                    disponible : {nuggetsDispo[0].quantitePret}
                   </button>
                   <button
-                    //onClick={() => handleClickRemplirPlateau()}
-                    disabled={nuggetsDispo.boite6 === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[1])}
+                    disabled={nuggetsDispo[1].quantitePret === 0 ? true : false}
                     className={
-                      nuggetsDispo.boite6 === 0
+                      nuggetsDispo[1].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    Boite de 6 <br />
-                    disponible : {nuggetsDispo.boite6}
+                    {nuggetsDispo[1].friture} <br />
+                    disponible : {nuggetsDispo[1].quantitePret}
                   </button>
                   <button
-                    //onClick={() => handleClickRemplirPlateau()}
-                    disabled={nuggetsDispo.boite3 === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[2])}
+                    disabled={nuggetsDispo[2].quantitePret === 0 ? true : false}
                     className={
-                      nuggetsDispo.boite3 === 0
+                      nuggetsDispo[2].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    Boite de 3 <br />
-                    disponible : {nuggetsDispo.boite3}
+                    {nuggetsDispo[2].friture} <br />
+                    disponible : {nuggetsDispo[2].quantitePret}
                   </button>
                 </div>
                 <div
@@ -770,10 +783,10 @@ function ComptoirAssemblage({
                   {fontainePret.map((e, i) => (
                     <button
                       key={i}
-                      //onClick={() => handleClickRemplirPlateau(e)}
+                      onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
-                      {e}
+                      {e.tailleProduit} {e.saveur}
                     </button>
                   ))}
                 </div>
@@ -787,10 +800,10 @@ function ComptoirAssemblage({
                   {glacesCommande.map((e, i) => (
                     <button
                       key={i}
-                      // onClick={() => handleClickRemplirPlateau(e)}
+                      onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
-                      {e}
+                      {e.coulis} {e.topping}
                     </button>
                   ))}
                 </div>

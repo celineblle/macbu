@@ -1,5 +1,10 @@
 import { createContext } from "react";
-import { ProduitEtMenu, Burger, Accompagnement } from "./elements/burgers";
+import {
+  ProduitEtMenu,
+  Burger,
+  Accompagnement,
+  nuggets,
+} from "./elements/burgers";
 
 export const FritesContext = createContext<Accompagnement[]>([
   {
@@ -15,20 +20,32 @@ export const FritesContextSetter = createContext<
   undefined | React.Dispatch<React.SetStateAction<Accompagnement[]>>
 >(undefined);
 
-export type NuggetContextType = {
-  boite18: number;
-  boite6: number;
-  boite3: number;
-};
+export interface BoiteNugget {
+  friture: string;
+  nombreNugget: number;
+  quantitePret: number;
+}
 
-export const NuggetsContext = createContext<NuggetContextType>({
-  boite18: 0,
-  boite6: 0,
-  boite3: 0,
-});
+export const NuggetsContext = createContext<BoiteNugget[]>([
+  {
+    friture: nuggets[0].nom,
+    nombreNugget: nuggets[0].nombreNugget,
+    quantitePret: 0,
+  },
+  {
+    friture: nuggets[1].nom,
+    nombreNugget: nuggets[1].nombreNugget,
+    quantitePret: 0,
+  },
+  {
+    friture: nuggets[2].nom,
+    nombreNugget: nuggets[2].nombreNugget,
+    quantitePret: 0,
+  },
+]);
 
 export const NuggetsContextSetter = createContext<
-  undefined | React.Dispatch<React.SetStateAction<NuggetContextType>>
+  undefined | React.Dispatch<React.SetStateAction<BoiteNugget[]>>
 >(undefined);
 
 export const BurgersContext = createContext<Burger[]>([

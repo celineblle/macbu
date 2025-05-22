@@ -4,7 +4,7 @@ import Caisse from "./Caisse";
 import ComptoirAssemblage from "./ComptoirAssemblage";
 import PosteBoisson from "./Boisson";
 import Glace from "./Glace";
-import { ProduitEtMenu } from "../../elements/burgers";
+import { Boisson, GlaceType, ProduitEtMenu } from "../../elements/burgers";
 import { affichageCommande, randomCommande } from "./gestionCommandes";
 import {
   CommandesAPreparerContext,
@@ -15,15 +15,25 @@ function Comptoir() {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
 
-  const [glacesCommande, setGlacesCommande] = useState<string[]>(["Vide"]);
-  const glacesCommandeRef = useRef<string[]>(glacesCommande);
+  const [glacesCommande, setGlacesCommande] = useState<GlaceType[]>([
+    {
+      nom: "Glace",
+      base: "Glace au lait",
+      topping: "Aucun",
+      coulis: " ",
+      tailleProduit: "initial",
+      type: "dessert",
+      sousType: "glace",
+    },
+  ]);
+  const glacesCommandeRef = useRef<GlaceType[]>(glacesCommande);
 
   useEffect(() => {
     glacesCommandeRef.current = glacesCommande;
   }, [glacesCommande]);
 
-  const [fontainePret, setFontainePret] = useState<string[]>([]);
-  const fontainePretRef = useRef<string[]>([]);
+  const [fontainePret, setFontainePret] = useState<Boisson[]>([]);
+  const fontainePretRef = useRef<Boisson[]>([]);
 
   useEffect(() => {
     fontainePretRef.current = fontainePret;
@@ -87,6 +97,7 @@ function Comptoir() {
         fontainePretRef={fontainePretRef}
       />
       <Glace
+        glacesCommande={glacesCommande}
         setGlacesCommande={setGlacesCommande}
         glacesCommandeRef={glacesCommandeRef}
       />

@@ -4,20 +4,20 @@ import { taille, boisson } from "../../elements/stocks";
 import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { quiEstQuoi, demantelerMenu } from "../../elements/function";
-import { Produit } from "../../elements/burgers";
+import { Produit, Boisson } from "../../elements/burgers";
 
 function PosteBoisson({
   fontainePret,
   setFontainePret,
   fontainePretRef,
 }: {
-  fontainePret: string[];
-  setFontainePret: React.Dispatch<React.SetStateAction<string[]>>;
-  fontainePretRef: React.RefObject<string[]>;
+  fontainePret: Boisson[];
+  setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
+  fontainePretRef: React.RefObject<Boisson[]>;
 }) {
-  interface Boisson {
+  interface BoissonOptionnel {
     nom?: string;
-    base?: string;
+    saveur?: string;
     tailleProduit?: string;
     type?: string;
     sousType?: string;
@@ -28,7 +28,7 @@ function PosteBoisson({
 
   const [buttonActionModalBoisson, setButtonActionModalBoisson] =
     useState<boolean>(false);
-  const [currentBoisson, setCurrentBoisson] = useState<Boisson>({});
+  const [currentBoisson, setCurrentBoisson] = useState<BoissonOptionnel>({});
   const [fontaine, setFontaine] = useState<Boisson[]>([]);
   const [placeVideBoisson, setPlaceVideBoisson] = useState<string[]>([]);
   const [commandeBoisson, setCommandeBoisson] = useState<(string[] | string)[]>(
@@ -46,11 +46,12 @@ function PosteBoisson({
   }
 
   function handleClickBoissonConstruction(element: string): void {
-    const copieCurentBoisson: Boisson = structuredClone(currentBoisson);
+    const copieCurentBoisson: BoissonOptionnel =
+      structuredClone(currentBoisson);
     if (taille.includes(element)) {
       copieCurentBoisson.tailleProduit = element;
     } else {
-      copieCurentBoisson.base = element;
+      copieCurentBoisson.saveur = element;
     }
     setCurrentBoisson(copieCurentBoisson);
   }
@@ -58,27 +59,33 @@ function PosteBoisson({
   function handleClickPreparationToFontaine(): void {
     const actualSizeBoisson: number =
       fontaineRef.current.length + fontainePretRef.current.length;
+    const boissonPrete: Boisson = {
+      nom: "initial",
+      saveur: "initial",
+      tailleProduit: "initial",
+      type: "boisson",
+      sousType: "cannette",
+    };
     if (actualSizeBoisson < taillePosteBoisson) {
-      const copieCurentBoisson: Boisson = structuredClone(currentBoisson);
+      const copieCurentBoisson: BoissonOptionnel =
+        structuredClone(currentBoisson);
       if (
         copieCurentBoisson.tailleProduit !== undefined &&
-        copieCurentBoisson.base !== undefined
+        copieCurentBoisson.saveur !== undefined
       ) {
-        copieCurentBoisson.nom = copieCurentBoisson.base;
-        copieCurentBoisson.type = "boisson";
-        copieCurentBoisson.sousType = "cannette";
-        setFontaine([...fontaineRef.current, copieCurentBoisson]);
-        setTimeout(() => {
-          const oldestBoisson: number =
-            fontaineRef.current.indexOf(copieCurentBoisson);
-          const tabFontaineCopie: Boisson[] = fontaineRef.current.slice();
-          tabFontaineCopie.splice(oldestBoisson, 1);
-          setFontaine(tabFontaineCopie);
-          const finalBoisson: string = `${copieCurentBoisson.tailleProduit} ${copieCurentBoisson.base}`;
-          setFontainePret([...fontainePretRef.current, finalBoisson]);
-        }, 2000);
+        boissonPrete.nom = copieCurentBoisson.saveur;
+        boissonPrete.saveur = copieCurentBoisson.saveur;
+        boissonPrete.tailleProduit = copieCurentBoisson.tailleProduit;
+        setFontaine([...fontaineRef.current, boissonPrete]);
       }
     }
+    setTimeout(() => {
+      const oldestBoisson: number = fontaineRef.current.indexOf(boissonPrete);
+      const tabFontaineCopie: Boisson[] = fontaineRef.current.slice();
+      tabFontaineCopie.splice(oldestBoisson, 1);
+      setFontaine(tabFontaineCopie);
+      setFontainePret([...fontainePretRef.current, boissonPrete]);
+    }, 2000);
   }
 
   useEffect(() => {
@@ -94,7 +101,7 @@ function PosteBoisson({
   }, [fontaine, fontainePret]);
 
   function handleClickTransfertBoisson(boisson: number): void {
-    const fontainePretCopie: string[] = fontainePretRef.current.slice();
+    const fontainePretCopie: Boisson[] = fontainePretRef.current.slice();
     fontainePretCopie.splice(boisson, 1);
     setFontainePret(fontainePretCopie);
   }
@@ -118,9 +125,11 @@ function PosteBoisson({
       <div id="pageContentBoisson">
         <h3>Fontaine</h3>
         <ul id="boissonListePage">
-          {fontainePret.map((emplacement: string, index: number) => (
+          {fontainePret.map((emplacement: Boisson, index: number) => (
             <li key={index} onClick={() => handleClickTransfertBoisson(index)}>
-              <p>{emplacement}</p>
+              <p>
+                {emplacement.tailleProduit} {emplacement.saveur}
+              </p>
             </li>
           ))}
           {placeVideBoisson.map((emplacement: string, index: number) => (
@@ -146,13 +155,13 @@ function PosteBoisson({
             <div id="modalGaucheBoisson">
               <h3>Fontaine</h3>
               <div id="fontaineBoisson">
-                {fontainePret.map((emplacement: string, index: number) => (
+                {fontainePret.map((emplacement: Boisson, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleClickTransfertBoisson(index)}
                     className="buttonPret buttonFontaine"
                   >
-                    {emplacement}
+                    {emplacement.tailleProduit} {emplacement.saveur}
                   </button>
                 ))}
                 {fontaine.map((emplacement: Boisson, index: number) => (
@@ -161,7 +170,7 @@ function PosteBoisson({
                     key={index}
                     className="buttonCuisson buttonFontaine"
                   >
-                    {emplacement.tailleProduit} {emplacement.base}
+                    {emplacement.tailleProduit} {emplacement.saveur}
                   </button>
                 ))}
                 {placeVideBoisson.map((emplacement: string, index: number) => (
