@@ -78,6 +78,17 @@ function Glace({
       const tabPosteGlacePretCopie: GlaceType[] =
         glacesCommandeRef.current.slice();
       tabPosteGlacePretCopie.splice(oldestGlace, 1);
+      if (tabPosteGlacePretCopie.length === 0) {
+        tabPosteGlacePretCopie.push({
+          nom: "Glace",
+          base: "Glace au lait",
+          topping: "glace prete",
+          coulis: "Aucune ",
+          tailleProduit: "initial",
+          type: "dessert",
+          sousType: "glace",
+        });
+      }
       setGlacesCommande(tabPosteGlacePretCopie);
     }, 10000);
     setTimeOutPretPosteGlaceId([
@@ -119,9 +130,12 @@ function Glace({
           const tabPosteGlaceCopie: GlaceType[] = posteGlaceRef.current.slice();
           tabPosteGlaceCopie.splice(oldestGlace, 1);
           setPosteGlace(tabPosteGlaceCopie);
-          setGlacesCommande([...glacesCommandeRef.current, copieCurentGlace]);
+          if (glacesCommandeRef.current[0].coulis === "Aucune ") {
+            setGlacesCommande([copieCurentGlace]);
+          } else {
+            setGlacesCommande([...glacesCommandeRef.current, copieCurentGlace]);
+          }
           posteGlaceStandBy(copieCurentGlace);
-          setGlacesCommande([...glacesCommandeRef.current, copieCurentGlace]);
         }, 2000);
       }
     }

@@ -19,8 +19,8 @@ function Comptoir() {
     {
       nom: "Glace",
       base: "Glace au lait",
-      topping: "Aucun",
-      coulis: " ",
+      topping: "glace prete",
+      coulis: "Aucune ",
       tailleProduit: "initial",
       type: "dessert",
       sousType: "glace",
