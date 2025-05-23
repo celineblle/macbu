@@ -286,7 +286,7 @@ export function affichageCommande(
             if ("dessert" in produitEnCour) {
               if ("coulis" in produitEnCour.dessert) {
                 menuVersion.push(
-                  `${produitEnCour.dessert.topping} ${produitEnCour.dessert.coulis}`
+                  `${produitEnCour.dessert.coulis} ${produitEnCour.dessert.topping}`
                 );
               } else {
                 menuVersion.push(produitEnCour.dessert.nom);
@@ -299,7 +299,7 @@ export function affichageCommande(
           } else if ("nombreNugget" in produitEnCour) {
             finalProduct = produitEnCour.nom;
           } else if ("coulis" in produitEnCour) {
-            finalProduct = `${produitEnCour.nom} ${produitEnCour.topping} ${produitEnCour.coulis}`;
+            finalProduct = `${produitEnCour.nom} ${produitEnCour.coulis} ${produitEnCour.topping}`;
           } else if (
             ("saveur" in produitEnCour || "complement" in produitEnCour) &&
             produitEnCour.sousType === "enfant"

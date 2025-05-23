@@ -26,11 +26,18 @@ function Comptoir() {
       sousType: "glace",
     },
   ]);
+  const [timeOutPretPosteGlaceId, setTimeOutPretPosteGlaceId] = useState<
+    number[]
+  >([]);
   const glacesCommandeRef = useRef<GlaceType[]>(glacesCommande);
+  const timeOutPretPosteGlaceRef = useRef<number[]>([]);
 
   useEffect(() => {
     glacesCommandeRef.current = glacesCommande;
   }, [glacesCommande]);
+  useEffect(() => {
+    timeOutPretPosteGlaceRef.current = timeOutPretPosteGlaceId;
+  }, [timeOutPretPosteGlaceId]);
 
   const [fontainePret, setFontainePret] = useState<Boisson[]>([]);
   const fontainePretRef = useRef<Boisson[]>([]);
@@ -87,9 +94,13 @@ function Comptoir() {
       <Caisse aPreparerAffichage={aPreparerAffichage} />
       <ComptoirAssemblage
         glacesCommande={glacesCommande}
+        setGlacesCommande={setGlacesCommande}
+        glacesCommandeRef={glacesCommandeRef}
         fontainePret={fontainePret}
+        setFontainePret={setFontainePret}
         aPreparerAffichage={aPreparerAffichage}
         aPreparerRef={aPreparerRef}
+        timeOutPretPosteGlaceRef={timeOutPretPosteGlaceRef}
       />
       <PosteBoisson
         fontainePret={fontainePret}
@@ -100,6 +111,8 @@ function Comptoir() {
         glacesCommande={glacesCommande}
         setGlacesCommande={setGlacesCommande}
         glacesCommandeRef={glacesCommandeRef}
+        setTimeOutPretPosteGlaceId={setTimeOutPretPosteGlaceId}
+        timeOutPretPosteGlaceRef={timeOutPretPosteGlaceRef}
       />
     </div>
   );

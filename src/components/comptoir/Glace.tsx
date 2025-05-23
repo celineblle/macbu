@@ -10,10 +10,14 @@ function Glace({
   setGlacesCommande,
   glacesCommandeRef,
   glacesCommande,
+  setTimeOutPretPosteGlaceId,
+  timeOutPretPosteGlaceRef,
 }: {
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   glacesCommandeRef: React.RefObject<GlaceType[]>;
   glacesCommande: GlaceType[];
+  setTimeOutPretPosteGlaceId: React.Dispatch<React.SetStateAction<number[]>>;
+  timeOutPretPosteGlaceRef: React.RefObject<number[]>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
@@ -44,15 +48,12 @@ function Glace({
   });
   const [posteGlace, setPosteGlace] = useState<GlaceType[]>([]);
   const [posteGlaceFondue, setPosteGlaceFondue] = useState<GlaceType[]>([]);
-  const [timeOutPretPosteGlaceId, setTimeOutPretPosteGlaceId] = useState<
-    number[]
-  >([]);
+
   const [placeVidePosteGlace, setPlaceVidePosteGlace] = useState<string[]>([]);
   const [commandeGlace, setCommandeGlace] = useState<(string | string[])[]>([]);
 
   const posteGlaceRef = useRef<GlaceType[]>([]);
   const posteGlaceFondueRef = useRef<GlaceType[]>([]);
-  const timeOutPretPosteGlaceRef = useRef<number[]>([]);
 
   useEffect(() => {
     posteGlaceRef.current = posteGlace;
@@ -62,16 +63,16 @@ function Glace({
     posteGlaceFondueRef.current = posteGlaceFondue;
   }, [posteGlaceFondue]);
 
-  useEffect(() => {
-    timeOutPretPosteGlaceRef.current = timeOutPretPosteGlaceId;
-  }, [timeOutPretPosteGlaceId]);
-
   function handleClickActionModal(): void {
     setButtonActionModalGlace(!buttonActionModalGlace);
   }
 
   function posteGlaceStandBy(element: GlaceType): void {
     standByTimeOutGlace = setTimeout(() => {
+      if (element.coulis !== undefined && element.topping !== undefined) {
+        element.coulis = "Glace ";
+        element.topping = "fondue";
+      }
       setPosteGlaceFondue([...posteGlaceFondueRef.current, element]);
       const oldestGlace: number = glacesCommandeRef.current.indexOf(element);
       const tabPosteGlacePretCopie: GlaceType[] =

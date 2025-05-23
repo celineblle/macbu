@@ -8,6 +8,8 @@ import {
   nuggets,
   Boisson,
   GlaceType,
+  Burger,
+  Accompagnement,
 } from "../../elements/burgers";
 import "./ComptoirAssemblage.css";
 import {
@@ -15,24 +17,40 @@ import {
   NuggetsContext,
   CommandesAPreparerContext,
   BoiteNugget,
+  NuggetsContextSetter,
+  BurgersContext,
+  BurgersContextSetter,
+  FritesContextSetter,
 } from "../../CommandeContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
 
 function ComptoirAssemblage({
   glacesCommande,
+  setGlacesCommande,
+  glacesCommandeRef,
   fontainePret,
+  setFontainePret,
   aPreparerAffichage,
   aPreparerRef,
+  timeOutPretPosteGlaceRef,
 }: {
   glacesCommande: GlaceType[];
+  setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
+  glacesCommandeRef: React.RefObject<GlaceType[]>;
   fontainePret: Boisson[];
+  setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
   aPreparerAffichage: (string | string[])[][];
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
+  timeOutPretPosteGlaceRef: React.RefObject<number[]>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const fritesDispo = useContext(FritesContext);
+  const setFritesDispo = useContext(FritesContextSetter);
   const nuggetsDispo = useContext(NuggetsContext);
+  const setNuggetsStateContext = useContext(NuggetsContextSetter);
+  const burgerDispo = useContext(BurgersContext);
+  const setBurgerDispo = useContext(BurgersContextSetter);
   const burger = [
     {
       nom: "Origin Burger",
@@ -315,13 +333,59 @@ function ComptoirAssemblage({
     }
     if ("friture" in plat) {
       const nuggetProduit: Produit | undefined = nuggets.find(
-        (e) => (e.nom = plat.friture)
+        (e) => e.nom === plat.friture
       );
       if (nuggetProduit !== undefined) {
         commandeCopie.push(nuggetProduit);
       }
+
+      const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
+      const quelNugget: number = nuggetTabCopie.findIndex(
+        (e) => e.friture === plat.friture
+      );
+      nuggetTabCopie[quelNugget].quantitePret =
+        nuggetTabCopie[quelNugget].quantitePret - 1;
+      if (setNuggetsStateContext !== undefined) {
+        setNuggetsStateContext(nuggetTabCopie);
+      }
     } else {
       commandeCopie.push(plat);
+      if ("pain" in plat) {
+        const burgerDispoCopie: Burger[] = burgerDispo.slice();
+        const quelBurger: number = burgerDispo.findIndex(
+          (e) => e.nom === plat.nom
+        );
+        burgerDispoCopie.splice(quelBurger, 1);
+        if (setBurgerDispo !== undefined) {
+          setBurgerDispo(burgerDispoCopie);
+        }
+      } else if ("complement" in plat && plat.sousType === "frite") {
+        const friteDispoCopie: Accompagnement[] = fritesDispo.slice();
+        const quelFrite: number = friteDispoCopie.findIndex(
+          (e) =>
+            e.tailleProduit === plat.tailleProduit &&
+            e.complement === plat.complement
+        );
+        friteDispoCopie.splice(quelFrite, 1);
+        if (setFritesDispo !== undefined) {
+          setFritesDispo(friteDispoCopie);
+        }
+      } else if ("saveur" in plat) {
+        const boissonDispoCopie: Boisson[] = fontainePret.slice();
+        const quelBoisson: number = boissonDispoCopie.findIndex(
+          (e) =>
+            e.tailleProduit === plat.tailleProduit && e.saveur === plat.saveur
+        );
+        boissonDispoCopie.splice(quelBoisson, 1);
+        setFontainePret(boissonDispoCopie);
+      } else if ("coulis" in plat) {
+        const glaceDispoCopie: GlaceType[] = glacesCommandeRef.current.slice();
+        const quelGlace: number = glacesCommandeRef.current.findIndex(
+          (e) => e.coulis === plat.coulis && e.topping === plat.topping
+        );
+        glaceDispoCopie.splice(quelGlace, 1);
+        setGlacesCommande(glaceDispoCopie);
+      }
     }
     allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
