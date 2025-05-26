@@ -33,11 +33,9 @@ function ComptoirAssemblage({
   aPreparerAffichage,
   aPreparerRef,
 }: {
-  glacesCommande: [GlaceType, number][];
-  setGlacesCommande: React.Dispatch<
-    React.SetStateAction<[GlaceType, number][]>
-  >;
-  glacesCommandeRef: React.RefObject<[GlaceType, number][]>;
+  glacesCommande: GlaceType[];
+  setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
+  glacesCommandeRef: React.RefObject<GlaceType[]>;
   fontainePret: Boisson[];
   setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
   aPreparerAffichage: (string | string[])[][];
@@ -276,9 +274,7 @@ function ComptoirAssemblage({
     elementsCommandes[0].nom
   );
 
-  const [commandeEnCour, setCommandeEnCour] = useState<
-    (Produit | [GlaceType, number])[][]
-  >([]);
+  const [commandeEnCour, setCommandeEnCour] = useState<Produit[][]>([]);
   const [idPlateauPrepa, setIdPlateauPrepa] = useState<number>(0);
   const [enCourAffichage, setEnCourAffichage] = useState<
     (string | string[])[][]
@@ -290,7 +286,7 @@ function ComptoirAssemblage({
     [[string, number][], number][]
   >([]);
 
-  const enCourRef = useRef<(Produit | [GlaceType, number])[][]>([]);
+  const enCourRef = useRef<Produit[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
   const idPlateauRef = useRef<number>(0);
   const capaciteSacRef = useRef<[[string, number][], number][]>([]);
@@ -327,16 +323,12 @@ function ComptoirAssemblage({
     }
   }
 
-  function handleClickRemplirPlateau(
-    plat: Produit | BoiteNugget | [GlaceType, number]
-  ): void {
-    const allCommandeEnCourCopie: (Produit | [GlaceType, number])[][] =
-      enCourRef.current.slice();
-    let commandeCopie: (Produit | [GlaceType, number])[] = [];
-    let commandePourAffichage: Produit[] = [];
+  function handleClickRemplirPlateau(plat: Produit | BoiteNugget): void {
+    const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+    let commandeCopie: Produit[] = [];
+
     if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
       commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
-      commandePourAffichage = allCommandeEnCourCopie[idPlateauRef.current];
     }
     if ("friture" in plat) {
       const nuggetProduit: Produit | undefined = nuggets.find(
@@ -344,7 +336,6 @@ function ComptoirAssemblage({
       );
       if (nuggetProduit !== undefined) {
         commandeCopie.push(nuggetProduit);
-        commandePourAffichage.push(nuggetProduit);
       }
 
       const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
@@ -356,12 +347,8 @@ function ComptoirAssemblage({
       if (setNuggetsStateContext !== undefined) {
         setNuggetsStateContext(nuggetTabCopie);
       }
-    } else if (Array.isArray(plat)) {
-      commandeCopie.push(plat);
-      commandePourAffichage.push(plat[0]);
     } else {
       commandeCopie.push(plat);
-      commandePourAffichage.push(plat);
       if ("pain" in plat) {
         const burgerDispoCopie: Burger[] = burgerDispo.slice();
         const quelBurger: number = burgerDispo.findIndex(
@@ -391,21 +378,20 @@ function ComptoirAssemblage({
         boissonDispoCopie.splice(quelBoisson, 1);
         setFontainePret(boissonDispoCopie);
       } else if ("coulis" in plat) {
-        const glaceDispoCopie: [GlaceType, number][] =
-          glacesCommandeRef.current.slice();
+        const glaceDispoCopie: GlaceType[] = glacesCommandeRef.current.slice();
         const quelGlace: number = glacesCommandeRef.current.findIndex(
-          (e) => e[0].coulis === plat.coulis && e[0].topping === plat.topping
+          (e) => e.coulis === plat.coulis && e.topping === plat.topping
         );
         glaceDispoCopie.splice(quelGlace, 1);
         setGlacesCommande(glaceDispoCopie);
+        clearTimeout(plat.timeId);
       }
     }
     allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
 
-    const commandeAffichageCopie: (string | string[])[] = affichageCommande(
-      commandePourAffichage
-    );
+    const commandeAffichageCopie: (string | string[])[] =
+      affichageCommande(commandeCopie);
     const enCourTabAffichageCopie: (string | string[])[][] =
       enCourAffichageRef.current.slice();
     enCourTabAffichageCopie.splice(
@@ -881,7 +867,7 @@ function ComptoirAssemblage({
                       onClick={() => handleClickRemplirPlateau(e)}
                       className="buttonNeutre"
                     >
-                      {e[0].coulis} {e[0].topping}
+                      {e.coulis} {e.topping}
                     </button>
                   ))}
                 </div>

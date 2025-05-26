@@ -15,24 +15,23 @@ function Comptoir() {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
 
-  const [glacesCommande, setGlacesCommande] = useState<[GlaceType, number][]>([
-    [
-      {
-        nom: "Glace",
-        base: "Glace au lait",
-        topping: "glace prete",
-        coulis: "Aucune ",
-        tailleProduit: "initial",
-        type: "dessert",
-        sousType: "glace",
-      },
-      0,
-    ],
+  const [glacesCommande, setGlacesCommande] = useState<GlaceType[]>([
+    {
+      nom: "Glace",
+      base: "Glace au lait",
+      topping: "glace prete",
+      coulis: "Aucune ",
+      tailleProduit: "initial",
+      temps: 0,
+      timeId: 0,
+      type: "dessert",
+      sousType: "glace",
+    },
   ]);
   const [timeOutPretPosteGlaceId, setTimeOutPretPosteGlaceId] = useState<
     number[]
   >([]);
-  const glacesCommandeRef = useRef<[GlaceType, number][]>(glacesCommande);
+  const glacesCommandeRef = useRef<GlaceType[]>(glacesCommande);
   const timeOutPretPosteGlaceRef = useRef<number[]>([]);
 
   useEffect(() => {

@@ -258,6 +258,8 @@ export interface GlaceType{
     topping?: string | null,
     coulis?: string | null,
     tailleProduit: string,
+    temps?: number,
+    timeId: number,  
     type: string,
     sousType: string,
 };
@@ -274,6 +276,8 @@ function glace (): GlaceType[] {
                 topping: toppings[i],
                 coulis: coulis[j],
                 tailleProduit: stocks.taille[2],
+                temps: 0,
+                timeId: 0,
                 type: "dessert",
                 sousType: "glace",
             };
