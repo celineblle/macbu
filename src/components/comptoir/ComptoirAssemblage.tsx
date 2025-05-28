@@ -644,7 +644,7 @@ function ComptoirAssemblage({
           comptoir ComptoirAssemblage
         </button>
         <p id="compteurCommande">
-          Commande en attente : {enCourAffichage.length}
+          Commande en attente : {aPreparerAffichage.length}
         </p>
       </div>
       <div>
