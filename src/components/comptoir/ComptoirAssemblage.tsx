@@ -421,7 +421,15 @@ function ComptoirAssemblage({
     const commandeCopie: Produit[] = allCommandeEnCourCopie[commande];
     const currentPlat: Produit = commandeCopie[plat];
     commandeCopie.splice(plat, 1);
-    allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
+
+    if (commandeCopie.length > 0) {
+      console.log("ici");
+      allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
+    } else {
+      console.log("la", allCommandeEnCourCopie);
+      allCommandeEnCourCopie.splice(commande, 1);
+      console.log(allCommandeEnCourCopie);
+    }
     setCommandeEnCour(allCommandeEnCourCopie);
 
     const allCommandeAffichageCopie: (string | string[])[][] =
@@ -429,7 +437,12 @@ function ComptoirAssemblage({
     const commandeAffichageCopie: (string | string[])[] =
       allCommandeAffichageCopie[commande];
     commandeAffichageCopie.splice(plat, 1);
-    allCommandeAffichageCopie.splice(commande, 1, commandeAffichageCopie);
+    if (commandeAffichageCopie.length > 0) {
+      allCommandeAffichageCopie.splice(commande, 1, commandeAffichageCopie);
+    } else {
+      allCommandeAffichageCopie.splice(commande, 1);
+    }
+
     setEnCourAffichage(allCommandeAffichageCopie);
 
     if ("pain" in currentPlat) {
