@@ -339,7 +339,9 @@ function ComptoirAssemblage({
         (e) => e.nom === plat.friture
       );
       if (nuggetProduit !== undefined) {
-        commandeCopie.push(nuggetProduit);
+        if (plat.quantitePret > 0) {
+          commandeCopie.push(nuggetProduit);
+        }
       }
 
       const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
@@ -423,12 +425,9 @@ function ComptoirAssemblage({
     commandeCopie.splice(plat, 1);
 
     if (commandeCopie.length > 0) {
-      console.log("ici");
       allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
     } else {
-      console.log("la", allCommandeEnCourCopie);
       allCommandeEnCourCopie.splice(commande, 1);
-      console.log(allCommandeEnCourCopie);
     }
     setCommandeEnCour(allCommandeEnCourCopie);
 
@@ -456,10 +455,11 @@ function ComptoirAssemblage({
       if (setFritesDispo !== undefined) {
         setFritesDispo(copieFritePret);
       }
-    } else if ("friture" in currentPlat && "nombreNugget" in currentPlat) {
+    } else if ("nombreNugget" in currentPlat) {
+      console.log("ici");
       const copieNugget: BoiteNugget[] = nuggetsDispo.slice();
       const quelNugget: number = copieNugget.findIndex(
-        (e) => e.friture === currentPlat.friture
+        (e) => e.friture === currentPlat.nom
       );
       copieNugget[quelNugget].quantitePret =
         copieNugget[quelNugget].quantitePret + 1;
@@ -878,7 +878,7 @@ function ComptoirAssemblage({
                   }
                 >
                   <button
-                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[1])}
+                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[0])}
                     disabled={nuggetsDispo[0].quantitePret === 0 ? true : false}
                     className={
                       nuggetsDispo[0].quantitePret === 0
