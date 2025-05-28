@@ -32,6 +32,8 @@ function ComptoirAssemblage({
   setFontainePret,
   aPreparerAffichage,
   aPreparerRef,
+  setPosteGlaceFondue,
+  posteGlaceFondueRef,
 }: {
   glacesCommande: GlaceType[];
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
@@ -40,6 +42,8 @@ function ComptoirAssemblage({
   setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
   aPreparerAffichage: (string | string[])[][];
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
+  setPosteGlaceFondue: React.Dispatch<React.SetStateAction<GlaceType[]>>;
+  posteGlaceFondueRef: React.RefObject<GlaceType[]>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
@@ -415,6 +419,7 @@ function ComptoirAssemblage({
   function handleClickSupprimerPlat(commande: number, plat: number): void {
     const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
     const commandeCopie: Produit[] = allCommandeEnCourCopie[commande];
+    const currentPlat: Produit = commandeCopie[plat];
     commandeCopie.splice(plat, 1);
     allCommandeEnCourCopie.splice(commande, 1, commandeCopie);
     setCommandeEnCour(allCommandeEnCourCopie);
@@ -426,6 +431,65 @@ function ComptoirAssemblage({
     commandeAffichageCopie.splice(plat, 1);
     allCommandeAffichageCopie.splice(commande, 1, commandeAffichageCopie);
     setEnCourAffichage(allCommandeAffichageCopie);
+
+    if ("pain" in currentPlat) {
+      const copieBurgerPret: Produit[] = burgerDispo.slice();
+      copieBurgerPret.push(currentPlat);
+      // A METTRE EN PLACE EN MEME TEMPS QUE LES BURGERS
+      // setBurgerDispo(copieBurgerPret)
+    } else if ("complement" in currentPlat) {
+      const copieFritePret: Accompagnement[] = fritesDispo.slice();
+      copieFritePret.push(currentPlat);
+      if (setFritesDispo !== undefined) {
+        setFritesDispo(copieFritePret);
+      }
+    } else if ("friture" in currentPlat && "nombreNugget" in currentPlat) {
+      const copieNugget: BoiteNugget[] = nuggetsDispo.slice();
+      const quelNugget: number = copieNugget.findIndex(
+        (e) => e.friture === currentPlat.friture
+      );
+      copieNugget[quelNugget].quantitePret =
+        copieNugget[quelNugget].quantitePret + 1;
+      if (setNuggetsStateContext !== undefined) {
+        setNuggetsStateContext(copieNugget);
+      }
+    } else if ("saveur" in currentPlat) {
+      const copieBoissonPret: Boisson[] = fontainePret.slice();
+      copieBoissonPret.push(currentPlat);
+      setFontainePret(copieBoissonPret);
+    } else if ("coulis" in currentPlat) {
+      if (currentPlat.temps > Date.now()) {
+        let copieGlaceCommande: GlaceType[] = glacesCommandeRef.current.slice();
+        const standByTimeOutGlace = setTimeout(() => {
+          copieGlaceCommande = copieGlaceCommande.filter(
+            (e) => e.temps !== currentPlat.temps
+          );
+          if (copieGlaceCommande.length === 0) {
+            copieGlaceCommande.push({
+              nom: "Glace",
+              base: "Glace au lait",
+              topping: "glace prete",
+              coulis: "Aucune ",
+              tailleProduit: "initial",
+              temps: 0,
+              timeId: 0,
+              type: "dessert",
+              sousType: "glace",
+            });
+          }
+          setGlacesCommande(copieGlaceCommande);
+          const copieGlaceFondue: GlaceType[] =
+            posteGlaceFondueRef.current.slice();
+          currentPlat.coulis = "Glace ";
+          currentPlat.topping = "fondue";
+          copieGlaceFondue.push(currentPlat);
+          setPosteGlaceFondue(copieGlaceFondue);
+        }, currentPlat.temps - Date.now());
+        currentPlat.timeId = standByTimeOutGlace;
+        copieGlaceCommande.push(currentPlat);
+        setGlacesCommande(copieGlaceCommande);
+      }
+    }
   }
 
   function handleClickFinirPlateau(plateau: number): void {

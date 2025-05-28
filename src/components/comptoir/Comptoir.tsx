@@ -28,18 +28,16 @@ function Comptoir() {
       sousType: "glace",
     },
   ]);
-  const [timeOutPretPosteGlaceId, setTimeOutPretPosteGlaceId] = useState<
-    number[]
-  >([]);
   const glacesCommandeRef = useRef<GlaceType[]>(glacesCommande);
-  const timeOutPretPosteGlaceRef = useRef<number[]>([]);
+  const [posteGlaceFondue, setPosteGlaceFondue] = useState<GlaceType[]>([]);
+  const posteGlaceFondueRef = useRef<GlaceType[]>([]);
 
   useEffect(() => {
     glacesCommandeRef.current = glacesCommande;
   }, [glacesCommande]);
   useEffect(() => {
-    timeOutPretPosteGlaceRef.current = timeOutPretPosteGlaceId;
-  }, [timeOutPretPosteGlaceId]);
+    posteGlaceFondueRef.current = posteGlaceFondue;
+  }, [posteGlaceFondue]);
 
   const [fontainePret, setFontainePret] = useState<Boisson[]>([]);
   const fontainePretRef = useRef<Boisson[]>([]);
@@ -102,6 +100,8 @@ function Comptoir() {
         setFontainePret={setFontainePret}
         aPreparerAffichage={aPreparerAffichage}
         aPreparerRef={aPreparerRef}
+        setPosteGlaceFondue={setPosteGlaceFondue}
+        posteGlaceFondueRef={posteGlaceFondueRef}
       />
       <PosteBoisson
         fontainePret={fontainePret}
@@ -112,8 +112,9 @@ function Comptoir() {
         glacesCommande={glacesCommande}
         setGlacesCommande={setGlacesCommande}
         glacesCommandeRef={glacesCommandeRef}
-        setTimeOutPretPosteGlaceId={setTimeOutPretPosteGlaceId}
-        timeOutPretPosteGlaceRef={timeOutPretPosteGlaceRef}
+        setPosteGlaceFondue={setPosteGlaceFondue}
+        posteGlaceFondueRef={posteGlaceFondueRef}
+        posteGlaceFondue={posteGlaceFondue}
       />
     </div>
   );

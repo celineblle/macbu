@@ -258,7 +258,7 @@ export interface GlaceType{
     topping?: string | null,
     coulis?: string | null,
     tailleProduit: string,
-    temps?: number,
+    temps: number,
     timeId: number,  
     type: string,
     sousType: string,

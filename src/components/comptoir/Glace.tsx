@@ -10,14 +10,16 @@ function Glace({
   setGlacesCommande,
   glacesCommandeRef,
   glacesCommande,
-  setTimeOutPretPosteGlaceId,
-  timeOutPretPosteGlaceRef,
+  setPosteGlaceFondue,
+  posteGlaceFondueRef,
+  posteGlaceFondue,
 }: {
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   glacesCommandeRef: React.RefObject<GlaceType[]>;
   glacesCommande: GlaceType[];
-  setTimeOutPretPosteGlaceId: React.Dispatch<React.SetStateAction<number[]>>;
-  timeOutPretPosteGlaceRef: React.RefObject<number[]>;
+  setPosteGlaceFondue: React.Dispatch<React.SetStateAction<GlaceType[]>>;
+  posteGlaceFondueRef: React.RefObject<GlaceType[]>;
+  posteGlaceFondue: GlaceType[];
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
@@ -49,21 +51,15 @@ function Glace({
     sousType: "glace",
   });
   const [posteGlace, setPosteGlace] = useState<GlaceType[]>([]);
-  const [posteGlaceFondue, setPosteGlaceFondue] = useState<GlaceType[]>([]);
 
   const [placeVidePosteGlace, setPlaceVidePosteGlace] = useState<string[]>([]);
   const [commandeGlace, setCommandeGlace] = useState<(string | string[])[]>([]);
 
   const posteGlaceRef = useRef<GlaceType[]>([]);
-  const posteGlaceFondueRef = useRef<GlaceType[]>([]);
 
   useEffect(() => {
     posteGlaceRef.current = posteGlace;
   }, [posteGlace]);
-
-  useEffect(() => {
-    posteGlaceFondueRef.current = posteGlaceFondue;
-  }, [posteGlaceFondue]);
 
   function handleClickActionModal(): void {
     setButtonActionModalGlace(!buttonActionModalGlace);
@@ -71,9 +67,7 @@ function Glace({
 
   function posteGlaceStandBy(element: GlaceType): void {
     const delaisFonte: number = 10000 + Date.now();
-    console.log(delaisFonte);
     element.temps = delaisFonte;
-    console.log(element);
     standByTimeOutGlace = setTimeout(() => {
       if (element.coulis !== undefined && element.topping !== undefined) {
         element.coulis = "Glace ";
@@ -100,10 +94,6 @@ function Glace({
       setGlacesCommande(tabPosteGlacePretCopie);
     }, element.temps - Date.now());
     element.timeId = standByTimeOutGlace;
-    setTimeOutPretPosteGlaceId([
-      ...timeOutPretPosteGlaceRef.current,
-      standByTimeOutGlace,
-    ]);
   }
 
   function handleClickGlaceConstruction(element: string): void {
@@ -152,10 +142,8 @@ function Glace({
   }
 
   function handleClickAvailabilityGlace(element: number): void {
-    const timeOutIdCopie: number[] = timeOutPretPosteGlaceRef.current.slice();
-    const glaceTimeOutId = timeOutIdCopie[element];
-    clearTimeout(glaceTimeOutId);
     const tabPosteGlaceCopie: GlaceType[] = glacesCommandeRef.current.slice();
+    clearTimeout(tabPosteGlaceCopie[element].timeId);
     tabPosteGlaceCopie.splice(element, 1);
     setGlacesCommande(tabPosteGlaceCopie);
   }
