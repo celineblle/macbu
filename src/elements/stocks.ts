@@ -22,7 +22,7 @@ export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Ora
 
 export const taille: string[] = ["Grand", "Moyen", "Petit"];
 
-export const sac: [string, number][] = [["Grand sac", 12], ["Grand sachet", 6], ["Petit sachet", 3]];
+export const sac: [string, number][] = [["Grand sac", 12], ["Sac moyen", 6], ["Petit sac", 3]];
 
 export const grandProduitBurger: string[] = [pains[0], pains[1], pains[3], pains[4], viande[2], viande[4], frituresCuisine[4]];
 

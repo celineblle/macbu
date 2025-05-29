@@ -46,7 +46,6 @@ function ComptoirAssemblage({
   posteGlaceFondueRef: React.RefObject<GlaceType[]>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
-
   const fritesDispo = useContext(FritesContext);
   const setFritesDispo = useContext(FritesContextSetter);
   const nuggetsDispo = useContext(NuggetsContext);
@@ -167,82 +166,6 @@ function ComptoirAssemblage({
     },
   ];
 
-  const frites = [
-    {
-      nom: stocks.frite[1],
-      complement: stocks.frite[1],
-      tailleProduit: stocks.taille[0],
-      type: "accompagnement",
-      sousType: "frite",
-    },
-    {
-      nom: stocks.frite[1],
-      complement: stocks.frite[1],
-      tailleProduit: stocks.taille[1],
-      type: "accompagnement",
-      sousType: "frite",
-    },
-    {
-      nom: stocks.frite[0],
-      complement: stocks.frite[0],
-      tailleProduit: stocks.taille[2],
-      type: "accompagnement",
-      sousType: "frite",
-    },
-    {
-      nom: stocks.frite[0],
-      complement: stocks.frite[0],
-      tailleProduit: stocks.taille[0],
-      type: "accompagnement",
-      sousType: "frite",
-    },
-  ];
-
-  const boissonsTest = [
-    {
-      nom: stocks.boisson[5],
-      saveur: stocks.boisson[5],
-      tailleProduit: stocks.taille[2],
-      type: "boisson",
-      sousType: "cannette",
-    },
-    {
-      nom: stocks.boisson[6],
-      saveur: stocks.boisson[6],
-      tailleProduit: stocks.taille[2],
-      type: "boisson",
-      sousType: "cannette",
-    },
-    {
-      nom: stocks.boisson[4],
-      saveur: stocks.boisson[4],
-      tailleProduit: stocks.taille[1],
-      type: "boisson",
-      sousType: "cannette",
-    },
-    {
-      nom: stocks.boisson[2],
-      saveur: stocks.boisson[2],
-      tailleProduit: stocks.taille[1],
-      type: "boisson",
-      sousType: "cannette",
-    },
-    {
-      nom: stocks.boisson[0],
-      saveur: stocks.boisson[0],
-      tailleProduit: stocks.taille[0],
-      type: "boisson",
-      sousType: "cannette",
-    },
-    {
-      nom: stocks.boisson[3],
-      saveur: stocks.boisson[3],
-      tailleProduit: stocks.taille[0],
-      type: "boisson",
-      sousType: "cannette",
-    },
-  ];
-
   const elementsCommandes = [
     {
       nom: "Burgers",
@@ -250,7 +173,7 @@ function ComptoirAssemblage({
     },
     {
       nom: "Frites",
-      produit: frites,
+      produit: fritesDispo,
     },
     {
       nom: "Nuggets",
@@ -258,7 +181,7 @@ function ComptoirAssemblage({
     },
     {
       nom: "Boisson",
-      produit: boissonsTest,
+      produit: fontainePret,
     },
     {
       nom: "Glaces",
@@ -286,14 +209,14 @@ function ComptoirAssemblage({
   const [enCourVide, setEnCourVide] = useState<string[]>([]);
   const [validerPlateau, setValiderPlateau] = useState<boolean>(false);
   const [tailleCommande, setTailleCommande] = useState<number[]>([]);
-  const [capaciteSac, setCapaciteSac] = useState<
-    [[string, number][], number][]
-  >([]);
+  const [sacEnCour, setSacEnCour] = useState<[string, number][][]>([]);
+  const [sacAffichage, setSacAffichage] = useState<string[][]>([]);
 
   const enCourRef = useRef<Produit[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
   const idPlateauRef = useRef<number>(0);
-  const capaciteSacRef = useRef<[[string, number][], number][]>([]);
+  const sacRef = useRef<[string, number][][]>([]);
+  const sacAffichageRef = useRef<string[][]>([]);
 
   useEffect(() => {
     enCourRef.current = commandeEnCour;
@@ -308,8 +231,12 @@ function ComptoirAssemblage({
   }, [idPlateauPrepa]);
 
   useEffect(() => {
-    capaciteSacRef.current = capaciteSac;
-  }, [capaciteSac]);
+    sacRef.current = sacEnCour;
+  }, [sacEnCour]);
+
+  useEffect(() => {
+    sacAffichageRef.current = sacAffichage;
+  }, [sacAffichage]);
 
   function handleClickActionModal(): void {
     setButtonActionModalComptoirA(!buttonActionModalComptoirA);
@@ -408,16 +335,6 @@ function ComptoirAssemblage({
     setEnCourAffichage(enCourTabAffichageCopie);
   }
 
-  useEffect(() => {
-    if (enCourRef.current.length > capaciteSacRef.current.length) {
-      const currentCapaciteSac: [[string, number][], number][] =
-        capaciteSacRef.current.slice();
-      const newSac: [[string, number][], number] = [[["Aucun sac", 0]], 0];
-      currentCapaciteSac.push(newSac);
-      setCapaciteSac(currentCapaciteSac);
-    }
-  }, [commandeEnCour]);
-
   function handleClickSupprimerPlat(commande: number, plat: number): void {
     const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
     const commandeCopie: Produit[] = allCommandeEnCourCopie[commande];
@@ -511,15 +428,57 @@ function ComptoirAssemblage({
   }
 
   function handleClickGetSac(sac: [string, number]) {
-    let currentCommandeSac: [[string, number][], number] =
-      capaciteSacRef.current[idPlateauPrepa];
-    currentCommandeSac[0].push(sac);
-    let currentSac: number = currentCommandeSac[1];
-    currentSac = currentSac + sac[1];
-    currentCommandeSac = [currentCommandeSac[0], currentSac];
-    const capaciteSacCopie = capaciteSacRef.current.slice();
-    capaciteSacCopie.splice(idPlateauPrepa, 1, currentCommandeSac);
-    setCapaciteSac(capaciteSacCopie);
+    const allSacCommandeCopie: [string, number][][] = sacRef.current.slice();
+    let uniqueCommandeSacCopie: [string, number][] = [];
+    if (allSacCommandeCopie.length > 0) {
+      uniqueCommandeSacCopie =
+        allSacCommandeCopie[idPlateauRef.current].slice();
+    }
+
+    uniqueCommandeSacCopie.push(sac);
+    allSacCommandeCopie.splice(idPlateauRef.current, 1, uniqueCommandeSacCopie);
+    setSacEnCour(allSacCommandeCopie);
+
+    const allAffichageSacCopie = sacAffichageRef.current.slice();
+    const uniqueAffichageSacCopie =
+      allAffichageSacCopie[idPlateauRef.current].slice();
+    if (uniqueAffichageSacCopie[0] === "Aucun Sac") {
+      uniqueAffichageSacCopie.splice(0, 1, sac[0]);
+    } else {
+      uniqueAffichageSacCopie.push(sac[0]);
+    }
+
+    allAffichageSacCopie.splice(
+      idPlateauRef.current,
+      1,
+      uniqueAffichageSacCopie
+    );
+    setSacAffichage(allAffichageSacCopie);
+  }
+
+  useEffect(() => {
+    if (
+      enCourRef.current.length > 0 &&
+      enCourRef.current.length > sacRef.current.length
+    ) {
+      const allSacAffichageCopie = sacAffichageRef.current.slice();
+      allSacAffichageCopie.push(["Aucun Sac"]);
+      setSacAffichage(allSacAffichageCopie);
+    }
+  }, [commandeEnCour]);
+
+  function handleClickSupprimerSac(position: number) {
+    const allSacCopie = sacRef.current.slice();
+    const uniqueSacCopie = allSacCopie[idPlateauRef.current].slice();
+    uniqueSacCopie.splice(position, 1);
+    allSacCopie.splice(idPlateauRef.current, 1, uniqueSacCopie);
+    setSacEnCour(allSacCopie);
+
+    const allAffSacCopie = sacAffichageRef.current.slice();
+    const uniqueAffSacCopie = allAffSacCopie[idPlateauRef.current].slice();
+    uniqueAffSacCopie.splice(position, 1);
+    allAffSacCopie.splice(idPlateauRef.current, 1, uniqueAffSacCopie);
+    setSacAffichage(allAffSacCopie);
   }
 
   function handleClickValiderPlateau(commande: number): boolean {
@@ -630,7 +589,7 @@ function ComptoirAssemblage({
           const currentProduit = commandeAPreparer[i][j];
           if ("boisson" in currentProduit) {
             finalTailleCommande = finalTailleCommande + currentProduit.taille;
-          } else {
+          } else if ("tailleProduit" in currentProduit) {
             switch (currentProduit.tailleProduit) {
               case stocks.taille[0]:
                 finalTailleCommande = finalTailleCommande + 3;
@@ -790,6 +749,17 @@ function ComptoirAssemblage({
                           ))
                         )
                       )}
+                      {sacAffichage.length > 0 &&
+                        sacAffichage[position].map((sac, i) => (
+                          <li key={i}>
+                            <button
+                              className="buttonNeutre buttonCommandeEnCour"
+                              onClick={() => handleClickSupprimerSac(i)}
+                            >
+                              {sac}
+                            </button>
+                          </li>
+                        ))}
 
                       <button
                         onClick={() => handleClickFinirPlateau(position)}
