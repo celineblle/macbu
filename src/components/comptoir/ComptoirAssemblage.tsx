@@ -316,6 +316,19 @@ function ComptoirAssemblage({
           (e) => e.coulis === plat.coulis && e.topping === plat.topping
         );
         glaceDispoCopie.splice(quelGlace, 1);
+        if (glaceDispoCopie.length === 0) {
+          glaceDispoCopie.push({
+            nom: "Glace",
+            base: "Glace au lait",
+            topping: "glace prete",
+            coulis: "Aucune ",
+            tailleProduit: "initial",
+            temps: 0,
+            timeId: 0,
+            type: "dessert",
+            sousType: "glace",
+          });
+        }
         setGlacesCommande(glaceDispoCopie);
         clearTimeout(plat.timeId);
       }

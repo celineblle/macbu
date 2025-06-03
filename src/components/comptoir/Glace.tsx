@@ -141,13 +141,6 @@ function Glace({
     }
   }
 
-  function handleClickAvailabilityGlace(element: number): void {
-    const tabPosteGlaceCopie: GlaceType[] = glacesCommandeRef.current.slice();
-    clearTimeout(tabPosteGlaceCopie[element].timeId);
-    tabPosteGlaceCopie.splice(element, 1);
-    setGlacesCommande(tabPosteGlaceCopie);
-  }
-
   function handleClickPoubelle(element: number): void {
     const tabFondueCopie: GlaceType[] = posteGlaceFondueRef.current.slice();
     tabFondueCopie.splice(element, 1);
@@ -192,11 +185,7 @@ function Glace({
           </button>
         ))}
         {glacesCommande.map((emplacement: GlaceType, index: number) => (
-          <button
-            key={index}
-            onClick={() => handleClickAvailabilityGlace(index)}
-            className="buttonPret"
-          >
+          <button key={index} disabled={true} className="buttonPret">
             {emplacement.coulis} {emplacement.topping}
           </button>
         ))}
@@ -234,7 +223,7 @@ function Glace({
               {glacesCommande.map((emplacement: GlaceType, index: number) => (
                 <button
                   key={index}
-                  onClick={() => handleClickAvailabilityGlace(index)}
+                  disabled={true}
                   className="buttonPret buttonPretGlace"
                 >
                   {emplacement.coulis} {emplacement.topping}
