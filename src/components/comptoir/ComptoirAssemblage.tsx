@@ -780,6 +780,7 @@ function ComptoirAssemblage({
                         )
                       )}
                       {sacAffichage.length > 0 &&
+                        sacAffichage[position] !== undefined &&
                         sacAffichage[position].map((sac, i) => (
                           <li key={i}>
                             <button
@@ -802,13 +803,13 @@ function ComptoirAssemblage({
                   )
                 )}
                 {enCourVide.map((e: string, i: number) => (
-                  <div
+                  <button
                     key={i}
                     onClick={() => handleClickPlateau(-1)}
                     className="commandeVide commandeUnique"
                   >
                     <p id="contenuVide">{e}</p>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
