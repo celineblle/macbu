@@ -27,6 +27,8 @@
   flex-direction: column;
   align-content: flex-start;
   justify-content: flex-start;
+  align-items: center;
+  list-style-type: none;
 }
 .commandeUnique li {
   margin-left: auto;
@@ -60,9 +62,8 @@
 }
 
 #buttonFinir {
-  margin-left: 16px;
-  height: 30px;
-  width: 50px;
+  height: 40px;
+  width: 230px;
 }
 
 .buttonCommandeEnCour {

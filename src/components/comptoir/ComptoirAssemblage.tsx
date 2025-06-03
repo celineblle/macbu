@@ -797,7 +797,8 @@ function ComptoirAssemblage({
                         className="buttonNeutre"
                         id="buttonFinir"
                       >
-                        Soumettre commande
+                        Valider le plateau et <br />
+                        selectionner commande
                       </button>
                     </ul>
                   )
