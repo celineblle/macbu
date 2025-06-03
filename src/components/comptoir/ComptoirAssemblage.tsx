@@ -562,8 +562,25 @@ function ComptoirAssemblage({
           }
         }
       }
-      setValiderPlateau(false);
-      return true;
+
+      const tailleCommandeAValider: number = tailleCommande[commande];
+      const taillePlateau: [string, number][] =
+        sacRef.current[idPlateauPrepa].slice();
+      let finalContenancePlateau: number = 0;
+
+      if (taillePlateau !== undefined) {
+        for (let i = 0; i < taillePlateau.length; i++) {
+          finalContenancePlateau = finalContenancePlateau + taillePlateau[i][1];
+        }
+        if (finalContenancePlateau < tailleCommandeAValider) {
+          return false;
+        } else {
+          setValiderPlateau(false);
+          return true;
+        }
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -766,7 +783,7 @@ function ComptoirAssemblage({
                         className="buttonNeutre"
                         id="buttonFinir"
                       >
-                        Finir
+                        Soumettre commande
                       </button>
                     </ul>
                   )
