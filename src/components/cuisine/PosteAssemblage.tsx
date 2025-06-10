@@ -46,7 +46,10 @@ function PosteAssemblage({
   interface ButtonIngredient {
     nom: string;
     tableau: string[];
-    fonctionConstruction: (element: string, property: keyof Burger) => void;
+    fonctionConstruction: (
+      element: string,
+      property: keyof BurgerAllOptional
+    ) => void;
   }
 
   const burgersContext = useContext(BurgersContext);
@@ -453,7 +456,7 @@ function PosteAssemblage({
                           onClick={() =>
                             element.fonctionConstruction(
                               e,
-                              element.nom as keyof Burger
+                              element.nom as keyof BurgerAllOptional
                             )
                           }
                           className="buttonNeutre buttonIngredient"
