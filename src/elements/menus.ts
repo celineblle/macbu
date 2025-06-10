@@ -6,6 +6,7 @@ export interface Menu {
   accompagnement: burgers.Accompagnement;
   boisson: burgers.Boisson;
   taille: number;
+  prix: number;
 }
 
 function getElementByTab(
@@ -34,6 +35,7 @@ export interface MenuEnfant {
   boisson: burgers.Boisson;
   dessert: burgers.GlaceType | burgers.Accompagnement;
   taille: number;
+  prix: number;
 }
 
 export function getMenuEnfant() {
@@ -51,3 +53,5 @@ export function getMenuEnfant() {
 }
 
 export const menuEnfant: [( burgers.Nugget | burgers.Burger)[], burgers.Accompagnement[], burgers.Boisson[], (burgers.Accompagnement | burgers.GlaceType)[]] = getMenuEnfant();
+
+export const prixMenu = [[9, 16], [6, 13], [4, 5]]

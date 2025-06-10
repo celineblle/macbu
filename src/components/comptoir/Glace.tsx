@@ -49,6 +49,7 @@ function Glace({
     timeId: 0,
     type: "dessert",
     sousType: "glace",
+    prix: 0,
   });
   const [posteGlace, setPosteGlace] = useState<GlaceType[]>([]);
 
@@ -89,6 +90,7 @@ function Glace({
           timeId: 0,
           type: "dessert",
           sousType: "glace",
+          prix: 0,
         });
       }
       setGlacesCommande(tabPosteGlacePretCopie);
@@ -123,6 +125,7 @@ function Glace({
         copieCurentGlace.sousType = "glace";
         copieCurentGlace.tailleProduit = taille[1];
         copieCurentGlace.temps = 0;
+        copieCurentGlace.prix = 5;
         const glacePrepa: GlaceType = copieCurentGlace;
         setPosteGlace([...posteGlaceRef.current, glacePrepa]);
         setTimeout(() => {

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./Caisse.css";
 import close from "../../assets/close.svg";
+import { TailleEtPrixCommandeContext } from "../../CommandeContext";
+import { FondDeCaisseContext } from "../../CaisseContext";
 
-function Caisse({
-  aPreparerAffichage,
-}: {
-  aPreparerAffichage: (string | string[])[][];
-}) {
+function Caisse() {
+  const tailleEtPrixCommande = useContext(TailleEtPrixCommandeContext);
+  const fondDeCaisse = useContext(FondDeCaisseContext);
+
   const [buttonActionModalCaisse, setButtonActionModalCaisse] =
     useState<boolean>(false);
 
@@ -16,13 +17,16 @@ function Caisse({
 
   return (
     <div id="caisseComponent" className="component">
-      <button className="buttonModal" onClick={handleClickActionModal}>
-        Caisse
-      </button>
+      <div>
+        <button className="buttonModal" onClick={handleClickActionModal}>
+          Caisse
+        </button>
+        <p>Fond de caisse : {fondDeCaisse}</p>
+      </div>
       <ul id="listeCommandePage">
-        {aPreparerAffichage.map((tab: (string | string[])[], index: number) => (
+        {tailleEtPrixCommande.map((tab: [number, number], index: number) => (
           <li key={index} className="commandeUniquePage">
-            Commande {index + 1} : xx€
+            Commande {index + 1} : {tab[1]}€
           </li>
         ))}
       </ul>

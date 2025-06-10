@@ -15,13 +15,19 @@ import "./ComptoirAssemblage.css";
 import {
   FritesContext,
   NuggetsContext,
-  CommandesAPreparerContext,
   BoiteNugget,
   NuggetsContextSetter,
   BurgersContext,
   BurgersContextSetter,
   FritesContextSetter,
+  TailleEtPrixCommandeContext,
+  CommandesAPreparerContextSetter,
+  TailleEtPrixCommandeContextSetter,
 } from "../../CommandeContext";
+import {
+  FondDeCaisseContext,
+  FondDeCaisseContextSetter,
+} from "../../CaisseContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
 
 function ComptoirAssemblage({
@@ -31,6 +37,7 @@ function ComptoirAssemblage({
   fontainePret,
   setFontainePret,
   aPreparerAffichage,
+  setAPreparerAffichage,
   aPreparerRef,
   setPosteGlaceFondue,
   posteGlaceFondueRef,
@@ -41,18 +48,26 @@ function ComptoirAssemblage({
   fontainePret: Boisson[];
   setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
   aPreparerAffichage: (string | string[])[][];
+  setAPreparerAffichage: React.Dispatch<
+    React.SetStateAction<(string | string[])[][]>
+  >;
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
   setPosteGlaceFondue: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   posteGlaceFondueRef: React.RefObject<GlaceType[]>;
 }) {
-  const commandeAPreparer = useContext(CommandesAPreparerContext);
   const fritesDispo = useContext(FritesContext);
   const setFritesDispo = useContext(FritesContextSetter);
   const nuggetsDispo = useContext(NuggetsContext);
   const setNuggetsStateContext = useContext(NuggetsContextSetter);
   const burgerDispo = useContext(BurgersContext);
   const setBurgerDispo = useContext(BurgersContextSetter);
-  const burger = [
+  const tailleEtPrixCommande = useContext(TailleEtPrixCommandeContext);
+  const setTailleEtPrixCommande = useContext(TailleEtPrixCommandeContextSetter);
+  const fondDeCaisse = useContext(FondDeCaisseContext);
+  const setFondDeCaisse = useContext(FondDeCaisseContextSetter);
+  const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
+
+  const burger: Burger[] = [
     {
       nom: "Origin Burger",
       pain: stocks.pains[6],
@@ -62,7 +77,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[2],
       type: "sandwich",
       sousType: "burger",
-      conforme: true,
+      prix: 6,
     },
     {
       nom: "Opti Bacon",
@@ -78,7 +93,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: true,
+      prix: 0,
     },
     {
       nom: "Classic Big",
@@ -94,7 +109,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: true,
+      prix: 12,
     },
     {
       nom: "Fish N Pan",
@@ -106,7 +121,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: true,
+      prix: 8,
     },
     {
       nom: "Special Bu",
@@ -122,7 +137,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: false,
+      prix: 8,
     },
     {
       nom: "Big Cheese Origin",
@@ -134,7 +149,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: false,
+      prix: 15,
     },
     {
       nom: "Italicain",
@@ -146,7 +161,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: false,
+      prix: 15,
     },
     {
       nom: "Bacon Basic",
@@ -162,7 +177,7 @@ function ComptoirAssemblage({
       tailleProduit: stocks.taille[0],
       type: "sandwich",
       sousType: "burger",
-      conforme: false,
+      prix: 12,
     },
   ];
 
@@ -208,9 +223,10 @@ function ComptoirAssemblage({
   >([]);
   const [enCourVide, setEnCourVide] = useState<string[]>([]);
   const [validerPlateau, setValiderPlateau] = useState<boolean>(false);
-  const [tailleCommande, setTailleCommande] = useState<number[]>([]);
   const [sacEnCour, setSacEnCour] = useState<[string, number][][]>([]);
   const [sacAffichage, setSacAffichage] = useState<string[][]>([]);
+  const [tabTaille, setTabTaille] = useState<number[]>([]);
+  const [tabPrix, setTabPrix] = useState<number[]>([]);
 
   const enCourRef = useRef<Produit[][]>([]);
   const enCourAffichageRef = useRef<(string | string[])[][]>([]);
@@ -327,6 +343,7 @@ function ComptoirAssemblage({
             timeId: 0,
             type: "dessert",
             sousType: "glace",
+            prix: 0,
           });
         }
         setGlacesCommande(glaceDispoCopie);
@@ -386,7 +403,6 @@ function ComptoirAssemblage({
         setFritesDispo(copieFritePret);
       }
     } else if ("nombreNugget" in currentPlat) {
-      console.log("ici");
       const copieNugget: BoiteNugget[] = nuggetsDispo.slice();
       const quelNugget: number = copieNugget.findIndex(
         (e) => e.friture === currentPlat.nom
@@ -418,6 +434,7 @@ function ComptoirAssemblage({
               timeId: 0,
               type: "dessert",
               sousType: "glace",
+              prix: 0,
             });
           }
           setGlacesCommande(copieGlaceCommande);
@@ -494,28 +511,14 @@ function ComptoirAssemblage({
     setSacAffichage(allAffSacCopie);
   }
 
-  function handleClickValiderPlateau(commande: number): boolean {
+  function handleClickValiderPlateau(commande: number): void {
     if (validerPlateau === true) {
       const copiePlateau: ProduitEtMenu[] =
         enCourRef.current[idPlateauPrepa].slice();
       const copieCommande: ProduitEtMenu[] =
         aPreparerRef.current[commande].slice();
-
-      for (let i = 0; i < copieCommande.length; i++) {
-        const currentProduit = copieCommande[i];
-        if ("sandwich" in currentProduit) {
-          copieCommande.push(
-            currentProduit.sandwich,
-            currentProduit.accompagnement,
-            currentProduit.boisson
-          );
-          if ("dessert" in currentProduit) {
-            copieCommande.push(currentProduit.dessert);
-          }
-          copieCommande.splice(i, 1);
-          i = 0;
-        }
-      }
+      let malusPrix: number = 0;
+      let finalPrix: number = 0;
 
       const copiePlateauTrie: Produit[][] = triProduit(copiePlateau);
       const copieCommandeTrie: Produit[][] = triProduit(copieCommande);
@@ -535,48 +538,47 @@ function ComptoirAssemblage({
       ];
 
       for (let i = 0; i < copieCommandeTrie.length; i++) {
-        if (copiePlateauTrie[i].length !== copieCommandeTrie[i].length) {
-          return false;
-        } else {
-          if (copieCommandeTrie[i].length > 0) {
-            for (let j = 0; j < copieCommandeTrie[i].length; j++) {
-              parametreLambda1 = copieCommandeTrie[i][j].nom;
-              parametreLambda2 = copieCommandeTrie[i][j].tailleProduit;
-              if (i > 0) {
-                indexLambda = 1;
-              }
-              const validProduit: Produit | undefined = copiePlateauTrie[
-                i
-              ].find(lambaComparaison[indexLambda]);
-              if (i === 3) {
-                const produitEval = copieCommandeTrie[i][j];
-                if ("coulis" in produitEval) {
-                  const validGlace: Produit | undefined = copiePlateauTrie[
-                    i
-                  ].find(
-                    (element) =>
-                      "coulis" in element &&
-                      element.coulis === produitEval.coulis &&
-                      element.topping === produitEval.topping
-                  );
-                  if (!validGlace) {
-                    return false;
-                  }
+        if (copieCommandeTrie[i].length > 0) {
+          for (let j = 0; j < copieCommandeTrie[i].length; j++) {
+            parametreLambda1 = copieCommandeTrie[i][j].nom;
+            parametreLambda2 = copieCommandeTrie[i][j].tailleProduit;
+            if (i > 0) {
+              indexLambda = 1;
+            }
+            const validProduit: Produit | undefined = copiePlateauTrie[i].find(
+              lambaComparaison[indexLambda]
+            );
+            if (i === 3) {
+              const produitEval = copieCommandeTrie[i][j];
+              if ("coulis" in produitEval) {
+                const validGlace: Produit | undefined = copiePlateauTrie[
+                  i
+                ].find(
+                  (element) =>
+                    "coulis" in element &&
+                    element.coulis === produitEval.coulis &&
+                    element.topping === produitEval.topping
+                );
+                if (!validGlace) {
+                  malusPrix = malusPrix + 2;
+                } else {
+                  finalPrix = finalPrix + produitEval.prix;
                 }
               }
-              if (!validProduit) {
-                return false;
-              } else {
-                copieCommandeTrie[i] = copieCommandeTrie[i].filter(
-                  (e) => e !== validProduit
-                );
-              }
+            }
+            if (!validProduit) {
+              malusPrix = malusPrix + 2;
+            } else {
+              copieCommandeTrie[i] = copieCommandeTrie[i].filter(
+                (e) => e !== validProduit
+              );
+              finalPrix = finalPrix + validProduit.prix;
             }
           }
         }
       }
 
-      const tailleCommandeAValider: number = tailleCommande[commande];
+      const tailleCommandeAValider: number = tailleEtPrixCommande[commande][0];
       const taillePlateau: [string, number][] =
         sacRef.current[idPlateauPrepa].slice();
       let finalContenancePlateau: number = 0;
@@ -586,16 +588,51 @@ function ComptoirAssemblage({
           finalContenancePlateau = finalContenancePlateau + taillePlateau[i][1];
         }
         if (finalContenancePlateau < tailleCommandeAValider) {
-          return false;
+          malusPrix = malusPrix + 4;
         } else {
           setValiderPlateau(false);
-          return true;
         }
       } else {
-        return false;
+        malusPrix = malusPrix + 4;
       }
+      console.log("mal", malusPrix);
+      console.log("final", finalPrix);
+      if (malusPrix > 0 && malusPrix < finalPrix) {
+        finalPrix = finalPrix - malusPrix;
+      } else if (malusPrix > finalPrix) {
+        finalPrix = 0;
+      }
+
+      finalPrix = fondDeCaisse + finalPrix;
+      if (setFondDeCaisse !== undefined) {
+        setFondDeCaisse(finalPrix);
+      }
+      const copieAllCommandeAPreparer = aPreparerRef.current.slice();
+      copieAllCommandeAPreparer.splice(commande, 1);
+      if (setCommandeAPreparer !== undefined) {
+        setCommandeAPreparer(copieAllCommandeAPreparer);
+      }
+      const copieCommandeAPreparerAffi = aPreparerAffichage.slice();
+      copieCommandeAPreparerAffi.splice(commande, 1);
+      setAPreparerAffichage(copieCommandeAPreparerAffi);
+
+      const copieAllPlateau = enCourRef.current.slice();
+      copieAllPlateau.splice(idPlateauPrepa, 1);
+      setCommandeEnCour(copieAllPlateau);
+      const copieEnCourAffichage = enCourAffichageRef.current.slice();
+      copieEnCourAffichage.splice(idPlateauPrepa, 1);
+      setEnCourAffichage(copieEnCourAffichage);
+
+      const copieTaillePrix = tailleEtPrixCommande.slice();
+      copieTaillePrix.splice(commande, 1);
+      if (setTailleEtPrixCommande !== undefined) {
+        setTailleEtPrixCommande(copieTaillePrix);
+      }
+
+      setIdPlateauPrepa(0);
+      setValiderPlateau(false);
     } else {
-      return false;
+      console.log("a finir");
     }
   }
 
@@ -611,33 +648,15 @@ function ComptoirAssemblage({
   }, [commandeEnCour]);
 
   useEffect(() => {
-    if (commandeAPreparer.length > 0) {
-      const allFinalTailleCommande: number[] = [];
-      for (let i = 0; i < commandeAPreparer.length; i++) {
-        let finalTailleCommande: number = 0;
-        for (let j = 0; j < commandeAPreparer[i].length; j++) {
-          const currentProduit = commandeAPreparer[i][j];
-          if ("boisson" in currentProduit) {
-            finalTailleCommande = finalTailleCommande + currentProduit.taille;
-          } else if ("tailleProduit" in currentProduit) {
-            switch (currentProduit.tailleProduit) {
-              case stocks.taille[0]:
-                finalTailleCommande = finalTailleCommande + 3;
-                break;
-              case stocks.taille[1]:
-                finalTailleCommande = finalTailleCommande + 2;
-                break;
-              case stocks.taille[2]:
-                finalTailleCommande = finalTailleCommande + 1;
-                break;
-            }
-          }
-        }
-        allFinalTailleCommande.push(finalTailleCommande);
-      }
-      setTailleCommande(allFinalTailleCommande);
+    const allFinalTaille: number[] = [];
+    const allFinalPrix: number[] = [];
+    for (let i = 0; i < tailleEtPrixCommande.length; i++) {
+      allFinalTaille.push(tailleEtPrixCommande[i][0]);
+      allFinalPrix.push(tailleEtPrixCommande[i][1]);
     }
-  }, [commandeAPreparer]);
+    setTabTaille(allFinalTaille);
+    setTabPrix(allFinalPrix);
+  }, [tailleEtPrixCommande]);
 
   return (
     <div id="comptoirAssemblageComponent" className="component">
@@ -690,7 +709,7 @@ function ComptoirAssemblage({
       <div className={buttonActionModalComptoirA ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
           <div id="headerModal">
-            <h2>Comptoir</h2>
+            <h2>Comptoir {fondDeCaisse}</h2>
             <button
               onClick={handleClickActionModal}
               className="closeModalButton"
@@ -726,7 +745,13 @@ function ComptoirAssemblage({
                             </ul>
                           )
                         )}
-                        <p>Taille commande : {tailleCommande[position]}</p>
+                        {tailleEtPrixCommande.length > 0 && (
+                          <div>
+                            <p>Taille : {tabTaille[position]}</p>
+                            <br />
+                            <p>Prix : {tabPrix[position]}€</p>
+                          </div>
+                        )}
                       </button>
                     )
                 )}

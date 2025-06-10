@@ -14,7 +14,11 @@ import {
   FritesContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { Accompagnement, Produit } from "../../elements/burgers";
+import {
+  Accompagnement,
+  accompagnements,
+  Produit,
+} from "../../elements/burgers";
 import { demantelerMenu, quiEstQuoi } from "../../elements/function";
 
 function Friteuse() {
@@ -240,6 +244,13 @@ function Friteuse() {
       if (bac[0].quantiteSachet >= portionChoisie[0].quantite) {
         bac[0].quantiteSachet =
           bac[0].quantiteSachet - portionChoisie[0].quantite;
+        const prixFrite: Accompagnement | undefined = accompagnements.find(
+          (e) => e.tailleProduit === portionChoisie[0].tailleProduit
+        );
+        let finalPrix: number = 0;
+        if (prixFrite !== undefined) {
+          finalPrix = prixFrite.prix;
+        }
 
         const finalPortion: Accompagnement = {
           nom: portionChoisie[0].base,
@@ -247,6 +258,7 @@ function Friteuse() {
           tailleProduit: portionChoisie[0].tailleProduit,
           type: "accompagnement",
           sousType: "frite",
+          prix: finalPrix,
         };
 
         setRackAFrite([...rackAFriteRef.current, finalPortion]);

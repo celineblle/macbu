@@ -4,7 +4,7 @@ import { taille, boisson } from "../../elements/stocks";
 import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { quiEstQuoi, demantelerMenu } from "../../elements/function";
-import { Produit, Boisson } from "../../elements/burgers";
+import { Produit, Boisson, boissons } from "../../elements/burgers";
 
 function PosteBoisson({
   fontainePret,
@@ -65,6 +65,7 @@ function PosteBoisson({
       tailleProduit: "initial",
       type: "boisson",
       sousType: "cannette",
+      prix: 0,
     };
     if (actualSizeBoisson < taillePosteBoisson) {
       const copieCurentBoisson: BoissonOptionnel =
@@ -76,6 +77,13 @@ function PosteBoisson({
         boissonPrete.nom = copieCurentBoisson.saveur;
         boissonPrete.saveur = copieCurentBoisson.saveur;
         boissonPrete.tailleProduit = copieCurentBoisson.tailleProduit;
+        const prixBoisson: Boisson | undefined = boissons.find(
+          (e) => e.tailleProduit === copieCurentBoisson.tailleProduit
+        );
+        if (prixBoisson !== undefined) {
+          boissonPrete.prix = prixBoisson.prix;
+        }
+
         setFontaine([...fontaineRef.current, boissonPrete]);
       }
     }

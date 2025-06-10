@@ -1,5 +1,5 @@
 import { Produit, ProduitEtMenu, Salade, Nugget, Burger, Accompagnement, Boisson, GlaceType, allProduits, salade, saladeCesar, boissons, adultAccompagnement, pouce, legume, jusDefruit, fruits } from "../../elements/burgers";
-import { Menu, MenuEnfant, menuEnfant } from "../../elements/menus";
+import { Menu, MenuEnfant, menuEnfant, prixMenu } from "../../elements/menus";
 import * as stocks from "../../elements/stocks";
 
 const tailleMaxCommande: number = 8;
@@ -136,6 +136,7 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
                   accompagnement: salade,
                   boisson: boissons[0],
                   taille: 0,
+                  prix: 0,
                 };
     
                 currentMenu.sandwich = commandeTrie[0][i];
@@ -191,6 +192,11 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
                 let tailleMenu: number = currentSize === stocks.taille[0] ? 3 : 2;
                 tailleMenu = tailleMenu * 3;
                 currentMenu.taille = tailleMenu;
+                if(currentMenu.taille === prixMenu[0][0]) {
+                  currentMenu.prix = prixMenu[0][1]
+                } else if(currentMenu.taille === prixMenu[1][0]) {
+                  currentMenu.prix = prixMenu[1][1]
+                }
                 finalCommande.push(currentMenu);
               }
             }
@@ -204,6 +210,7 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
                 boisson: jusDefruit,
                 dessert: fruits,
                 taille: 4,
+                prix: prixMenu[2][1],
               };
     
               currentMenu.sandwich = commandeTrieEnfant[0][i];

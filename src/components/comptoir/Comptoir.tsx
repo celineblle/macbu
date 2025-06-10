@@ -26,6 +26,7 @@ function Comptoir() {
       timeId: 0,
       type: "dessert",
       sousType: "glace",
+      prix: 0,
     },
   ]);
   const glacesCommandeRef = useRef<GlaceType[]>(glacesCommande);
@@ -91,14 +92,15 @@ function Comptoir() {
 
   return (
     <div id="comptoirComponent">
-      <Caisse aPreparerAffichage={aPreparerAffichage} />
+      <Caisse />
       <ComptoirAssemblage
         glacesCommande={glacesCommande}
         setGlacesCommande={setGlacesCommande}
         glacesCommandeRef={glacesCommandeRef}
         fontainePret={fontainePret}
         setFontainePret={setFontainePret}
-        aPreparerAffichage={aPreparerAffichage}
+        aPreparerAffichage={aPreparerAffichageRef.current}
+        setAPreparerAffichage={setAPreparerAffichage}
         aPreparerRef={aPreparerRef}
         setPosteGlaceFondue={setPosteGlaceFondue}
         posteGlaceFondueRef={posteGlaceFondueRef}

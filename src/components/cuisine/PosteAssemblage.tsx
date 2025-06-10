@@ -9,7 +9,7 @@ import {
   tailleProduitBurger,
   taille,
 } from "../../elements/stocks";
-import { burgers, Produit, Burger } from "../../elements/burgers";
+import { burgers, Produit, Burger, sandwichs } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
 import { Friture } from "../../elements/ingredientsQuantite";
 import {
@@ -260,6 +260,7 @@ function PosteAssemblage({
         tailleProduit: "initial",
         type: "sandwich",
         sousType: "burger",
+        prix: 0,
       };
 
       if (
@@ -272,6 +273,12 @@ function PosteAssemblage({
         finalBurger.pain = currentBurger.pain;
         finalBurger.viande = currentBurger.viande;
         finalBurger.tailleProduit = currentBurger.tailleProduit;
+
+        const prixBurger = sandwichs.find((e) => e.nom === currentBurger.nom);
+
+        if (prixBurger !== undefined) {
+          finalBurger.prix = prixBurger.prix;
+        }
 
         if (currentBurger.fromage !== undefined) {
           finalBurger.fromage = currentBurger.fromage;

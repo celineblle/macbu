@@ -11,6 +11,7 @@ export interface Salade {
     tailleProduit: string,
     type: string,
     sousType: string,
+    prix: number,
 };
 
 export const saladeCesar: Salade = {
@@ -23,6 +24,7 @@ export const saladeCesar: Salade = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "salade",
+    prix: 15,
 };
 
 export const saladeItalienne: Salade = {
@@ -35,6 +37,7 @@ export const saladeItalienne: Salade = {
     tailleProduit: stocks.taille[0],  
     type: "sandwich",
     sousType: "salade",
+    prix: 15,
 };
 
 export interface Nugget {
@@ -44,11 +47,13 @@ export interface Nugget {
     tailleProduit: string,
     type: string,
     sousType: string,
+    prix: number, 
 };
 
 function nugget (): Nugget[] {
     const noms = ["Boite de 18 nuggets", "Boite de 6 nuggets", "Boite de 3 nuggets"];
     const nombre = [18, 6, 3];
+    const prix = [15, 6, 4]
     const allNuggets = [];
     for(let i = 0; i < noms.length; i++){
             const unNugget: Nugget = {
@@ -58,6 +63,7 @@ function nugget (): Nugget[] {
                 tailleProduit: stocks.taille[i], 
                 type: "sandwich",
                 sousType: "nugget",
+                prix: prix[i],
             }
             
             allNuggets.push(unNugget);
@@ -77,6 +83,7 @@ export interface Burger {
     tailleProduit: string,
     type: string,
     sousType: string,
+    prix: number, 
 }
 
 export const fishNPan: Burger = {
@@ -89,6 +96,7 @@ export const fishNPan: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 8,
 };
 
 export const specialBu: Burger = {
@@ -101,18 +109,20 @@ export const specialBu: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 8,
 };
 
 export const classicBig: Burger = {
-        nom: "Classic Big",
-        pain: stocks.pains[1],
-        viande: stocks.viande[4],
-        fromage: [stocks.fromages[2]],
-        ingredient: [stocks.ingredientBurger[1],  stocks.ingredientBurger[0], stocks.ingredientBurger[2]],
-        sauce: [stocks.sauces[4]], 
-        tailleProduit: stocks.taille[0],
-        type: "sandwich",
-        sousType: "burger",
+     nom: "Classic Big",
+    pain: stocks.pains[1],
+    viande: stocks.viande[4],
+    fromage: [stocks.fromages[2]],
+    ingredient: [stocks.ingredientBurger[1],  stocks.ingredientBurger[0], stocks.ingredientBurger[2]],
+    sauce: [stocks.sauces[4]], 
+    tailleProduit: stocks.taille[0],
+    type: "sandwich",
+    sousType: "burger",
+    prix: 12,
 };
 
 function primSBu (): Burger[] {
@@ -129,6 +139,7 @@ function primSBu (): Burger[] {
                 tailleProduit: stocks.taille[1],
                 type: "sandwich",
                 sousType: "burger",
+                prix: 5,
             }
             
             allPrimSBu.push(unPrimSBu);
@@ -148,6 +159,7 @@ export const optiBacon: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 12,
 };
 
 export const bigCheeseOrigin: Burger = {
@@ -160,6 +172,7 @@ export const bigCheeseOrigin: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 15,
 }
 
 export const italicain: Burger = {
@@ -172,6 +185,7 @@ export const italicain: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 15,
 };
 
 export const baconBasic: Burger = {
@@ -184,6 +198,7 @@ export const baconBasic: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
+    prix: 12,
 };
 
 export const englishTouch: Burger = {
@@ -194,6 +209,7 @@ export const englishTouch: Burger = {
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
+    prix: 6,
 };
 
 export const cheeseOrigin: Burger = {
@@ -206,6 +222,7 @@ export const cheeseOrigin: Burger = {
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
+    prix: 6,
 };
 
 export const originBurger: Burger = {
@@ -217,6 +234,7 @@ export const originBurger: Burger = {
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
+    prix: 6,
 };
 
 export const pouce: Burger = {
@@ -227,6 +245,7 @@ export const pouce: Burger = {
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
+    prix: 4,
 };
 
 export const goatyWrap: Burger = {
@@ -238,6 +257,7 @@ export const goatyWrap: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "wrap",
+    prix: 10,
 };
 
 export const classyWrap: Burger = {
@@ -250,6 +270,7 @@ export const classyWrap: Burger = {
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "wrap",
+    prix: 10,
 };
 
 export interface GlaceType{
@@ -262,6 +283,7 @@ export interface GlaceType{
     timeId: number,  
     type: string,
     sousType: string,
+    prix: number,
 };
 
 function glace (): GlaceType[] {
@@ -280,6 +302,7 @@ function glace (): GlaceType[] {
                 timeId: 0,
                 type: "dessert",
                 sousType: "glace",
+                prix: 5,
             };
             allGlace.push(unGlace);
         }
@@ -296,11 +319,13 @@ export interface Accompagnement {
     tailleProduit: string,
     type: string,
     sousType: string,
+    prix: number, 
 };
 
  function accompagnement (): Accompagnement[] {
     const noms = ["Frite", "Potatoe"];
     const bases = [stocks.frite[0], stocks.frite[1]];
+    const prix = [8,6,4]
     const allAccompagnements = [];
     for(let i = 0; i < noms.length; i++){
         for(let j= 0; j < stocks.taille.length; j++){
@@ -310,6 +335,7 @@ export interface Accompagnement {
                 tailleProduit: stocks.taille[j],
                 type: "accompagnement",
                 sousType: "frite",
+                prix: prix[j],
             };
             allAccompagnements.push(unAccompagnement);
         }
@@ -325,6 +351,7 @@ export const salade: Accompagnement = {
     tailleProduit: stocks.taille[2],
     type: "accompagnement",
     sousType: "salade",
+    prix: 3,
 }
 
 export const legume: Accompagnement = {
@@ -333,6 +360,7 @@ export const legume: Accompagnement = {
     tailleProduit: stocks.taille[2],
     type: "accompagnement",
     sousType: "enfant",
+    prix: 3,
 }
 
 export const boissonYaourt: Accompagnement = {
@@ -341,6 +369,7 @@ export const boissonYaourt: Accompagnement = {
     tailleProduit: stocks.taille[2],
     type: "dessert",
     sousType: "enfant",
+    prix: 3,
 }
 
 export const fruits: Accompagnement = {
@@ -349,6 +378,7 @@ export const fruits: Accompagnement = {
     tailleProduit: stocks.taille[2],
     type: "dessert",
     sousType: "enfant",
+    prix: 3,
 }
 
 export interface Boisson {
@@ -357,11 +387,13 @@ export interface Boisson {
     tailleProduit: string,
     type: string,
     sousType: string,
+    prix: number,
 };
 
 function boisson (): Boisson[] {
     const noms = [stocks.boisson[0], stocks.boisson[1], stocks.boisson[2],stocks.boisson[3], stocks.boisson[4], stocks.boisson[5], stocks.boisson[6], stocks.boisson[7]];
     const bases = [stocks.boisson[0], stocks.boisson[1], stocks.boisson[2],stocks.boisson[3], stocks.boisson[4], stocks.boisson[5], stocks.boisson[6], stocks.boisson[7]];
+    const prix = [7,5,3]
     const allBoisson = [];
     for(let i = 0; i < noms.length; i++){
         for(let j= 0; j < stocks.taille.length; j++){
@@ -371,6 +403,7 @@ function boisson (): Boisson[] {
                 tailleProduit: stocks.taille[j],
                 type: "boisson",
                 sousType: "cannette",
+                prix: prix[j],
             };
             allBoisson.push(uneBoisson);
         }
@@ -386,6 +419,7 @@ export const jusDefruit: Boisson = {
     tailleProduit: stocks.taille[2],
     type: "boisson",
     sousType: "enfant",
+    prix: 3,
 }
 
 accompagnements.push(salade)
