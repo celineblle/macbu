@@ -16,7 +16,6 @@
   overflow: scroll;
   height: 89%;
 }
-
 .commandeUnique {
   width: 25%;
   overflow: scroll;
@@ -27,6 +26,7 @@
   justify-content: flex-start;
   align-items: center;
   list-style-type: none;
+  height: 220px;
   li {
     margin-left: auto;
     margin-right: auto;
@@ -72,11 +72,10 @@
 .commandeEnCour {
   margin: 5px 8px;
   padding-left: 0;
-  height: 250px;
 }
 
 .commandeVide {
-  height: 254px;
+  height: 224px;
 }
 
 .commandeVide,

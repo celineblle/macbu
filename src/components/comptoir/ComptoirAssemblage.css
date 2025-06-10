@@ -29,6 +29,7 @@
   justify-content: flex-start;
   align-items: center;
   list-style-type: none;
+  height: 220px;
 }
 .commandeUnique li {
   margin-left: auto;
@@ -74,11 +75,10 @@
 .commandeEnCour {
   margin: 5px 8px;
   padding-left: 0;
-  height: 250px;
 }
 
 .commandeVide {
-  height: 254px;
+  height: 224px;
 }
 
 .commandeVide,
