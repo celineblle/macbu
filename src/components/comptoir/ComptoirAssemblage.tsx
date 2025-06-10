@@ -726,42 +726,39 @@ function ComptoirAssemblage({
               <h3>Commandes à prerarer</h3>
               <div className="commandesComptoir">
                 {aPreparerAffichage.map(
-                  (tab: (string | string[])[], position: number) =>
-                    position < 4 && (
-                      <button
-                        key={position}
-                        onClick={() => handleClickValiderPlateau(position)}
-                        className="commandeModal commandeUnique"
-                      >
-                        {tab.map(
-                          (commande: string | string[], index: number) => (
-                            <ul key={index}>
-                              {typeof commande === "string" ? (
-                                <li>{commande}</li>
-                              ) : (
-                                <ul>
-                                  {commande.map((menu: string, i: number) => (
-                                    <li key={i}>{menu}</li>
-                                  ))}
-                                </ul>
-                              )}
+                  (tab: (string | string[])[], position: number) => (
+                    <button
+                      key={position}
+                      onClick={() => handleClickValiderPlateau(position)}
+                      className="commandeModal commandeUnique commandeApreparer"
+                    >
+                      {tab.map((commande: string | string[], index: number) => (
+                        <ul key={index}>
+                          {typeof commande === "string" ? (
+                            <li>{commande}</li>
+                          ) : (
+                            <ul>
+                              {commande.map((menu: string, i: number) => (
+                                <li key={i}>{menu}</li>
+                              ))}
                             </ul>
-                          )
-                        )}
-                        {tailleEtPrixCommande.length > 0 && (
-                          <div>
-                            <p>Taille : {tabTaille[position]}</p>
-                            <br />
-                            <p>Prix : {tabPrix[position]}€</p>
-                          </div>
-                        )}
-                      </button>
-                    )
+                          )}
+                        </ul>
+                      ))}
+                      {tailleEtPrixCommande.length > 0 && (
+                        <div>
+                          <p>Taille : {tabTaille[position]}</p>
+                          <br />
+                          <p>Prix : {tabPrix[position]}€</p>
+                        </div>
+                      )}
+                    </button>
+                  )
                 )}
                 {aPreparerAffichage.length === 0 && (
                   <button
                     disabled={true}
-                    className="buttonNeutre commandeUnique"
+                    className="buttonNeutre commandeUnique commandeApreparer"
                   >
                     Pas de commande
                   </button>
