@@ -83,7 +83,7 @@ function Glace({
         tabPosteGlacePretCopie.push({
           nom: "Glace",
           base: "Glace au lait",
-          topping: "glace prete",
+          topping: "glace prête",
           coulis: "Aucune ",
           tailleProduit: "initial",
           temps: 0,

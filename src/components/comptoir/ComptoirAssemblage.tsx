@@ -271,98 +271,101 @@ function ComptoirAssemblage({
   }
 
   function handleClickRemplirPlateau(plat: Produit | BoiteNugget): void {
-    const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
-    let commandeCopie: Produit[] = [];
+    if (plat.prix !== 0) {
+      const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+      let commandeCopie: Produit[] = [];
 
-    if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
-      commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
-    }
-    if ("friture" in plat) {
-      const nuggetProduit: Produit | undefined = nuggets.find(
-        (e) => e.nom === plat.friture
+      if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
+        commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
+      }
+      if ("friture" in plat) {
+        const nuggetProduit: Produit | undefined = nuggets.find(
+          (e) => e.nom === plat.friture
+        );
+        if (nuggetProduit !== undefined) {
+          if (plat.quantitePret > 0) {
+            commandeCopie.push(nuggetProduit);
+          }
+        }
+
+        const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
+        const quelNugget: number = nuggetTabCopie.findIndex(
+          (e) => e.friture === plat.friture
+        );
+        nuggetTabCopie[quelNugget].quantitePret =
+          nuggetTabCopie[quelNugget].quantitePret - 1;
+        if (setNuggetsStateContext !== undefined) {
+          setNuggetsStateContext(nuggetTabCopie);
+        }
+      } else {
+        commandeCopie.push(plat);
+        if ("pain" in plat) {
+          const burgerDispoCopie: Burger[] = burgerDispo.slice();
+          const quelBurger: number = burgerDispo.findIndex(
+            (e) => e.nom === plat.nom
+          );
+          burgerDispoCopie.splice(quelBurger, 1);
+          if (setBurgerDispo !== undefined) {
+            setBurgerDispo(burgerDispoCopie);
+          }
+        } else if ("complement" in plat && plat.sousType === "frite") {
+          const friteDispoCopie: Accompagnement[] = fritesDispo.slice();
+          const quelFrite: number = friteDispoCopie.findIndex(
+            (e) =>
+              e.tailleProduit === plat.tailleProduit &&
+              e.complement === plat.complement
+          );
+          friteDispoCopie.splice(quelFrite, 1);
+          if (setFritesDispo !== undefined) {
+            setFritesDispo(friteDispoCopie);
+          }
+        } else if ("saveur" in plat) {
+          const boissonDispoCopie: Boisson[] = fontainePret.slice();
+          const quelBoisson: number = boissonDispoCopie.findIndex(
+            (e) =>
+              e.tailleProduit === plat.tailleProduit && e.saveur === plat.saveur
+          );
+          boissonDispoCopie.splice(quelBoisson, 1);
+          setFontainePret(boissonDispoCopie);
+        } else if ("coulis" in plat) {
+          const glaceDispoCopie: GlaceType[] =
+            glacesCommandeRef.current.slice();
+          const quelGlace: number = glacesCommandeRef.current.findIndex(
+            (e) => e.coulis === plat.coulis && e.topping === plat.topping
+          );
+          glaceDispoCopie.splice(quelGlace, 1);
+          if (glaceDispoCopie.length === 0) {
+            glaceDispoCopie.push({
+              nom: "Glace",
+              base: "Glace au lait",
+              topping: "glace prête",
+              coulis: "Aucune ",
+              tailleProduit: "initial",
+              temps: 0,
+              timeId: 0,
+              type: "dessert",
+              sousType: "glace",
+              prix: 0,
+            });
+          }
+          setGlacesCommande(glaceDispoCopie);
+          clearTimeout(plat.timeId);
+        }
+      }
+      allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
+      setCommandeEnCour(allCommandeEnCourCopie);
+
+      const commandeAffichageCopie: (string | string[])[] =
+        affichageCommande(commandeCopie);
+      const enCourTabAffichageCopie: (string | string[])[][] =
+        enCourAffichageRef.current.slice();
+      enCourTabAffichageCopie.splice(
+        idPlateauRef.current,
+        1,
+        commandeAffichageCopie
       );
-      if (nuggetProduit !== undefined) {
-        if (plat.quantitePret > 0) {
-          commandeCopie.push(nuggetProduit);
-        }
-      }
-
-      const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
-      const quelNugget: number = nuggetTabCopie.findIndex(
-        (e) => e.friture === plat.friture
-      );
-      nuggetTabCopie[quelNugget].quantitePret =
-        nuggetTabCopie[quelNugget].quantitePret - 1;
-      if (setNuggetsStateContext !== undefined) {
-        setNuggetsStateContext(nuggetTabCopie);
-      }
-    } else {
-      commandeCopie.push(plat);
-      if ("pain" in plat) {
-        const burgerDispoCopie: Burger[] = burgerDispo.slice();
-        const quelBurger: number = burgerDispo.findIndex(
-          (e) => e.nom === plat.nom
-        );
-        burgerDispoCopie.splice(quelBurger, 1);
-        if (setBurgerDispo !== undefined) {
-          setBurgerDispo(burgerDispoCopie);
-        }
-      } else if ("complement" in plat && plat.sousType === "frite") {
-        const friteDispoCopie: Accompagnement[] = fritesDispo.slice();
-        const quelFrite: number = friteDispoCopie.findIndex(
-          (e) =>
-            e.tailleProduit === plat.tailleProduit &&
-            e.complement === plat.complement
-        );
-        friteDispoCopie.splice(quelFrite, 1);
-        if (setFritesDispo !== undefined) {
-          setFritesDispo(friteDispoCopie);
-        }
-      } else if ("saveur" in plat) {
-        const boissonDispoCopie: Boisson[] = fontainePret.slice();
-        const quelBoisson: number = boissonDispoCopie.findIndex(
-          (e) =>
-            e.tailleProduit === plat.tailleProduit && e.saveur === plat.saveur
-        );
-        boissonDispoCopie.splice(quelBoisson, 1);
-        setFontainePret(boissonDispoCopie);
-      } else if ("coulis" in plat) {
-        const glaceDispoCopie: GlaceType[] = glacesCommandeRef.current.slice();
-        const quelGlace: number = glacesCommandeRef.current.findIndex(
-          (e) => e.coulis === plat.coulis && e.topping === plat.topping
-        );
-        glaceDispoCopie.splice(quelGlace, 1);
-        if (glaceDispoCopie.length === 0) {
-          glaceDispoCopie.push({
-            nom: "Glace",
-            base: "Glace au lait",
-            topping: "glace prete",
-            coulis: "Aucune ",
-            tailleProduit: "initial",
-            temps: 0,
-            timeId: 0,
-            type: "dessert",
-            sousType: "glace",
-            prix: 0,
-          });
-        }
-        setGlacesCommande(glaceDispoCopie);
-        clearTimeout(plat.timeId);
-      }
+      setEnCourAffichage(enCourTabAffichageCopie);
     }
-    allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
-    setCommandeEnCour(allCommandeEnCourCopie);
-
-    const commandeAffichageCopie: (string | string[])[] =
-      affichageCommande(commandeCopie);
-    const enCourTabAffichageCopie: (string | string[])[][] =
-      enCourAffichageRef.current.slice();
-    enCourTabAffichageCopie.splice(
-      idPlateauRef.current,
-      1,
-      commandeAffichageCopie
-    );
-    setEnCourAffichage(enCourTabAffichageCopie);
   }
 
   function handleClickSupprimerPlat(commande: number, plat: number): void {
@@ -884,15 +887,18 @@ function ComptoirAssemblage({
                   }
                 >
                   {fritesDispo.length < 1 ? (
-                    <button>Vide</button>
+                    <button className="buttonNeutre">Vide</button>
                   ) : (
                     fritesDispo.map((e, i) => (
                       <button
                         key={i}
+                        disabled={e.tailleProduit === "Vide" ? true : false}
                         onClick={() => handleClickRemplirPlateau(e)}
                         className="buttonNeutre"
                       >
-                        {e.tailleProduit} {e.nom}
+                        {e.tailleProduit === "Vide"
+                          ? "Aucune frite prête"
+                          : `${e.tailleProduit} ${e.nom}`}
                       </button>
                     ))
                   )}
@@ -948,15 +954,21 @@ function ComptoirAssemblage({
                       : "tabContenComptoirA"
                   }
                 >
-                  {fontainePret.map((e, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleClickRemplirPlateau(e)}
-                      className="buttonNeutre"
-                    >
-                      {e.tailleProduit} {e.saveur}
+                  {fontainePret.length === 0 ? (
+                    <button disabled={true} className="buttonNeutre">
+                      Aucune boisson prête
                     </button>
-                  ))}
+                  ) : (
+                    fontainePret.map((e, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleClickRemplirPlateau(e)}
+                        className="buttonNeutre"
+                      >
+                        {e.tailleProduit} {e.saveur}
+                      </button>
+                    ))
+                  )}
                 </div>
                 <div
                   className={
