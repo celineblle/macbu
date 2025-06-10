@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: row;
   width: 100vw;
-  border: solid blue;
   height: 40vh;
 }
 

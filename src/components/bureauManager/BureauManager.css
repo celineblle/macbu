@@ -1,7 +1,6 @@
 #bureauManagerComponent {
   width: 100%;
-  border: solid black;
-  height: 8vh;
+  height: 10vh;
   display: flex;
   flex-direction: row;
 }
