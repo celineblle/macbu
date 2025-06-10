@@ -461,32 +461,38 @@ function ComptoirAssemblage({
   }
 
   function handleClickGetSac(sac: [string, number]) {
-    const allSacCommandeCopie: [string, number][][] = sacRef.current.slice();
-    let uniqueCommandeSacCopie: [string, number][] = [];
-    if (allSacCommandeCopie.length > 0) {
-      uniqueCommandeSacCopie =
-        allSacCommandeCopie[idPlateauRef.current].slice();
+    if (enCourAffichageRef.current[idPlateauRef.current] !== undefined) {
+      const allSacCommandeCopie: [string, number][][] = sacRef.current.slice();
+      let uniqueCommandeSacCopie: [string, number][] = [];
+      if (allSacCommandeCopie.length > 0) {
+        uniqueCommandeSacCopie =
+          allSacCommandeCopie[idPlateauRef.current].slice();
+      }
+
+      uniqueCommandeSacCopie.push(sac);
+      allSacCommandeCopie.splice(
+        idPlateauRef.current,
+        1,
+        uniqueCommandeSacCopie
+      );
+      setSacEnCour(allSacCommandeCopie);
+
+      const allAffichageSacCopie = sacAffichageRef.current.slice();
+      const uniqueAffichageSacCopie =
+        allAffichageSacCopie[idPlateauRef.current].slice();
+      if (uniqueAffichageSacCopie[0] === "Aucun Sac") {
+        uniqueAffichageSacCopie.splice(0, 1, sac[0]);
+      } else {
+        uniqueAffichageSacCopie.push(sac[0]);
+      }
+
+      allAffichageSacCopie.splice(
+        idPlateauRef.current,
+        1,
+        uniqueAffichageSacCopie
+      );
+      setSacAffichage(allAffichageSacCopie);
     }
-
-    uniqueCommandeSacCopie.push(sac);
-    allSacCommandeCopie.splice(idPlateauRef.current, 1, uniqueCommandeSacCopie);
-    setSacEnCour(allSacCommandeCopie);
-
-    const allAffichageSacCopie = sacAffichageRef.current.slice();
-    const uniqueAffichageSacCopie =
-      allAffichageSacCopie[idPlateauRef.current].slice();
-    if (uniqueAffichageSacCopie[0] === "Aucun Sac") {
-      uniqueAffichageSacCopie.splice(0, 1, sac[0]);
-    } else {
-      uniqueAffichageSacCopie.push(sac[0]);
-    }
-
-    allAffichageSacCopie.splice(
-      idPlateauRef.current,
-      1,
-      uniqueAffichageSacCopie
-    );
-    setSacAffichage(allAffichageSacCopie);
   }
 
   useEffect(() => {
@@ -598,8 +604,6 @@ function ComptoirAssemblage({
       } else {
         malusPrix = malusPrix + 4;
       }
-      console.log("mal", malusPrix);
-      console.log("final", finalPrix);
       if (malusPrix > 0 && malusPrix < finalPrix) {
         finalPrix = finalPrix - malusPrix;
       } else if (malusPrix > finalPrix) {
@@ -640,11 +644,12 @@ function ComptoirAssemblage({
   }
 
   useEffect(() => {
-    const placeVide: number = tailleEnCour - enCourRef.current.length;
+    let placeVide: number = tailleEnCour - enCourRef.current.length;
+    placeVide = placeVide - sacAffichageRef.current.length;
     if (placeVide <= tailleEnCour) {
       const placeVideTab: string[] = [];
       for (let i = 0; i < placeVide; i++) {
-        placeVideTab.push("vide");
+        placeVideTab.push("Vide");
       }
       setEnCourVide(placeVideTab);
     }
