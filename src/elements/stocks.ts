@@ -1,6 +1,6 @@
 export const  pains: string[] = ["Pain sésame 3 tranches", "Grand pain sésame", "Moyen pain sésame", "Pain carré ciabatta", "Pain carré bacon", "Pain muffin", "Petit pain bun", "Moyen pain bun", "Galette wrap"];
 
-export const frituresCuisine: string[] = ["Nugget poulet", "Petit poisson pané", "Grand poisson pané", "Petit steak poulet pané", "Grand steak poulet pané", "Poulet pané", "Palet chêvre"];
+export const frituresCuisine: string[] = ["Nugget poulet", "Petit poisson pané", "Grand poisson pané", "Petit steak poulet pané", "Grand steak poulet pané", "Palet chêvre"];
 
 export const sauces: string[] = ["César", "Huile salade", "Tartare", "Spécial Bu", "Abricot", "Ketchup", "Ranch", "Moutarde"];
 
@@ -18,7 +18,7 @@ export const glaceToppings: string[] = [ "Coulis caramel", "Coulis chocolat", "E
 
 export const frite: string[] = ["Frite", "Potatoe"];
 
-export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Orange gazeuse", "Jus d'orange", "jus multifruit", "Thé glacé"];
+export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Orange gazeuse", "Jus d'orange", "Jus multifruit", "Thé glacé"];
 
 export const taille: string[] = ["Grand", "Moyen", "Petit"];
 
