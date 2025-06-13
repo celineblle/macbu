@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import "./BureauManager.css";
-import { FondDeCaisseContext } from "../../CaisseContext";
+import {
+  FondDeCaisseContext,
+  FondDeCaisseContextSetter,
+} from "../../CaisseContext";
 import close from "../../assets/close.svg";
 import {
   frituresCuisine,
@@ -16,9 +19,24 @@ import {
   boisson,
   sac,
 } from "../../elements/stocks";
+import {
+  prixQuantiteFrites,
+  prixQuantiteNugget,
+  prixQuantitePains,
+  prixQuantiteFromages,
+  prixQuantiteSauces,
+  prixQuantiteIngredientsBurger,
+  prixQuantiteIngredientSalade,
+  prixQuantiteGrill,
+  prixQuantiteSac,
+  prixQuantiteAutresProduits,
+  prixQuantiteBoisson,
+  prixQuantiteGlace,
+} from "../../elements/prixIngredient";
 
 function BureauManager() {
   const fondDeCaisse = useContext(FondDeCaisseContext);
+  const setFondDeCaisse = useContext(FondDeCaisseContextSetter);
 
   const [buttonActionModalBureau, setButtonActionModalBureau] =
     useState<boolean>(false);
@@ -27,45 +45,26 @@ function BureauManager() {
     setButtonActionModalBureau(!buttonActionModalBureau);
   }
 
-  const prixQuantiteFrites: [number, number][] = [
-    [15, 100],
-    [20, 100],
-  ];
-  const prixQuantiteNugget: [number, number][] = [
-    [35, 40],
-    [28, 50],
-    [20, 50],
-    [15, 50],
-    [120, 20],
-    [40, 100],
-    [30, 20],
-    [40, 20],
-    [25, 20],
-    [35, 20],
-    [20, 20],
-  ];
+  function handleClickAcheter(produit: string, prix: number) {
+    if (prix < fondDeCaisse) {
+      let copieFondDeCaisse: number = fondDeCaisse;
+      copieFondDeCaisse = copieFondDeCaisse - prix;
+      if (setFondDeCaisse !== undefined) {
+        setFondDeCaisse(copieFondDeCaisse);
+      }
+      // if (produit === "LotNugget") {
+      // } else if (produit === "BoiteNugget") {
+      // } else if (produit === "LotFriture") {
 
-  const prixQuantitePains: [number, number][] = [
-    [80, 10],
-    [30, 30],
-    [20, 20],
-    [20, 30],
-    [30, 20],
-    [30, 20],
-    [40, 40],
-    [40, 40],
-    [50, 30],
-    [40, 40],
-  ];
+      // } else if (produit === "LotPain") {
 
-  const prixQuantiteFromages: [number, number][] = [
-    [65, 20],
-    [20, 50],
-    [18, 20],
-    [18, 20],
-    [25, 20],
-    [30, 50],
-  ];
+      // } else if(produit === "LotFromage") {
+
+      // } else if (produit === "LotBurger") {
+
+      // } else if(produit === "")
+    }
+  }
 
   return (
     <div id="bureauManagerComponent">
@@ -101,7 +100,12 @@ function BureauManager() {
                     <p>{prixQuantiteFrites[i][1]} pièces</p>
                     <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">
+                  <button
+                    className="buttonNeutre"
+                    onClick={() =>
+                      handleClickAcheter(e, prixQuantiteFrites[i][0])
+                    }
+                  >
                     Acheter {prixQuantiteFrites[i][0]} €
                   </button>
                 </div>
@@ -116,7 +120,12 @@ function BureauManager() {
                   Lot boites de nuggets toutes tailles <br />
                   {prixQuantiteNugget[0][1]} pièces de chaque taille
                 </p>
-                <button className="buttonNeutre">
+                <button
+                  className="buttonNeutre"
+                  onClick={() =>
+                    handleClickAcheter("LotNugget", prixQuantiteNugget[0][0])
+                  }
+                >
                   Acheter {prixQuantiteNugget[0][0]} €
                 </button>
               </div>
@@ -126,7 +135,12 @@ function BureauManager() {
                   <p>{prixQuantiteNugget[1][1]} pièces</p>
                   <p>Stock actuel:</p>
                 </div>
-                <button className="buttonNeutre">
+                <button
+                  className="buttonNeutre"
+                  onClick={() =>
+                    handleClickAcheter("BoiteNugget", prixQuantiteNugget[1][0])
+                  }
+                >
                   Acheter {prixQuantiteNugget[1][0]} €
                 </button>
               </div>
@@ -136,7 +150,12 @@ function BureauManager() {
                   <p>{prixQuantiteNugget[2][1]} pièces</p>
                   <p>Stock actuel:</p>
                 </div>
-                <button className="buttonNeutre">
+                <button
+                  className="buttonNeutre"
+                  onClick={() =>
+                    handleClickAcheter("BoiteNugget", prixQuantiteNugget[2][0])
+                  }
+                >
                   Acheter {prixQuantiteNugget[2][0]} €
                 </button>
               </div>
@@ -146,7 +165,12 @@ function BureauManager() {
                   <p> {prixQuantiteNugget[3][1]} pièces</p>
                   <p>Stock actuel:</p>
                 </div>
-                <button className="buttonNeutre">
+                <button
+                  className="buttonNeutre"
+                  onClick={() =>
+                    handleClickAcheter("BoiteNugget", prixQuantiteNugget[3][0])
+                  }
+                >
                   Acheter {prixQuantiteNugget[3][0]} €
                 </button>
               </div>
@@ -158,7 +182,12 @@ function BureauManager() {
                   hors nuggets poulet
                   <br /> {prixQuantiteNugget[4][1]} pièces de chaque friture
                 </p>
-                <button className="buttonNeutre">
+                <button
+                  className="buttonNeutre"
+                  onClick={() =>
+                    handleClickAcheter("LotFriture", prixQuantiteNugget[4][0])
+                  }
+                >
                   Acheter {prixQuantiteNugget[4][0]} €
                 </button>
               </div>
@@ -169,7 +198,12 @@ function BureauManager() {
                     <p>{prixQuantiteNugget[i + 5][1]} pièces</p>
                     <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">
+                  <button
+                    className="buttonNeutre"
+                    onClick={() =>
+                      handleClickAcheter(e, prixQuantiteNugget[i + 5][0])
+                    }
+                  >
                     Acheter {prixQuantiteNugget[i + 5][0]}€
                   </button>
                 </div>
@@ -187,7 +221,12 @@ function BureauManager() {
                     Lot de tous les pains <br /> {prixQuantitePains[0][1]} de
                     chaque pain
                   </p>
-                  <button className="buttonNeutre">
+                  <button
+                    className="buttonNeutre"
+                    onClick={() =>
+                      handleClickAcheter("LotPain", prixQuantitePains[0][0])
+                    }
+                  >
                     Acheter {prixQuantitePains[0][0]} €
                   </button>
                 </div>
@@ -198,7 +237,12 @@ function BureauManager() {
                       <p>{prixQuantitePains[i + 1][1]} pièces</p>
                       <p>Stock actuel:</p>
                     </div>
-                    <button className="buttonNeutre">
+                    <button
+                      className="buttonNeutre"
+                      onClick={() =>
+                        handleClickAcheter(e, prixQuantitePains[i + 1][0])
+                      }
+                    >
                       Acheter {prixQuantitePains[i + 1][0]} €
                     </button>
                   </div>
@@ -213,7 +257,15 @@ function BureauManager() {
                     Lot de tous les fromages <br /> {prixQuantiteFromages[0][1]}{" "}
                     de chaque fromage
                   </p>
-                  <button className="buttonNeutre">
+                  <button
+                    className="buttonNeutre"
+                    onClick={() =>
+                      handleClickAcheter(
+                        "LotFromage",
+                        prixQuantiteFromages[0][0]
+                      )
+                    }
+                  >
                     Acheter {prixQuantiteFromages[0][0]} €
                   </button>
                 </div>
@@ -224,7 +276,12 @@ function BureauManager() {
                       <p>{prixQuantiteFromages[i + 1][1]}</p>
                       <p>Stock actuel:</p>
                     </div>
-                    <button className="buttonNeutre">
+                    <button
+                      className="buttonNeutre"
+                      onClick={() =>
+                        handleClickAcheter(e, prixQuantiteFromages[i + 1][0])
+                      }
+                    >
                       Acheter {prixQuantiteFromages[i + 1][0]} €
                     </button>
                   </div>
@@ -236,18 +293,23 @@ function BureauManager() {
               <div className="rayonUnique">
                 <div className="produit">
                   <p>
-                    Lot de tous les ingrédients burger <br />x de chaque
-                    ingredient{" "}
+                    Lot de tous les ingrédients burger <br />
+                    {prixQuantiteIngredientsBurger[0][1]} de chaque ingredient
                   </p>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteIngredientsBurger[0][0]} €
+                  </button>
                 </div>
                 {ingredientBurger.map((e, i) => (
                   <div key={i} className="produit">
                     <div>
                       <p>{e}</p>
-                      <p>Stock :</p>
+                      <p>{prixQuantiteIngredientsBurger[i + 1][1]}</p>
+                      <p>Stock actuel:</p>
                     </div>
-                    <button className="buttonNeutre">Acheter x€</button>
+                    <button className="buttonNeutre">
+                      Acheter {prixQuantiteIngredientsBurger[i + 1]} €
+                    </button>
                   </div>
                 ))}
               </div>
@@ -257,17 +319,23 @@ function BureauManager() {
               <div className="rayonUnique">
                 <div className="produit">
                   <p>
-                    Lot de toutes les sauces <br />x de chaque sauce
+                    Lot de toutes les sauces <br />
+                    {prixQuantiteSauces[0][1]}de chaque sauce
                   </p>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteSauces[0][1]} €
+                  </button>
                 </div>
                 {sauces.map((e, i) => (
                   <div key={i} className="produit">
                     <div>
                       <p>{e}</p>
-                      <p>Stock :</p>
+                      <p>{prixQuantiteSauces[i + 0][1]}</p>
+                      <p>Stock actuel:</p>
                     </div>
-                    <button className="buttonNeutre">Acheter x€</button>
+                    <button className="buttonNeutre">
+                      Acheter {prixQuantiteSauces[i + 1][0]} €
+                    </button>
                   </div>
                 ))}
               </div>
@@ -277,18 +345,23 @@ function BureauManager() {
               <div className="rayonUnique">
                 <div className="produit">
                   <p>
-                    Lot de tous les ingrédients salade <br />x de chaque
-                    ingredient
+                    Lot de tous les toppings salade <br />
+                    {prixQuantiteIngredientSalade[0][1]} de chaque ingredient
                   </p>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteIngredientSalade[0][0]} €
+                  </button>
                 </div>
                 {ingredientSalade.map((e, i) => (
                   <div key={i} className="produit">
                     <div>
                       <p>{e}</p>
-                      <p>Stock :</p>
+                      <p>{prixQuantiteIngredientSalade[i + 1][1]}</p>
+                      <p>Stock actuel:</p>
                     </div>
-                    <button className="buttonNeutre">Acheter x€</button>
+                    <button className="buttonNeutre">
+                      Acheter {prixQuantiteIngredientSalade[i + 1][0]} €
+                    </button>
                   </div>
                 ))}
               </div>
@@ -299,17 +372,23 @@ function BureauManager() {
             <div className="rayonUnique">
               <div className="produit">
                 <p>
-                  Lot de toutes les viandes <br />x de chaque viande
+                  Lot de toutes les viandes <br />
+                  {prixQuantiteGrill[0][1]} de chaque viande
                 </p>
-                <button className="buttonNeutre">Acheter x€</button>
+                <button className="buttonNeutre">
+                  Acheter {prixQuantiteGrill[0][0]} €
+                </button>
               </div>
               {viande.map((e, i) => (
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
-                    <p>Stock :</p>
+                    <p>{prixQuantiteGrill[i + 1][1]}</p>
+                    <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteGrill[i + 1][0]} €
+                  </button>
                 </div>
               ))}
             </div>
@@ -319,17 +398,23 @@ function BureauManager() {
             <div className="rayonUnique">
               <div className="produit">
                 <p>
-                  Lot de toutes les tailles de sac <br />x de chaque taille
+                  Lot de toutes les tailles de sac <br />
+                  {prixQuantiteSac[0][1]} de chaque taille
                 </p>
-                <button className="buttonNeutre">Acheter x€</button>
+                <button className="buttonNeutre">
+                  Acheter {prixQuantiteSac[0][0]} €
+                </button>
               </div>
               {sac.map((e, i) => (
                 <div key={i} className="produit">
                   <div>
                     <p>{e[0]}</p>
-                    <p>Stock :</p>
+                    <p>{prixQuantiteSac[i + 1][1]}</p>
+                    <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteSac[i + 1][0]} €
+                  </button>
                 </div>
               ))}
             </div>
@@ -339,17 +424,23 @@ function BureauManager() {
             <div className="rayonUnique">
               <div className="produit">
                 <p>
-                  Lot de toutes les saveurs de boisson <br />x de chaque saveur
+                  Lot de toutes les saveurs de boisson <br />
+                  {prixQuantiteBoisson[0][1]} de chaque saveur
                 </p>
-                <button className="buttonNeutre">Acheter x€</button>
+                <button className="buttonNeutre">
+                  Acheter {prixQuantiteBoisson[0][0]} €
+                </button>
               </div>
               {boisson.map((e, i) => (
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
-                    <p>Stock :</p>
+                    <p>{prixQuantiteBoisson[i + 1][1]}</p>
+                    <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteBoisson[i + 1][0]} €
+                  </button>
                 </div>
               ))}
             </div>
@@ -359,18 +450,23 @@ function BureauManager() {
             <div className="rayonUnique">
               <div className="produit">
                 <p>
-                  Lot de tous les coulis et toppings glace <br />x de chaque
-                  ingredient
+                  Lot de tous les coulis et toppings glace <br />
+                  {prixQuantiteGlace[0][1]} de chaque ingredient
                 </p>
-                <button className="buttonNeutre">Acheter x€</button>
+                <button className="buttonNeutre">
+                  Acheter {prixQuantiteGlace[0][0]} €
+                </button>
               </div>
               {glaceToppings.map((e, i) => (
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
-                    <p>Stock :</p>
+                    <p>{prixQuantiteGlace[i + 1][1]}</p>
+                    <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteGlace[i + 1][0]} €
+                  </button>
                 </div>
               ))}
             </div>
@@ -382,9 +478,12 @@ function BureauManager() {
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
-                    <p>Stock :</p>
+                    <p>{prixQuantiteAutresProduits[i][1]}</p>
+                    <p>Stock actuel:</p>
                   </div>
-                  <button className="buttonNeutre">Acheter x€</button>
+                  <button className="buttonNeutre">
+                    Acheter {prixQuantiteAutresProduits[i][0]} €
+                  </button>
                 </div>
               ))}
             </div>
