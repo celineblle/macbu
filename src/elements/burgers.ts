@@ -50,14 +50,16 @@ export interface Nugget {
     prix: number, 
 };
 
+export const nomsNuggets = ["Boite de 18 nuggets", "Boite de 6 nuggets", "Boite de 3 nuggets"];
+
 function nugget (): Nugget[] {
-    const noms = ["Boite de 18 nuggets", "Boite de 6 nuggets", "Boite de 3 nuggets"];
+    
     const nombre = [18, 6, 3];
     const prix = [15, 6, 4]
     const allNuggets = [];
-    for(let i = 0; i < noms.length; i++){
+    for(let i = 0; i < nomsNuggets.length; i++){
             const unNugget: Nugget = {
-                nom: noms[i],
+                nom: nomsNuggets[i],
                 ingredient: stocks.frituresCuisine[0],
                 nombreNugget: nombre[i],
                 tailleProduit: stocks.taille[i], 
