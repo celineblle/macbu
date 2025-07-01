@@ -29,6 +29,7 @@ import {
   FondDeCaisseContextSetter,
 } from "../../CaisseContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
+import { StocksActuelsType } from "../../StocksActuels";
 
 function ComptoirAssemblage({
   glacesCommande,
@@ -41,6 +42,8 @@ function ComptoirAssemblage({
   aPreparerRef,
   setPosteGlaceFondue,
   posteGlaceFondueRef,
+  stocksComptoir,
+  setStocksComptoir,
 }: {
   glacesCommande: GlaceType[];
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
@@ -54,6 +57,8 @@ function ComptoirAssemblage({
   aPreparerRef: React.RefObject<ProduitEtMenu[][]>;
   setPosteGlaceFondue: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   posteGlaceFondueRef: React.RefObject<GlaceType[]>;
+  stocksComptoir: StocksActuelsType[];
+  setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   const fritesDispo = useContext(FritesContext);
   const setFritesDispo = useContext(FritesContextSetter);

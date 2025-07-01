@@ -27,6 +27,7 @@ import {
   nuggets,
 } from "./elements/burgers";
 import * as stocks from "./elements/stocks";
+import { StocksActuelsType, StocksActuels } from "./StocksActuels";
 
 function App() {
   const [frites, setFrites] = useState<Accompagnement[]>([
@@ -128,6 +129,23 @@ function App() {
     caisseRef.current = fondDeCaisse;
   }, [fondDeCaisse]);
 
+  const [stocksCuisine, setStocksCuisine] = useState<StocksActuelsType[]>([]);
+  const [stocksComptoir, setStocksComptoir] = useState<StocksActuelsType[]>([]);
+  const stocksCuisineRef = useRef<StocksActuelsType[]>([]);
+  const stocksComptoirRef = useRef<StocksActuelsType[]>([]);
+
+  useEffect(() => {
+    stocksCuisineRef.current = stocksCuisine;
+  }, [stocksCuisine]);
+
+  useEffect(() => {
+    stocksComptoirRef.current = stocksComptoir;
+  }, [stocksComptoir]);
+
+  useEffect(() => {
+    StocksActuels(setStocksCuisine, setStocksComptoir);
+  }, []);
+
   return (
     <div id="page">
       <CommandesAPreparerContext value={commandeAPreparer}>
@@ -136,15 +154,26 @@ function App() {
             <TailleEtPrixCommandeContextSetter value={setTailleEtPrixCommande}>
               <FondDeCaisseContext value={caisseRef.current}>
                 <FondDeCaisseContextSetter value={setFondDeCaisse}>
-                  <BureauManager />
+                  <BureauManager
+                    stocksCuisine={stocksCuisineRef.current}
+                    setStocksCuisine={setStocksCuisine}
+                    stocksComptoir={stocksComptoirRef.current}
+                    setStocksComptoir={setStocksComptoir}
+                  />
                   <FritesContext value={frites}>
                     <FritesContextSetter value={setFrites}>
                       <NuggetsContext value={nuggetsStateContext}>
                         <NuggetsContextSetter value={setNuggetsStateContext}>
                           <BurgersContext value={burgers}>
                             <BurgersContextSetter value={setBurgers}>
-                              <Cuisine />
-                              <Comptoir />
+                              <Cuisine
+                                stocksCuisine={stocksCuisineRef.current}
+                                setStocksCuisine={setStocksCuisine}
+                              />
+                              <Comptoir
+                                stocksComptoir={stocksComptoirRef.current}
+                                setStocksComptoir={setStocksComptoir}
+                              />
                             </BurgersContextSetter>
                           </BurgersContext>
                         </NuggetsContextSetter>

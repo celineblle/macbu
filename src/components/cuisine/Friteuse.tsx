@@ -20,8 +20,15 @@ import {
   Produit,
 } from "../../elements/burgers";
 import { demantelerMenu, quiEstQuoi } from "../../elements/function";
+import { StocksActuelsType } from "../../StocksActuels";
 
-function Friteuse() {
+function Friteuse({
+  stocksCuisine,
+  setStocksCuisine,
+}: {
+  stocksCuisine: StocksActuelsType[];
+  setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+}) {
   const setFrites = useContext(FritesContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 

@@ -10,8 +10,15 @@ import {
   CommandesAPreparerContext,
   CommandesAPreparerContextSetter,
 } from "../../CommandeContext";
+import { StocksActuelsType } from "../../StocksActuels";
 
-function Comptoir() {
+function Comptoir({
+  stocksComptoir,
+  setStocksComptoir,
+}: {
+  stocksComptoir: StocksActuelsType[];
+  setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+}) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
 
@@ -104,11 +111,15 @@ function Comptoir() {
         aPreparerRef={aPreparerRef}
         setPosteGlaceFondue={setPosteGlaceFondue}
         posteGlaceFondueRef={posteGlaceFondueRef}
+        stocksComptoir={stocksComptoir}
+        setStocksComptoir={setStocksComptoir}
       />
       <PosteBoisson
         fontainePret={fontainePret}
         setFontainePret={setFontainePret}
         fontainePretRef={fontainePretRef}
+        stocksComptoir={stocksComptoir}
+        setStocksComptoir={setStocksComptoir}
       />
       <Glace
         glacesCommande={glacesCommande}
@@ -117,6 +128,8 @@ function Comptoir() {
         setPosteGlaceFondue={setPosteGlaceFondue}
         posteGlaceFondueRef={posteGlaceFondueRef}
         posteGlaceFondue={posteGlaceFondue}
+        stocksComptoir={stocksComptoir}
+        setStocksComptoir={setStocksComptoir}
       />
     </div>
   );

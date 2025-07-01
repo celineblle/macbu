@@ -13,6 +13,8 @@ function Glace({
   setPosteGlaceFondue,
   posteGlaceFondueRef,
   posteGlaceFondue,
+  stocksComptoir,
+  setStocksComptoir,
 }: {
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   glacesCommandeRef: React.RefObject<GlaceType[]>;
@@ -20,6 +22,8 @@ function Glace({
   setPosteGlaceFondue: React.Dispatch<React.SetStateAction<GlaceType[]>>;
   posteGlaceFondueRef: React.RefObject<GlaceType[]>;
   posteGlaceFondue: GlaceType[];
+  stocksComptoir: StocksActuelsType[];
+  setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 

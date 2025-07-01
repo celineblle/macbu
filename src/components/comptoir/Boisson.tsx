@@ -5,15 +5,20 @@ import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { quiEstQuoi, demantelerMenu } from "../../elements/function";
 import { Produit, Boisson, boissons } from "../../elements/burgers";
+import { StocksActuelsType } from "../../StocksActuels";
 
 function PosteBoisson({
   fontainePret,
   setFontainePret,
   fontainePretRef,
+  stocksComptoir,
+  setStocksComptoir,
 }: {
   fontainePret: Boisson[];
   setFontainePret: React.Dispatch<React.SetStateAction<Boisson[]>>;
   fontainePretRef: React.RefObject<Boisson[]>;
+  stocksComptoir: StocksActuelsType[];
+  setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   interface BoissonOptionnel {
     nom?: string;

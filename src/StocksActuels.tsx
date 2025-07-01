@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { nomsNuggets } from "./elements/burgers";
 import {
   frituresCuisine,
@@ -23,9 +22,30 @@ export interface StocksActuelsType {
   }[];
 }
 
-function StocksActuels() {
-  const [stocksCuisine, setStocksCuisine] = useState<StocksActuelsType[]>([]);
-  const [stocksComptoir, setStocksComptoir] = useState<StocksActuelsType[]>([]);
+export const nomDesPostesCuisine: [string, string[]][] = [
+  ["frite", frite],
+  ["nugget", nomsNuggets],
+  ["friture", frituresCuisine],
+  ["pain", pains],
+  ["fromage", fromages],
+  ["ingredient burger", ingredientBurger],
+  ["sauce", sauces],
+  ["ingredient salade", ingredientSalade],
+  ["viande", viande],
+];
+
+export const nomDesPostesComptoir: [string, string[]][] = [
+  ["boisson", boisson],
+  ["glace", glaceToppings],
+  ["autre", frais],
+];
+
+export function StocksActuels(
+  setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>,
+  setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>
+) {
+  const finalStocksCuisine: StocksActuelsType[] = [];
+  const finalStockComptoir: StocksActuelsType[] = [];
 
   function getProduct(
     tabProduit: string[],
@@ -47,31 +67,13 @@ function StocksActuels() {
     return currentPosteStock;
   }
 
-  const nomDesPostesCuisine: [string, string[]][] = [
-    ["frite", frite],
-    ["nugget", nomsNuggets],
-    ["friture", frituresCuisine],
-    ["pain", pains],
-    ["fromange", fromages],
-    ["ingredient burger", ingredientBurger],
-    ["sauce", sauces],
-    ["ingredient salade", ingredientSalade],
-    ["viande", viande],
-  ];
-
-  const nomDesPostesComptoir: [string, string[]][] = [
-    ["boisson", boisson],
-    ["glace", glaceToppings],
-    ["autre", frais],
-  ];
-
   function getStocksFinal(nomTab: [string, string[]][]) {
     for (let i = 0; i < nomTab.length; i++) {
       const currentNewStock = getProduct(nomTab[i][1], nomTab[i][0]);
       if (nomTab.length === 3) {
-        setStocksComptoir([...stocksComptoir, currentNewStock]);
+        finalStockComptoir.push(currentNewStock);
       } else {
-        setStocksCuisine([...stocksCuisine, currentNewStock]);
+        finalStocksCuisine.push(currentNewStock);
       }
     }
   }
@@ -92,10 +94,11 @@ function StocksActuels() {
       poste: "sac",
       stockActuel: tabDeStock,
     };
-    setStocksCuisine([...stocksCuisine, currentPosteStock]);
+    finalStockComptoir.push(currentPosteStock);
   }
 
   getStocksSac();
-}
 
-export default StocksActuels;
+  setStocksComptoir(finalStockComptoir);
+  setStocksCuisine(finalStocksCuisine);
+}
