@@ -4,7 +4,15 @@ import close from "../../assets/close.svg";
 import { glaceToppings, taille } from "../../elements/stocks";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { Produit, GlaceType } from "../../elements/burgers";
-import { demantelerMenu, quiEstQuoi } from "../../elements/function";
+import {
+  demantelerMenu,
+  quiEstQuoi,
+  retirerStock,
+} from "../../elements/function";
+import {
+  StocksActuelsType,
+  StocksActuelInteriorType,
+} from "../../StocksActuels";
 
 function Glace({
   setGlacesCommande,
@@ -46,8 +54,6 @@ function Glace({
   const [currentGlace, setCurrentGlace] = useState<GlaceType>({
     nom: "Glace",
     base: "Glace au lait",
-    topping: "initial",
-    coulis: "initial",
     tailleProduit: "initial",
     temps: 0,
     timeId: 0,
@@ -103,13 +109,18 @@ function Glace({
   }
 
   function handleClickGlaceConstruction(element: string): void {
-    const copieCurentGlace: GlaceType = structuredClone(currentGlace);
-    if (coulis.includes(element)) {
-      copieCurentGlace.coulis = element;
-    } else {
-      copieCurentGlace.topping = element;
+    const stockFrigoGlace: StocksActuelInteriorType | undefined =
+      stocksComptoir[1].stockActuel.find((e) => e.produit === element);
+    if (stockFrigoGlace !== undefined && stockFrigoGlace.quantite > 0) {
+      const copieCurentGlace: GlaceType = structuredClone(currentGlace);
+      if (coulis.includes(element)) {
+        copieCurentGlace.coulis = element;
+      } else {
+        copieCurentGlace.topping = element;
+      }
+      setCurrentGlace(copieCurentGlace);
+      retirerStock(stocksComptoir, setStocksComptoir, "glace", stockFrigoGlace);
     }
-    setCurrentGlace(copieCurentGlace);
   }
 
   function handleClickFrigoToPosteGlace(): void {
@@ -132,6 +143,16 @@ function Glace({
         copieCurentGlace.prix = 5;
         const glacePrepa: GlaceType = copieCurentGlace;
         setPosteGlace([...posteGlaceRef.current, glacePrepa]);
+        setCurrentGlace({
+          nom: "Glace",
+          base: "Glace au lait",
+          tailleProduit: "initial",
+          temps: 0,
+          timeId: 0,
+          type: "dessert",
+          sousType: "glace",
+          prix: 0,
+        });
         setTimeout(() => {
           const oldestGlace: number = posteGlaceRef.current.indexOf(glacePrepa);
           const tabPosteGlaceCopie: GlaceType[] = posteGlaceRef.current.slice();
@@ -311,9 +332,14 @@ function Glace({
               <div id="stockModalGlace">
                 <h3>Stock</h3>
                 <ul>
-                  {glaceToppings.map((element: string, index: number) => (
-                    <li key={index}>{element} : X</li>
-                  ))}
+                  {stocksComptoir.length > 0 &&
+                    stocksComptoir[1].stockActuel.map(
+                      (element, index: number) => (
+                        <li key={index}>
+                          {element.produit} : {element.quantite}
+                        </li>
+                      )
+                    )}
                 </ul>
               </div>
             </div>

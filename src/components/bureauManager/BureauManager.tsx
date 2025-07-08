@@ -9,6 +9,7 @@ import { sac } from "../../elements/stocks";
 import {
   prixQuantiteFrites,
   prixQuantiteNugget,
+  prixQuantiteFriture,
   prixQuantitePains,
   prixQuantiteFromages,
   prixQuantiteSauces,
@@ -20,8 +21,11 @@ import {
   prixQuantiteBoisson,
   prixQuantiteGlace,
 } from "../../elements/prixIngredient";
-import { nomDesPostesCuisine, nomDesPostesComptoir } from "../../StocksActuels";
-import { StocksActuelsType } from "../../StocksActuels";
+import {
+  nomDesPostesCuisine,
+  nomDesPostesComptoir,
+  StocksActuelsType,
+} from "../../StocksActuels";
 
 function BureauManager({
   stocksCuisine,
@@ -46,26 +50,60 @@ function BureauManager({
 
   const isItComptoir = (poste: string) => {
     let inComptoir: boolean = false;
-    nomDesPostesComptoir.forEach((e) => {
-      if (e[0] === poste) {
-        inComptoir = true;
-      }
-    });
+
+    const postePresent = stocksComptoir.find((e) => e.poste === poste);
+
+    if (postePresent !== undefined) {
+      inComptoir = true;
+    }
+
     return inComptoir;
   };
 
-  function handleClickAcheter(poste: string, produit: string, prix: number) {
-    if (prix < fondDeCaisse) {
+  function handleClickAcheter(
+    poste: string,
+    posteIndex: number,
+    produit: string,
+    prix: number
+  ) {
+    if (prix <= fondDeCaisse) {
       let copieFondDeCaisse: number = fondDeCaisse;
       copieFondDeCaisse = copieFondDeCaisse - prix;
       if (setFondDeCaisse !== undefined) {
         setFondDeCaisse(copieFondDeCaisse);
       }
-    }
-    const quelleZone: boolean = isItComptoir(poste);
 
-    // if (quelleZone === true) {
-    // }
+      const quelleZone: boolean = isItComptoir(poste);
+      let allTabZoneCopie: StocksActuelsType[] = [];
+      let posteCopie: StocksActuelsType = structuredClone(stocksComptoir[1]);
+
+      function insertProduct(
+        currentZoneTab: StocksActuelsType[],
+        setterZoneTab: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>
+      ) {
+        allTabZoneCopie = currentZoneTab.slice();
+        posteCopie = structuredClone(currentZoneTab[posteIndex]);
+        const produitIndex = posteCopie.stockActuel.findIndex(
+          (e) => e.produit === produit
+        );
+        const produitCopie = posteCopie.stockActuel[produitIndex];
+        const quantiteProduit = posteCopie.tableauPrixQuantite[produitIndex][1];
+
+        produitCopie.quantite = produitCopie.quantite + quantiteProduit;
+
+        posteCopie.stockActuel.splice(produitIndex, 1, produitCopie);
+
+        allTabZoneCopie.splice(posteIndex, 1, posteCopie);
+
+        setterZoneTab(allTabZoneCopie);
+      }
+
+      if (quelleZone === true) {
+        insertProduct(stocksComptoir, setStocksComptoir);
+      } else {
+        insertProduct(stocksCuisine, setStocksCuisine);
+      }
+    }
   }
 
   return (
@@ -100,13 +138,18 @@ function BureauManager({
                   <div>
                     <p>{e}</p>
                     <p>{prixQuantiteFrites[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksCuisine.length > 0 &&
+                        stocksCuisine[0].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesCuisine[0][0],
+                        0,
                         e,
                         prixQuantiteFrites[i][0]
                       )
@@ -125,13 +168,18 @@ function BureauManager({
                 <div>
                   <p>Boite 18 nuggets</p>
                   <p>{prixQuantiteNugget[0][1]} pièces</p>
-                  <p>Stock actuel:</p>
+                  <p>
+                    Stock actuel:{" "}
+                    {stocksCuisine.length > 0 &&
+                      stocksCuisine[1].stockActuel[0].quantite}
+                  </p>
                 </div>
                 <button
                   className="buttonNeutre"
                   onClick={() =>
                     handleClickAcheter(
                       nomDesPostesCuisine[1][0],
+                      1,
                       nomDesPostesCuisine[1][1][0],
                       prixQuantiteNugget[1][0]
                     )
@@ -144,13 +192,18 @@ function BureauManager({
                 <div>
                   <p>Boite 6 nuggets</p>
                   <p>{prixQuantiteNugget[1][1]} pièces</p>
-                  <p>Stock actuel:</p>
+                  <p>
+                    Stock actuel:{" "}
+                    {stocksCuisine.length > 0 &&
+                      stocksCuisine[1].stockActuel[1].quantite}
+                  </p>
                 </div>
                 <button
                   className="buttonNeutre"
                   onClick={() =>
                     handleClickAcheter(
                       nomDesPostesCuisine[1][0],
+                      1,
                       nomDesPostesCuisine[1][1][1],
                       prixQuantiteNugget[2][0]
                     )
@@ -163,13 +216,18 @@ function BureauManager({
                 <div>
                   <p>Boite 3 nuggets </p>
                   <p> {prixQuantiteNugget[2][1]} pièces</p>
-                  <p>Stock actuel:</p>
+                  <p>
+                    Stock actuel:{" "}
+                    {stocksCuisine.length > 0 &&
+                      stocksCuisine[1].stockActuel[2].quantite}
+                  </p>
                 </div>
                 <button
                   className="buttonNeutre"
                   onClick={() =>
                     handleClickAcheter(
                       nomDesPostesCuisine[1][0],
+                      1,
                       nomDesPostesCuisine[1][1][2],
                       prixQuantiteNugget[3][0]
                     )
@@ -184,20 +242,25 @@ function BureauManager({
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
-                    <p>{prixQuantiteNugget[i + 3][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>{prixQuantiteFriture[i][1]} pièces</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksCuisine.length > 0 &&
+                        stocksCuisine[2].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesCuisine[2][0],
+                        2,
                         e,
-                        prixQuantiteNugget[i + 5][0]
+                        prixQuantiteFriture[i][0]
                       )
                     }
                   >
-                    Acheter {prixQuantiteNugget[i + 3][0]} €
+                    Acheter {prixQuantiteFriture[i][0]} €
                   </button>
                 </div>
               ))}
@@ -214,13 +277,18 @@ function BureauManager({
                     <div>
                       <p>{e}</p>
                       <p>{prixQuantitePains[i][1]} pièces</p>
-                      <p>Stock actuel:</p>
+                      <p>
+                        Stock actuel:{" "}
+                        {stocksCuisine.length > 0 &&
+                          stocksCuisine[3].stockActuel[i].quantite}
+                      </p>
                     </div>
                     <button
                       className="buttonNeutre"
                       onClick={() =>
                         handleClickAcheter(
                           nomDesPostesCuisine[3][0],
+                          3,
                           e,
                           prixQuantitePains[i + 1][0]
                         )
@@ -240,15 +308,20 @@ function BureauManager({
                     <div>
                       <p>{e}</p>
                       <p>{prixQuantiteFromages[i][1]} pièces</p>
-                      <p>Stock actuel:</p>
+                      <p>
+                        Stock actuel:{" "}
+                        {stocksCuisine.length > 0 &&
+                          stocksCuisine[4].stockActuel[i].quantite}
+                      </p>
                     </div>
                     <button
                       className="buttonNeutre"
                       onClick={() =>
                         handleClickAcheter(
                           nomDesPostesCuisine[4][0],
+                          4,
                           e,
-                          prixQuantiteFromages[i + 1][0]
+                          prixQuantiteFromages[i][0]
                         )
                       }
                     >
@@ -266,13 +339,18 @@ function BureauManager({
                     <div>
                       <p>{e}</p>
                       <p>{prixQuantiteIngredientsBurger[i][1]} pièces</p>
-                      <p>Stock actuel:</p>
+                      <p>
+                        Stock actuel:{" "}
+                        {stocksCuisine.length > 0 &&
+                          stocksCuisine[5].stockActuel[i].quantite}
+                      </p>
                     </div>
                     <button
                       className="buttonNeutre"
                       onClick={() =>
                         handleClickAcheter(
                           nomDesPostesCuisine[5][0],
+                          5,
                           e,
                           prixQuantiteIngredientsBurger[i][0]
                         )
@@ -292,13 +370,18 @@ function BureauManager({
                     <div>
                       <p>{e}</p>
                       <p>{prixQuantiteSauces[i][1]} pièces</p>
-                      <p>Stock actuel:</p>
+                      <p>
+                        Stock actuel:{" "}
+                        {stocksCuisine.length > 0 &&
+                          stocksCuisine[6].stockActuel[i].quantite}
+                      </p>
                     </div>
                     <button
                       className="buttonNeutre"
                       onClick={() =>
                         handleClickAcheter(
                           nomDesPostesCuisine[6][0],
+                          6,
                           e,
                           prixQuantiteSauces[i][0]
                         )
@@ -318,13 +401,18 @@ function BureauManager({
                     <div>
                       <p>{e}</p>
                       <p>{prixQuantiteIngredientSalade[i][1]} pièces</p>
-                      <p>Stock actuel:</p>
+                      <p>
+                        Stock actuel:{" "}
+                        {stocksCuisine.length > 0 &&
+                          stocksCuisine[7].stockActuel[i].quantite}
+                      </p>
                     </div>
                     <button
                       className="buttonNeutre"
                       onClick={() =>
                         handleClickAcheter(
                           nomDesPostesCuisine[7][0],
+                          7,
                           e,
                           prixQuantiteIngredientSalade[i][0]
                         )
@@ -345,13 +433,18 @@ function BureauManager({
                   <div>
                     <p>{e}</p>
                     <p>{prixQuantiteGrill[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksCuisine.length > 0 &&
+                        stocksCuisine[8].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesCuisine[8][0],
+                        8,
                         e,
                         prixQuantiteGrill[i][0]
                       )
@@ -371,12 +464,16 @@ function BureauManager({
                   <div>
                     <p>{e[0]}</p>
                     <p>{prixQuantiteSac[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksComptoir.length > 0 &&
+                        stocksComptoir[3].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
-                      handleClickAcheter("sac", e[0], prixQuantiteSac[i][0])
+                      handleClickAcheter("sac", 3, e[0], prixQuantiteSac[i][0])
                     }
                   >
                     Acheter {prixQuantiteSac[i][0]} €
@@ -393,13 +490,18 @@ function BureauManager({
                   <div>
                     <p>{e}</p>
                     <p>{prixQuantiteBoisson[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksComptoir.length > 0 &&
+                        stocksComptoir[0].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesComptoir[0][0],
+                        0,
                         e,
                         prixQuantiteBoisson[i][0]
                       )
@@ -419,13 +521,18 @@ function BureauManager({
                   <div>
                     <p>{e}</p>
                     <p>{prixQuantiteGlace[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksComptoir.length > 0 &&
+                        stocksComptoir[1].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesComptoir[1][0],
+                        1,
                         e,
                         prixQuantiteGlace[i][0]
                       )
@@ -445,13 +552,18 @@ function BureauManager({
                   <div>
                     <p>{e}</p>
                     <p>{prixQuantiteAutresProduits[i][1]} pièces</p>
-                    <p>Stock actuel:</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksComptoir.length > 0 &&
+                        stocksComptoir[2].stockActuel[i].quantite}
+                    </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesComptoir[2][0],
+                        2,
                         e,
                         prixQuantiteAutresProduits[i][0]
                       )

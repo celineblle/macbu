@@ -27,7 +27,7 @@ import {
   nuggets,
 } from "./elements/burgers";
 import * as stocks from "./elements/stocks";
-import { StocksActuelsType, StocksActuels } from "./StocksActuels";
+import { StocksActuelsType, stocksActuels } from "./StocksActuels";
 
 function App() {
   const [frites, setFrites] = useState<Accompagnement[]>([
@@ -122,28 +122,13 @@ function App() {
     }
   }, [commandeAPreparer]);
 
-  const [fondDeCaisse, setFondDeCaisse] = useState<number>(0);
-  const caisseRef = useRef(0);
-
-  useEffect(() => {
-    caisseRef.current = fondDeCaisse;
-  }, [fondDeCaisse]);
+  const [fondDeCaisse, setFondDeCaisse] = useState<number>(50);
 
   const [stocksCuisine, setStocksCuisine] = useState<StocksActuelsType[]>([]);
   const [stocksComptoir, setStocksComptoir] = useState<StocksActuelsType[]>([]);
-  const stocksCuisineRef = useRef<StocksActuelsType[]>([]);
-  const stocksComptoirRef = useRef<StocksActuelsType[]>([]);
 
   useEffect(() => {
-    stocksCuisineRef.current = stocksCuisine;
-  }, [stocksCuisine]);
-
-  useEffect(() => {
-    stocksComptoirRef.current = stocksComptoir;
-  }, [stocksComptoir]);
-
-  useEffect(() => {
-    StocksActuels(setStocksCuisine, setStocksComptoir);
+    stocksActuels(setStocksCuisine, setStocksComptoir);
   }, []);
 
   return (
@@ -152,12 +137,12 @@ function App() {
         <CommandesAPreparerContextSetter value={setCommandeAPreparer}>
           <TailleEtPrixCommandeContext value={tailleEtPrixRef.current}>
             <TailleEtPrixCommandeContextSetter value={setTailleEtPrixCommande}>
-              <FondDeCaisseContext value={caisseRef.current}>
+              <FondDeCaisseContext value={fondDeCaisse}>
                 <FondDeCaisseContextSetter value={setFondDeCaisse}>
                   <BureauManager
-                    stocksCuisine={stocksCuisineRef.current}
+                    stocksCuisine={stocksCuisine}
                     setStocksCuisine={setStocksCuisine}
-                    stocksComptoir={stocksComptoirRef.current}
+                    stocksComptoir={stocksComptoir}
                     setStocksComptoir={setStocksComptoir}
                   />
                   <FritesContext value={frites}>
@@ -167,11 +152,11 @@ function App() {
                           <BurgersContext value={burgers}>
                             <BurgersContextSetter value={setBurgers}>
                               <Cuisine
-                                stocksCuisine={stocksCuisineRef.current}
+                                stocksCuisine={stocksCuisine}
                                 setStocksCuisine={setStocksCuisine}
                               />
                               <Comptoir
-                                stocksComptoir={stocksComptoirRef.current}
+                                stocksComptoir={stocksComptoir}
                                 setStocksComptoir={setStocksComptoir}
                               />
                             </BurgersContextSetter>

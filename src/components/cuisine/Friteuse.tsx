@@ -19,8 +19,15 @@ import {
   accompagnements,
   Produit,
 } from "../../elements/burgers";
-import { demantelerMenu, quiEstQuoi } from "../../elements/function";
-import { StocksActuelsType } from "../../StocksActuels";
+import {
+  demantelerMenu,
+  quiEstQuoi,
+  retirerStock,
+} from "../../elements/function";
+import {
+  StocksActuelsType,
+  StocksActuelInteriorType,
+} from "../../StocksActuels";
 
 function Friteuse({
   stocksCuisine,
@@ -174,19 +181,26 @@ function Friteuse({
   }
 
   function handleClickFrigoToFriteuse(element: Friture): void {
-    const actualSizeFriteuse: number =
-      friteuseRef.current.length + friteuseGrilleRef.current.length;
-    if (actualSizeFriteuse < tailleFriteuse) {
-      setFriteuse([...friteuseRef.current, element]);
+    const stockFrigoFrite: StocksActuelInteriorType | undefined =
+      stocksCuisine[0].stockActuel.find((e) => e.produit === element.friture);
+    if (stockFrigoFrite !== undefined && stockFrigoFrite.quantite > 0) {
+      const actualSizeFriteuse: number =
+        friteuseRef.current.length + friteuseGrilleRef.current.length;
+      if (actualSizeFriteuse < tailleFriteuse) {
+        setFriteuse([...friteuseRef.current, element]);
+      }
+
+      retirerStock(stocksCuisine, setStocksCuisine, "frite", stockFrigoFrite);
+
+      setTimeout(() => {
+        setFriteusePret([...friteusePretRef.current, element]);
+        const oldestFriture: number = friteuseRef.current.indexOf(element);
+        const tabFritureCopie: Friture[] = friteuseRef.current.slice();
+        tabFritureCopie.splice(oldestFriture, 1);
+        setFriteuse(tabFritureCopie);
+        friteuseStandBy(element);
+      }, 1000);
     }
-    setTimeout(() => {
-      setFriteusePret([...friteusePretRef.current, element]);
-      const oldestFriture: number = friteuseRef.current.indexOf(element);
-      const tabFritureCopie: Friture[] = friteuseRef.current.slice();
-      tabFritureCopie.splice(oldestFriture, 1);
-      setFriteuse(tabFritureCopie);
-      friteuseStandBy(element);
-    }, 1000);
   }
 
   function standByBacAFrite(bac: EtatBacAFrite, autreBac: EtatBacAFrite): void {
@@ -508,6 +522,16 @@ function Friteuse({
               <br />
               <div>
                 <h3>Stock</h3>
+                <ul>
+                  {stocksCuisine.length > 0 &&
+                    stocksCuisine[0].stockActuel.map(
+                      (element, index: number) => (
+                        <li key={index}>
+                          {element.produit} : {element.quantite}
+                        </li>
+                      )
+                    )}
+                </ul>
               </div>
             </div>
             <hr />

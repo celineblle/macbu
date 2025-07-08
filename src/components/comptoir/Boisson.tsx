@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import close from "../../assets/close.svg";
-import { taille, boisson } from "../../elements/stocks";
+import { boisson, taille } from "../../elements/stocks";
 import "./Boisson.css";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { quiEstQuoi, demantelerMenu } from "../../elements/function";
 import { Produit, Boisson, boissons } from "../../elements/burgers";
-import { StocksActuelsType } from "../../StocksActuels";
+import {
+  StocksActuelsType,
+  StocksActuelInteriorType,
+} from "../../StocksActuels";
+import { retirerStock } from "../../elements/function";
 
 function PosteBoisson({
   fontainePret,
@@ -50,13 +54,35 @@ function PosteBoisson({
     setButtonActionModalBoisson(!buttonActionModalBoisson);
   }
 
-  function handleClickBoissonConstruction(element: string): void {
+  function handleClickBoissonConstruction(
+    element: string | StocksActuelInteriorType
+  ): void {
     const copieCurentBoisson: BoissonOptionnel =
       structuredClone(currentBoisson);
-    if (taille.includes(element)) {
-      copieCurentBoisson.tailleProduit = element;
-    } else {
-      copieCurentBoisson.saveur = element;
+    const constructeurBoisson: string | StocksActuelInteriorType = element;
+    if (
+      typeof constructeurBoisson === "string" &&
+      taille.includes(constructeurBoisson)
+    ) {
+      copieCurentBoisson.tailleProduit = constructeurBoisson;
+    } else if (typeof constructeurBoisson !== "string") {
+      const currentQuantiteSaveur: StocksActuelInteriorType | undefined =
+        stocksComptoir[0].stockActuel.find(
+          (e) => e.produit === constructeurBoisson.produit
+        );
+      if (
+        currentQuantiteSaveur !== undefined &&
+        currentQuantiteSaveur.quantite > 0
+      ) {
+        copieCurentBoisson.saveur = constructeurBoisson.produit;
+
+        retirerStock(
+          stocksComptoir,
+          setStocksComptoir,
+          "boisson",
+          constructeurBoisson
+        );
+      }
     }
     setCurrentBoisson(copieCurentBoisson);
   }
@@ -88,8 +114,10 @@ function PosteBoisson({
         if (prixBoisson !== undefined) {
           boissonPrete.prix = prixBoisson.prix;
         }
-
-        setFontaine([...fontaineRef.current, boissonPrete]);
+        if (boissonPrete.nom !== "initial") {
+          setFontaine([...fontaineRef.current, boissonPrete]);
+          setCurrentBoisson({});
+        }
       }
     }
     setTimeout(() => {
@@ -97,7 +125,9 @@ function PosteBoisson({
       const tabFontaineCopie: Boisson[] = fontaineRef.current.slice();
       tabFontaineCopie.splice(oldestBoisson, 1);
       setFontaine(tabFontaineCopie);
-      setFontainePret([...fontainePretRef.current, boissonPrete]);
+      if (boissonPrete.nom !== "initial") {
+        setFontainePret([...fontainePretRef.current, boissonPrete]);
+      }
     }, 2000);
   }
 
@@ -200,15 +230,31 @@ function PosteBoisson({
               <h3>Preparation</h3>
               <h4>Saveur</h4>
               <div className="ensembleButton">
-                {boisson.map((element: string, index: number) => (
-                  <button
-                    onClick={() => handleClickBoissonConstruction(element)}
-                    key={index}
-                    className="buttonNeutre buttonSaveur"
-                  >
-                    {element}
-                  </button>
-                ))}
+                {stocksComptoir.length > 0
+                  ? stocksComptoir[0].stockActuel.map(
+                      (element, index: number) => (
+                        <button
+                          onClick={() =>
+                            handleClickBoissonConstruction(element)
+                          }
+                          key={index}
+                          className="buttonNeutre buttonSaveur"
+                          disabled={element.quantite > 0 ? false : true}
+                        >
+                          {element.produit}
+                        </button>
+                      )
+                    )
+                  : boisson.map((element, index: number) => (
+                      <button
+                        onClick={() => handleClickBoissonConstruction(element)}
+                        key={index}
+                        className="buttonNeutre buttonSaveur"
+                        disabled={true}
+                      >
+                        {element}
+                      </button>
+                    ))}
               </div>
               <h4>Taille</h4>
               <div className="ensembleButton">
@@ -258,9 +304,14 @@ function PosteBoisson({
               <div id="modalStockBoisson">
                 <h3>Stock</h3>
                 <ul>
-                  {boisson.map((element: string, index: number) => (
-                    <li key={index}>{element} : X</li>
-                  ))}
+                  {stocksComptoir.length > 0 &&
+                    stocksComptoir[0].stockActuel.map(
+                      (element, index: number) => (
+                        <li key={index}>
+                          {element.produit} : {element.quantite}
+                        </li>
+                      )
+                    )}
                 </ul>
               </div>
             </div>

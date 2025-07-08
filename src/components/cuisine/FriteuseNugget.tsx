@@ -12,16 +12,28 @@ import {
   BoiteNugget,
   NuggetsContext,
 } from "../../CommandeContext";
-import { demantelerMenu, quiEstQuoi } from "../../elements/function";
+import {
+  demantelerMenu,
+  quiEstQuoi,
+  retirerStock,
+} from "../../elements/function";
+import {
+  StocksActuelsType,
+  StocksActuelInteriorType,
+} from "../../StocksActuels";
 
 function FriteuseNugget({
   bacFriture,
   setBacFriture,
   bacFritureRef,
+  stocksCuisine,
+  setStocksCuisine,
 }: {
   bacFriture: Friture[];
   setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
   bacFritureRef: React.RefObject<Friture[]>;
+  stocksCuisine: StocksActuelsType[];
+  setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   const nuggetsStateContext = useContext(NuggetsContext);
   const setNuggetsStateContext = useContext(NuggetsContextSetter);
@@ -87,21 +99,35 @@ function FriteuseNugget({
   }
 
   function handleClickFrigoToFriteuseGp(element: Friture): void {
-    const actualSizeFriteuseGp: number =
-      friteuseGpRef.current.length +
-      pretGpRef.current.length +
-      grilleGpRef.current.length;
+    const stockFrigoFriture: StocksActuelInteriorType | undefined =
+      stocksCuisine[1].stockActuel.find((e) => e.produit === element.friture);
 
-    if (actualSizeFriteuseGp < tailleFriteuseGp) {
-      setFriteuseGp([...friteuseGp, element]);
-      setTimeout(() => {
-        setFriteuseGpPret([...pretGpRef.current, element]);
-        const oldestFritureGp: number = friteuseGpRef.current.indexOf(element);
-        const tabFritureGpCopie: Friture[] = friteuseGpRef.current.slice();
-        tabFritureGpCopie.splice(oldestFritureGp, 1);
-        setFriteuseGp(tabFritureGpCopie);
-        friteuseGpStandBy(element);
-      }, 2000);
+    if (stockFrigoFriture !== undefined && stockFrigoFriture.quantite > 0) {
+      const actualSizeFriteuseGp: number =
+        friteuseGpRef.current.length +
+        pretGpRef.current.length +
+        grilleGpRef.current.length;
+
+      if (actualSizeFriteuseGp < tailleFriteuseGp) {
+        setFriteuseGp([...friteuseGp, element]);
+
+        retirerStock(
+          stocksCuisine,
+          setStocksCuisine,
+          "friture",
+          stockFrigoFriture
+        );
+
+        setTimeout(() => {
+          setFriteuseGpPret([...pretGpRef.current, element]);
+          const oldestFritureGp: number =
+            friteuseGpRef.current.indexOf(element);
+          const tabFritureGpCopie: Friture[] = friteuseGpRef.current.slice();
+          tabFritureGpCopie.splice(oldestFritureGp, 1);
+          setFriteuseGp(tabFritureGpCopie);
+          friteuseGpStandBy(element);
+        }, 2000);
+      }
     }
   }
 
@@ -226,8 +252,6 @@ function FriteuseNugget({
                   </div>
                 ))}
               </div>
-
-              <h3>Stocks boites</h3>
             </div>
             <hr />
             <div className="nuggetConstructeur" id="cuissonNugget">
@@ -283,6 +307,14 @@ function FriteuseNugget({
                 )}
               </div>
               <h3>Stocks frigo</h3>
+              <ul>
+                {stocksCuisine.length > 0 &&
+                  stocksCuisine[1].stockActuel.map((element, index: number) => (
+                    <li key={index}>
+                      {element.produit} : {element.quantite}
+                    </li>
+                  ))}
+              </ul>
             </div>
             <hr />
             <div className="nuggetConstructeur" id="commandeNugget">

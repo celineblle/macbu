@@ -5,8 +5,11 @@
   export const prixQuantiteNugget: [number, number][] = [
     [28, 50],
     [20, 50],
-    [15, 50],
-    [40, 30],
+    [15, 50], ];
+
+  
+export const prixQuantiteFriture: [number, number][] = 
+  [  [40, 30],
     [30, 20],
     [40, 20],
     [25, 20],

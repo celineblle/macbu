@@ -1,20 +1,31 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import "./Grill.css";
 import close from "../../assets/close.svg";
-import { viande } from "../../elements/stocks";
 import { ViandePret } from "./Cuisine";
 import { CommandesAPreparerContext } from "../../CommandeContext";
 import { Produit } from "../../elements/burgers";
-import { demantelerMenu, quiEstQuoi } from "../../elements/function";
+import {
+  demantelerMenu,
+  quiEstQuoi,
+  retirerStock,
+} from "../../elements/function";
+import {
+  StocksActuelInteriorType,
+  StocksActuelsType,
+} from "../../StocksActuels";
 
 function Grill({
   viandePret,
   setViandePret,
   viandePretRef,
+  stocksCuisine,
+  setStocksCuisine,
 }: {
   viandePret: ViandePret[];
   setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
   viandePretRef: React.RefObject<ViandePret[]>;
+  stocksCuisine: StocksActuelsType[];
+  setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
@@ -69,21 +80,33 @@ function Grill({
   }
 
   function handleClickFrigoToGrill(element: string): void {
-    const actualSizeGrill: number =
-      tabCuisson.current.length +
-      tabPret.current.length +
-      tabGrille.current.length;
+    const stockFrigoGrill: StocksActuelInteriorType | undefined =
+      stocksCuisine[8].stockActuel.find((e) => e.produit === element);
+    if (stockFrigoGrill !== undefined && stockFrigoGrill.quantite > 0) {
+      const actualSizeGrill: number =
+        tabCuisson.current.length +
+        tabPret.current.length +
+        tabGrille.current.length;
 
-    if (actualSizeGrill < limitSizeGrill) {
-      setPlaqueDeCuisson([...plaqueDeCuisson, element]);
-      setTimeout(() => {
-        setPlaqueDeCuissonPret([...tabPret.current, element]);
-        const oldestSteak: number = tabCuisson.current.indexOf(element);
-        const tabCuissonCopie: string[] = tabCuisson.current.slice();
-        tabCuissonCopie.splice(oldestSteak, 1);
-        setPlaqueDeCuisson(tabCuissonCopie);
-        steakCuitStandBy(element);
-      }, 2000);
+      if (actualSizeGrill < limitSizeGrill) {
+        setPlaqueDeCuisson([...plaqueDeCuisson, element]);
+
+        retirerStock(
+          stocksCuisine,
+          setStocksCuisine,
+          "viande",
+          stockFrigoGrill
+        );
+
+        setTimeout(() => {
+          setPlaqueDeCuissonPret([...tabPret.current, element]);
+          const oldestSteak: number = tabCuisson.current.indexOf(element);
+          const tabCuissonCopie: string[] = tabCuisson.current.slice();
+          tabCuissonCopie.splice(oldestSteak, 1);
+          setPlaqueDeCuisson(tabCuissonCopie);
+          steakCuitStandBy(element);
+        }, 2000);
+      }
     }
   }
 
@@ -225,17 +248,18 @@ function Grill({
               <h3>Frigo</h3>
               <br />
               <div id="buttonFrigoGrill">
-                {viande.map((element, i) => (
-                  <div key={i}>
-                    <button
-                      onClick={() => handleClickFrigoToGrill(element)}
-                      className="buttonNeutre buttonGrill"
-                    >
-                      {element}
-                    </button>
-                    <p>quantité : x</p>
-                  </div>
-                ))}
+                {stocksCuisine.length > 0 &&
+                  stocksCuisine[8].stockActuel.map((element, i) => (
+                    <div key={i}>
+                      <button
+                        onClick={() => handleClickFrigoToGrill(element.produit)}
+                        className="buttonNeutre buttonGrill"
+                      >
+                        {element.produit}
+                      </button>
+                      <p>quantité : {element.quantite}</p>
+                    </div>
+                  ))}
               </div>
             </div>
             <hr />

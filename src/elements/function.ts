@@ -1,5 +1,6 @@
 import { ProduitEtMenu, Produit } from "./burgers";
 import { frituresCuisine, viande } from "./stocks";
+import { StocksActuelInteriorType, StocksActuelsType } from "../StocksActuels";
 
 function isItBoisson(element: Produit): string | undefined {
   if ("saveur" in element) {
@@ -132,3 +133,37 @@ export function quiEstQuoi(poste: string, commandes: Produit[][]): string[][] {
   }
   return commandesParPoste;
 }
+
+
+export function retirerStock(
+        getterAllStock: StocksActuelsType[],
+        setterAllStock: React.Dispatch<
+          React.SetStateAction<StocksActuelsType[]>
+        >,
+        nomPoste: string,
+        produitUtilise: StocksActuelInteriorType
+      ) {
+        const copieStockZone = getterAllStock.slice();
+        const copiePosteStock = copieStockZone.filter(
+          (e) => e.poste === nomPoste
+        );
+        const indexPosteStock = copieStockZone.findIndex(
+          (e) => e.poste === nomPoste
+        );
+        const copieSaveurStock = copiePosteStock[0].stockActuel.filter(
+          (e) => e.produit === produitUtilise.produit
+        );
+        const saveurStockIndex = copiePosteStock[0].stockActuel.findIndex(
+          (e) => e.produit === produitUtilise.produit
+        );
+
+        copieSaveurStock[0].quantite = copieSaveurStock[0].quantite - 1;
+
+        copiePosteStock[0].stockActuel.splice(
+          saveurStockIndex,
+          1,
+          copieSaveurStock[0]
+        );
+        copieStockZone.splice(indexPosteStock, 1, copiePosteStock[0]);
+        setterAllStock(copieStockZone);
+      }

@@ -17,18 +17,30 @@ import {
   BurgersContextSetter,
   CommandesAPreparerContext,
 } from "../../CommandeContext";
-import { demantelerMenu, quiEstQuoi } from "../../elements/function";
+import {
+  demantelerMenu,
+  quiEstQuoi,
+  retirerStock,
+} from "../../elements/function";
+import {
+  StocksActuelsType,
+  StocksActuelInteriorType,
+} from "../../StocksActuels";
 
 function PosteAssemblage({
   viandePretRef,
   setViandePret,
   bacFritureRef,
   setBacFriture,
+  stocksCuisine,
+  setStocksCuisine,
 }: {
   viandePretRef: React.RefObject<ViandePret[]>;
   setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
   bacFritureRef: React.RefObject<Friture[]>;
   setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
+  stocksCuisine: StocksActuelsType[];
+  setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
 }) {
   interface BurgerAllOptional {
     nom?: string;
@@ -47,7 +59,8 @@ function PosteAssemblage({
     nom: string;
     tableau: string[];
     fonctionConstruction: (
-      element: string,
+      poste: string,
+      produit: string,
       property: keyof BurgerAllOptional
     ) => void;
   }
@@ -123,7 +136,7 @@ function PosteAssemblage({
       fonctionConstruction: handleClickSeveralIngredient,
     },
     {
-      nom: "ingredient",
+      nom: "ingredient burger",
       tableau: ingredientBurger,
       fonctionConstruction: handleClickSeveralIngredient,
     },
@@ -143,81 +156,161 @@ function PosteAssemblage({
   }
 
   function handleClickOneIngredient(
-    element: string,
+    poste: string,
+    produit: string,
     property: keyof BurgerAllOptional
   ): void {
-    if (!Object.prototype.hasOwnProperty.call(currentBurger, property)) {
-      setCurrentBurger({
-        ...currentBurger,
-        [property]: element,
-      });
-    } else if (
-      Object.prototype.hasOwnProperty.call(currentBurger, property) &&
-      element !== currentBurger[property]
-    ) {
-      setCurrentBurger({
-        ...currentBurger,
-        [property]: element,
-      });
-    }
+    const stockFrigoPosteCuisine: StocksActuelsType | undefined =
+      stocksCuisine.find((e) => e.poste === poste);
 
-    if (viandeEtFriture.includes(element)) {
-      const isItfriture: number = bacFritureRef.current.findIndex(
-        (e) => e.friture === element
-      );
-      if (isItfriture === -1) {
-        const isItViande: number = viandePretRef.current.findIndex(
-          (e) => e.nom === element
+    const stockFrigoProduitCuisine: StocksActuelInteriorType | undefined =
+      stockFrigoPosteCuisine?.stockActuel.find((e) => e.produit === produit);
+
+    if (
+      stockFrigoProduitCuisine !== undefined &&
+      stockFrigoProduitCuisine.quantite > 0
+    ) {
+      if (!Object.prototype.hasOwnProperty.call(currentBurger, property)) {
+        setCurrentBurger({
+          ...currentBurger,
+          [property]: produit,
+        });
+      } else if (
+        Object.prototype.hasOwnProperty.call(currentBurger, property) &&
+        produit !== currentBurger[property]
+      ) {
+        setCurrentBurger({
+          ...currentBurger,
+          [property]: produit,
+        });
+      }
+
+      if (viandeEtFriture.includes(produit)) {
+        const isItfriture: number = bacFritureRef.current.findIndex(
+          (e) => e.friture === produit
         );
-        const viandeCopie: ViandePret[] = viandePretRef.current.slice();
-        viandeCopie[isItViande].quantite = viandeCopie[isItViande].quantite - 1;
-        setViandePret(viandeCopie);
-      } else {
-        const fritureCopie: Friture[] = bacFritureRef.current.slice();
-        fritureCopie[isItfriture].quantiteSachet =
-          fritureCopie[isItfriture].quantiteSachet - 1;
-        setBacFriture(fritureCopie);
+        if (isItfriture === -1) {
+          const isItViande: number = viandePretRef.current.findIndex(
+            (e) => e.nom === produit
+          );
+          const viandeCopie: ViandePret[] = viandePretRef.current.slice();
+          viandeCopie[isItViande].quantite =
+            viandeCopie[isItViande].quantite - 1;
+          setViandePret(viandeCopie);
+        } else {
+          const fritureCopie: Friture[] = bacFritureRef.current.slice();
+          fritureCopie[isItfriture].quantiteSachet =
+            fritureCopie[isItfriture].quantiteSachet - 1;
+          setBacFriture(fritureCopie);
+        }
       }
     }
   }
 
   function handleClickSeveralIngredient(
-    element: string,
+    poste: string,
+    produit: string,
     property: keyof BurgerAllOptional
   ): void {
-    let ingredientButtonAction: string[] = Array.isArray(
-      currentBurger[property]
-    )
-      ? currentBurger[property]
-      : [];
+    const stockFrigoPosteCuisine: StocksActuelsType | undefined =
+      stocksCuisine.find((e) => e.poste === poste);
 
-    const limit: number = property === "ingredient" ? 3 : 2;
-
-    if (ingredientButtonAction.length === 0) {
-      ingredientButtonAction.push(element);
-    } else if (
-      ingredientButtonAction.length < limit &&
-      !ingredientButtonAction.includes(element)
+    const stockFrigoProduitCuisine: StocksActuelInteriorType | undefined =
+      stockFrigoPosteCuisine?.stockActuel.find((e) => e.produit === produit);
+    if (
+      stockFrigoProduitCuisine !== undefined &&
+      stockFrigoProduitCuisine.quantite > 0
     ) {
-      ingredientButtonAction.push(element);
-    } else if (ingredientButtonAction.includes(element)) {
-      ingredientButtonAction = ingredientButtonAction.filter(
-        (e: string) => e !== element
+      let ingredientButtonAction: string[] = Array.isArray(
+        currentBurger[property]
+      )
+        ? currentBurger[property]
+        : [];
+
+      const limit: number = property === "ingredient" ? 3 : 2;
+
+      if (ingredientButtonAction.length === 0) {
+        ingredientButtonAction.push(produit);
+      } else if (
+        ingredientButtonAction.length < limit &&
+        !ingredientButtonAction.includes(produit)
+      ) {
+        ingredientButtonAction.push(produit);
+      } else if (ingredientButtonAction.includes(produit)) {
+        ingredientButtonAction = ingredientButtonAction.filter(
+          (e: string) => e !== produit
+        );
+      }
+      setCurrentBurger({
+        ...currentBurger,
+        [property]: ingredientButtonAction,
+      });
+      retirerStock(
+        stocksCuisine,
+        setStocksCuisine,
+        poste,
+        stockFrigoProduitCuisine
       );
     }
-    setCurrentBurger({
-      ...currentBurger,
-      [property]: ingredientButtonAction,
-    });
   }
 
   function handleClickTabIngredients(element: string): void {
     setTabAction(element);
   }
 
+  function retirerAllIngredientsStock() {
+    if (currentBurger.pain !== undefined) {
+      const stockFrigoPain: StocksActuelInteriorType | undefined =
+        stocksCuisine[3].stockActuel.find(
+          (e) => e.produit === currentBurger.pain
+        );
+      if (stockFrigoPain !== undefined) {
+        retirerStock(
+          stocksCuisine,
+          setStocksCuisine,
+          stocksCuisine[3].poste,
+          stockFrigoPain
+        );
+      }
+    }
+
+    function supprimerIngredientsStock(
+      tabIngredient: string[],
+      indexPoste: number,
+      property: keyof BurgerAllOptional
+    ) {
+      if (tabIngredient.length > 0) {
+        for (let i = 0; i < tabIngredient.length; i++) {
+          const stockFrigoIngredient: StocksActuelInteriorType | undefined =
+            stocksCuisine[indexPoste].stockActuel.find(
+              (e) => e.produit === currentBurger[property]
+            );
+          if (stockFrigoIngredient !== undefined) {
+            retirerStock(
+              stocksCuisine,
+              setStocksCuisine,
+              stocksCuisine[indexPoste].poste,
+              stockFrigoIngredient
+            );
+          }
+        }
+      }
+    }
+    if (currentBurger.fromage !== undefined) {
+      supprimerIngredientsStock(currentBurger.fromage, 4, "fromage");
+    }
+    if (currentBurger.ingredient !== undefined) {
+      supprimerIngredientsStock(currentBurger.ingredient, 5, "ingredient");
+    }
+    if (currentBurger.sauce !== undefined) {
+      supprimerIngredientsStock(currentBurger.sauce, 6, "sauce");
+    }
+  }
+
   function handleClickBurgerAttente(): void {
     if (burgerEnAttenteRef.current.length < limitBurgerRack) {
       setBurgerEnAttente([...burgerEnAttente, currentBurger]);
+      retirerAllIngredientsStock();
       setCurrentBurger({});
     }
   }
@@ -339,9 +432,11 @@ function PosteAssemblage({
       if (setBurgersContext !== undefined) {
         setBurgersContext([...burgersContext, finalBurger]);
       }
+      retirerAllIngredientsStock();
       setCurrentBurger({});
     }
   }
+  console.log(stocksCuisine);
 
   function handleClickReprendreBurger(element: object): void {
     setCurrentBurger(element);
@@ -455,6 +550,7 @@ function PosteAssemblage({
                           key={e}
                           onClick={() =>
                             element.fonctionConstruction(
+                              element.nom,
                               e,
                               element.nom as keyof BurgerAllOptional
                             )

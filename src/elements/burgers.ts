@@ -427,6 +427,8 @@ export const jusDefruit: Boisson = {
 accompagnements.push(salade)
 accompagnements.push(legume)
 
+export const fraisProduitFormat: (Accompagnement | Boisson)[] = [salade, legume, jusDefruit, boissonYaourt, fruits]
+
 export const sandwichs: (Salade | Nugget | Burger)[] = [saladeCesar, saladeItalienne, nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
 
 export const burgers: Burger[] = [fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
