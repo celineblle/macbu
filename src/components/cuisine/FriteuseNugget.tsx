@@ -90,7 +90,7 @@ function FriteuseNugget({
 
   function handleClickFrigoToFriteuseGp(element: Friture): void {
     const stockFrigoFriture: StocksActuelInteriorType | undefined =
-      stocksCuisine[1].stockActuel.find((e) => e.produit === element.friture);
+      stocksCuisine[2].stockActuel.find((e) => e.produit === element.friture);
 
     if (stockFrigoFriture !== undefined && stockFrigoFriture.quantite > 0) {
       const actualSizeFriteuseGp: number =
@@ -295,7 +295,7 @@ function FriteuseNugget({
               <h3>Stocks frigo</h3>
               <ul>
                 {stocksCuisine.length > 0 &&
-                  stocksCuisine[1].stockActuel.map((element, index: number) => (
+                  stocksCuisine[2].stockActuel.map((element, index: number) => (
                     <li key={index}>
                       {element.produit} : {element.quantite}
                     </li>

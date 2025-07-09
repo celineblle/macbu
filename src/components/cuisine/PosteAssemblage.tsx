@@ -11,7 +11,10 @@ import {
 } from "../../elements/stocks";
 import { burgers, Produit, Burger, sandwichs } from "../../elements/burgers";
 import { ViandePret } from "./Cuisine";
-import { Friture } from "../../elements/ingredientsQuantite";
+import {
+  Friture,
+  frituresCuisineQuantite,
+} from "../../elements/ingredientsQuantite";
 import {
   BurgersContext,
   BurgersContextSetter,
@@ -149,6 +152,14 @@ function PosteAssemblage({
     produit: string,
     property: keyof BurgerAllOptional
   ): void {
+    if (poste === "viande") {
+      const isItFriture = frituresCuisineQuantite.find(
+        (e) => e.friture === produit
+      );
+      if (isItFriture !== undefined) {
+        poste = "friture";
+      }
+    }
     const stockFrigoPosteCuisine: StocksActuelsType | undefined =
       stocksCuisine.find((e) => e.poste === poste);
 
@@ -403,8 +414,13 @@ function PosteAssemblage({
       }
 
       finalBurger.type = "sandwich";
-      finalBurger.sousType = "burger";
       finalBurger.nom = "";
+
+      if (finalBurger.pain === pains[8]) {
+        finalBurger.sousType = "wrap";
+      } else {
+        finalBurger.sousType = "burger";
+      }
 
       let conforme = false;
 

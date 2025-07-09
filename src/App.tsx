@@ -116,7 +116,7 @@ function App() {
     }
   }, [commandeAPreparer]);
 
-  const [fondDeCaisse, setFondDeCaisse] = useState<number>(50);
+  const [fondDeCaisse, setFondDeCaisse] = useState<number>(100);
 
   const [stocksCuisine, setStocksCuisine] = useState<StocksActuelsType[]>([]);
   const [stocksComptoir, setStocksComptoir] = useState<StocksActuelsType[]>([]);

@@ -413,7 +413,7 @@ function BureauManager({
                     onClick={() =>
                       handleClickAcheter(
                         nomDesPostesCuisine[7][0],
-                        8,
+                        7,
                         e,
                         prixQuantiteGrill[i][0]
                       )
