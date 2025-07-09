@@ -75,11 +75,6 @@ function Friteuse({
   const friteuseRef = useRef<Friture[]>([]);
   const friteusePretRef = useRef<Friture[]>([]);
   const friteuseGrilleRef = useRef<Friture[]>([]);
-  const bacAFriteRef = useRef<EtatBacAFrite[]>([]);
-  const portionRef = useRef<string>("");
-  const rackAFriteRef = useRef<Accompagnement[]>([]);
-  const timeOutFriteuseRef = useRef<number[]>([]);
-  const timeOutBacRef = useRef<BacTimeOut[]>([]);
 
   function handleClickToggleModal(): void {
     setModalActionFriteuse(!modalActionFriteuse);
@@ -87,20 +82,18 @@ function Friteuse({
 
   function emplacementVide(
     taille: number,
-    tableauActuel:
-      | React.RefObject<Friture[]>
-      | React.RefObject<Accompagnement[]>,
-    tableauActuelPret: React.RefObject<Friture[]> | null,
-    tableauActuelGrille: React.RefObject<Friture[]> | null,
+    tableauActuel: Friture[] | Accompagnement[],
+    tableauActuelPret: Friture[] | null,
+    tableauActuelGrille: Friture[] | null,
     setterTableau: React.Dispatch<React.SetStateAction<Friture[]>>
   ) {
-    let placeVide: number = taille - tableauActuel.current.length;
+    let placeVide: number = taille - tableauActuel.length;
 
     if (tableauActuelPret !== null) {
-      placeVide = placeVide - tableauActuelPret.current.length;
+      placeVide = placeVide - tableauActuelPret.length;
     }
     if (tableauActuelGrille !== null) {
-      placeVide = placeVide - tableauActuelGrille.current.length;
+      placeVide = placeVide - tableauActuelGrille.length;
     }
 
     const tableauVide: Friture[] = [];
@@ -129,18 +122,7 @@ function Friteuse({
   }, [friteuseGrille]);
 
   useEffect(() => {
-    bacAFriteRef.current = bacAFrite;
-  }, [bacAFrite]);
-
-  useEffect(() => {
-    rackAFriteRef.current = rackAFrite;
-    emplacementVide(
-      tailleRackAFrite,
-      rackAFriteRef,
-      null,
-      null,
-      setPlaceVideRack
-    );
+    emplacementVide(tailleRackAFrite, rackAFrite, null, null, setPlaceVideRack);
     if (setFrites !== undefined && rackAFrite.length > 0) {
       const newFrite: Accompagnement[] = rackAFrite.slice();
       setFrites(newFrite);
@@ -148,23 +130,11 @@ function Friteuse({
   }, [rackAFrite]);
 
   useEffect(() => {
-    portionRef.current = portion;
-  }, [portion]);
-
-  useEffect(() => {
-    timeOutFriteuseRef.current = timeOutFriteuse;
-  }, [timeOutFriteuse]);
-
-  useEffect(() => {
-    timeOutBacRef.current = timeOutBac;
-  }, [timeOutBac]);
-
-  useEffect(() => {
     emplacementVide(
       tailleFriteuse,
-      friteuseRef,
-      friteusePretRef,
-      friteuseGrilleRef,
+      friteuse,
+      friteusePret,
+      friteuseGrille,
       setPlaceVideFriteuse
     );
   }, [friteuse, friteusePret, friteuseGrille]);
@@ -177,7 +147,7 @@ function Friteuse({
       tabFriturePretCopie.splice(oldestFriture, 1);
       setFriteusePret(tabFriturePretCopie);
     }, 10000);
-    setTimeOutFriteuse([...timeOutFriteuseRef.current, standByTimeOutFriteuse]);
+    setTimeOutFriteuse([...timeOutFriteuse, standByTimeOutFriteuse]);
   }
 
   function handleClickFrigoToFriteuse(element: Friture): void {
@@ -187,7 +157,7 @@ function Friteuse({
       const actualSizeFriteuse: number =
         friteuseRef.current.length + friteuseGrilleRef.current.length;
       if (actualSizeFriteuse < tailleFriteuse) {
-        setFriteuse([...friteuseRef.current, element]);
+        setFriteuse([...friteuse, element]);
       }
 
       retirerStock(stocksCuisine, setStocksCuisine, "frite", stockFrigoFrite);
@@ -216,14 +186,14 @@ function Friteuse({
       timeout: standByTimeOutFriteuse,
       bac: bac.friture,
     };
-    setTimeOutBac([...timeOutBacRef.current, newTimeout]);
+    setTimeOutBac([...timeOutBac, newTimeout]);
   }
 
   function handleClickFriteuseToBac(element: Friture, index: number): void {
-    const bac: EtatBacAFrite[] = bacAFriteRef.current.filter(
+    const bac: EtatBacAFrite[] = bacAFrite.filter(
       (e) => e.friture === element.friture
     );
-    const autreBac: EtatBacAFrite[] = bacAFriteRef.current.filter(
+    const autreBac: EtatBacAFrite[] = bacAFrite.filter(
       (e) => e.friture !== element.friture
     );
     if (bac[0].quantiteSachet === 0) {
@@ -237,7 +207,7 @@ function Friteuse({
       setBacAFrite([autreBac[0], bac[0]]);
     }
     clearTimeout(timeOutFriteuse[index]);
-    const timeOutFriteuseCopie: number[] = timeOutFriteuseRef.current.slice();
+    const timeOutFriteuseCopie: number[] = timeOutFriteuse.slice();
     timeOutFriteuseCopie.splice(index, 1);
     setTimeOutFriteuse(timeOutFriteuseCopie);
     const friteusePretCopie: Friture[] = friteusePretRef.current.slice();
@@ -250,16 +220,16 @@ function Friteuse({
   }
 
   function handleClickFabriquerPortion(element: string): void {
-    if (portionRef.current !== "") {
+    if (portion !== "") {
       const portionChoisie: PortionFrite[] = portionFrite.filter(
-        (e) => e.base === portionRef.current && e.tailleProduit === element
+        (e) => e.base === portion && e.tailleProduit === element
       );
 
-      const bac: EtatBacAFrite[] = bacAFriteRef.current.filter(
-        (e) => e.friture === portionRef.current
+      const bac: EtatBacAFrite[] = bacAFrite.filter(
+        (e) => e.friture === portion
       );
-      const autreBac: EtatBacAFrite[] = bacAFriteRef.current.filter(
-        (e) => e.friture !== portionRef.current
+      const autreBac: EtatBacAFrite[] = bacAFrite.filter(
+        (e) => e.friture !== portion
       );
 
       if (bac[0].quantiteSachet >= portionChoisie[0].quantite) {
@@ -282,7 +252,7 @@ function Friteuse({
           prix: finalPrix,
         };
 
-        setRackAFrite([...rackAFriteRef.current, finalPortion]);
+        setRackAFrite([...rackAFrite, finalPortion]);
 
         if (bac[0].friture === "Frite") {
           setBacAFrite([bac[0], autreBac[0]]);
@@ -295,23 +265,23 @@ function Friteuse({
   }
   function handleClickPoubelle(
     element: Friture,
-    tableauRef: React.RefObject<Friture[]>,
+    tableau: Friture[],
     setter: React.Dispatch<React.SetStateAction<Friture[]>>
   ): void {
-    const oldestFrite: number = tableauRef.current.indexOf(element);
-    const tabGrilleCopie: Friture[] = tableauRef.current.slice();
+    const oldestFrite: number = tableau.indexOf(element);
+    const tabGrilleCopie: Friture[] = tableau.slice();
     tabGrilleCopie.splice(oldestFrite, 1);
     setter(tabGrilleCopie);
   }
 
   function clearTimeOutBac(index: number): void {
-    if (bacAFriteRef.current[index].quantiteSachet === 0) {
-      if (timeOutBacRef.current.length > 0) {
-        const actualTimeOut: number = timeOutBacRef.current.findIndex(
-          (e) => e.bac === bacAFriteRef.current[index].friture
+    if (bacAFrite[index].quantiteSachet === 0) {
+      if (timeOutBac.length > 0) {
+        const actualTimeOut: number = timeOutBac.findIndex(
+          (e) => e.bac === bacAFrite[index].friture
         );
         if (actualTimeOut !== -1) {
-          clearTimeout(timeOutBacRef.current[actualTimeOut].timeout);
+          clearTimeout(timeOutBac[actualTimeOut].timeout);
         }
       }
     }
@@ -323,10 +293,10 @@ function Friteuse({
   }, [bacAFrite]);
 
   function handleClickPoubelleBac(element: EtatBacAFrite): void {
-    const bac: EtatBacAFrite[] = bacAFriteRef.current.filter(
+    const bac: EtatBacAFrite[] = bacAFrite.filter(
       (e) => e.friture === element.friture
     );
-    const autreBac: EtatBacAFrite[] = bacAFriteRef.current.filter(
+    const autreBac: EtatBacAFrite[] = bacAFrite.filter(
       (e) => e.friture !== element.friture
     );
 
@@ -342,8 +312,8 @@ function Friteuse({
   }
 
   function handleClickAvailabilityFrite(element: Accompagnement): void {
-    const rackFriteCopie: Accompagnement[] = rackAFriteRef.current.slice();
-    const indexfrite: number = rackAFriteRef.current.findIndex(
+    const rackFriteCopie: Accompagnement[] = rackAFrite.slice();
+    const indexfrite: number = rackAFrite.findIndex(
       (e) => e.nom === element.nom && e.tailleProduit === element.tailleProduit
     );
 
@@ -484,7 +454,7 @@ function Friteuse({
                     onClick={() =>
                       handleClickPoubelle(
                         emplacement,
-                        friteuseGrilleRef,
+                        friteuseGrille,
                         setFriteuseGrille
                       )
                     }

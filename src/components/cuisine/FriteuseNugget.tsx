@@ -57,8 +57,6 @@ function FriteuseNugget({
   const friteuseGpRef = useRef<Friture[]>([]);
   const pretGpRef = useRef<Friture[]>([]);
   const grilleGpRef = useRef<Friture[]>([]);
-  const timeOutPretFriteuseGpRef = useRef<number[]>([]);
-  const boitesNuggetRef = useRef<BoiteNugget[]>(nuggetsStateContext);
 
   useEffect(() => {
     friteuseGpRef.current = friteuseGp;
@@ -71,14 +69,6 @@ function FriteuseNugget({
   useEffect(() => {
     grilleGpRef.current = friteuseGpGrille;
   }, [friteuseGpGrille]);
-
-  useEffect(() => {
-    timeOutPretFriteuseGpRef.current = timeOutPretFriteuseGpId;
-  }, [timeOutPretFriteuseGpId]);
-
-  useEffect(() => {
-    boitesNuggetRef.current = nuggetsStateContext;
-  }, [nuggetsStateContext]);
 
   function handleClickToggleModal(): void {
     setModalActionFriteuseNugget(!modalActionFriteuseNugget);
@@ -93,7 +83,7 @@ function FriteuseNugget({
       setFriteuseGpPret(tabFritureGpPretCopie);
     }, 5000);
     setTimeOutPretFriteuseGpId([
-      ...timeOutPretFriteuseGpRef.current,
+      ...timeOutPretFriteuseGpId,
       standByTimeOutFriteuseGp,
     ]);
   }
@@ -104,9 +94,7 @@ function FriteuseNugget({
 
     if (stockFrigoFriture !== undefined && stockFrigoFriture.quantite > 0) {
       const actualSizeFriteuseGp: number =
-        friteuseGpRef.current.length +
-        pretGpRef.current.length +
-        grilleGpRef.current.length;
+        friteuseGp.length + friteuseGpPret.length + friteuseGpGrille.length;
 
       if (actualSizeFriteuseGp < tailleFriteuseGp) {
         setFriteuseGp([...friteuseGp, element]);
@@ -133,9 +121,7 @@ function FriteuseNugget({
 
   useEffect(() => {
     const actualSizeFriteuseGp: number =
-      friteuseGpRef.current.length +
-      pretGpRef.current.length +
-      grilleGpRef.current.length;
+      friteuseGp.length + friteuseGpPret.length + friteuseGpGrille.length;
     const placeVide: string[] = [];
     if (actualSizeFriteuseGp < tailleFriteuseGp) {
       for (let i = actualSizeFriteuseGp; i < tailleFriteuseGp; i++) {
@@ -146,13 +132,13 @@ function FriteuseNugget({
   }, [friteuseGp, friteuseGpPret, friteuseGpGrille]);
 
   function handleClickAvailabilityFriture(element: Friture): void {
-    const getReadyFriture: number = pretGpRef.current.indexOf(element);
-    let timeOutIdCopie: number[] = timeOutPretFriteuseGpRef.current.slice();
+    const getReadyFriture: number = friteuseGpPret.indexOf(element);
+    let timeOutIdCopie: number[] = timeOutPretFriteuseGpId.slice();
     const friteTimeOutId = timeOutIdCopie[getReadyFriture];
     clearTimeout(friteTimeOutId);
     timeOutIdCopie = timeOutIdCopie.filter((e) => e !== friteTimeOutId);
     setTimeOutPretFriteuseGpId(timeOutIdCopie);
-    const tabCuissonCopie: Friture[] = pretGpRef.current.slice();
+    const tabCuissonCopie: Friture[] = friteuseGpPret.slice();
     tabCuissonCopie.splice(getReadyFriture, 1);
     setFriteuseGpPret(tabCuissonCopie);
     const indexCurrentFrit: number = bacFritureRef.current.findIndex(
@@ -165,8 +151,8 @@ function FriteuseNugget({
   }
 
   function handleClickPoubelle(element: Friture): void {
-    const oldestFritureNugget: number = grilleGpRef.current.indexOf(element);
-    const tabGrilleCopie: Friture[] = grilleGpRef.current.slice();
+    const oldestFritureNugget: number = friteuseGpGrille.indexOf(element);
+    const tabGrilleCopie: Friture[] = friteuseGpGrille.slice();
     tabGrilleCopie.splice(oldestFritureNugget, 1);
     setFriteuseGpGrille(tabGrilleCopie);
   }
@@ -176,7 +162,7 @@ function FriteuseNugget({
     indexBoite: number
   ): void {
     if (bacFritureRef.current[0].quantiteSachet > nugget.nombreNugget) {
-      const allBoite: BoiteNugget[] = boitesNuggetRef.current.slice();
+      const allBoite: BoiteNugget[] = nuggetsStateContext.slice();
       allBoite[indexBoite].quantitePret = allBoite[indexBoite].quantitePret + 1;
       if (setNuggetsStateContext !== undefined) {
         setNuggetsStateContext(allBoite);

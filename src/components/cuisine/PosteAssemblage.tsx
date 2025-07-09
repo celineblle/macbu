@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./PosteAssemblage.css";
 import close from "../../assets/close.svg";
 import {
@@ -103,17 +103,6 @@ function PosteAssemblage({
   }
 
   let viandeEtFriture: string[] = getAvailableViande();
-
-  const burgerPretRef = useRef<Burger[]>([]);
-  const burgerEnAttenteRef = useRef<BurgerAllOptional[]>([]);
-
-  useEffect(() => {
-    burgerPretRef.current = burgersContext;
-  }, [burgersContext]);
-
-  useEffect(() => {
-    burgerEnAttenteRef.current = burgerEnAttente;
-  }, [burgerEnAttente]);
 
   useEffect(() => {
     viandeEtFriture = getAvailableViande();
@@ -308,7 +297,7 @@ function PosteAssemblage({
   }
 
   function handleClickBurgerAttente(): void {
-    if (burgerEnAttenteRef.current.length < limitBurgerRack) {
+    if (burgerEnAttente.length < limitBurgerRack) {
       setBurgerEnAttente([...burgerEnAttente, currentBurger]);
       retirerAllIngredientsStock();
       setCurrentBurger({});
@@ -348,7 +337,7 @@ function PosteAssemblage({
   }
 
   function handleClickBurgerPret(): void {
-    if (burgerPretRef.current.length < limitBurgerRack) {
+    if (burgersContext.length < limitBurgerRack) {
       const finalBurger: Burger = {
         nom: "initial",
         pain: "initial",

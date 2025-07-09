@@ -89,7 +89,7 @@ function PosteBoisson({
 
   function handleClickPreparationToFontaine(): void {
     const actualSizeBoisson: number =
-      fontaineRef.current.length + fontainePretRef.current.length;
+      fontaine.length + fontainePretRef.current.length;
     const boissonPrete: Boisson = {
       nom: "initial",
       saveur: "initial",
@@ -115,7 +115,7 @@ function PosteBoisson({
           boissonPrete.prix = prixBoisson.prix;
         }
         if (boissonPrete.nom !== "initial") {
-          setFontaine([...fontaineRef.current, boissonPrete]);
+          setFontaine([...fontaine, boissonPrete]);
           setCurrentBoisson({});
         }
       }
@@ -133,7 +133,7 @@ function PosteBoisson({
 
   useEffect(() => {
     const actualSizeBoisson: number =
-      fontaineRef.current.length + fontainePretRef.current.length;
+      fontaine.length + fontainePretRef.current.length;
     const placeVide: string[] = [];
     if (actualSizeBoisson < taillePosteBoisson) {
       for (let i = actualSizeBoisson; i < taillePosteBoisson; i++) {

@@ -37,7 +37,6 @@ function Grill({
     []
   );
   const [plaqueDeCuissonPret, setPlaqueDeCuissonPret] = useState<string[]>([]);
-
   const [placeVideGrill, setPlaceVideGrill] = useState<string[]>([]);
   const [timeOutPretId, setTimeOutPretId] = useState<number[]>([]);
   const [commandeSteak, setCommandeSteak] = useState<(string | string[])[]>([]);
@@ -46,8 +45,6 @@ function Grill({
   const tabGrille = useRef<string[]>([]);
   const tabPret = useRef<string[]>([]);
 
-  const timeOutPretRef = useRef<number[]>([]);
-
   useEffect(() => {
     tabCuisson.current = plaqueDeCuisson;
   }, [plaqueDeCuisson]);
@@ -55,10 +52,6 @@ function Grill({
   useEffect(() => {
     tabGrille.current = plaqueDeCuissonGrille;
   }, [plaqueDeCuissonGrille]);
-
-  useEffect(() => {
-    timeOutPretRef.current = timeOutPretId;
-  }, [timeOutPretId]);
 
   useEffect(() => {
     tabPret.current = plaqueDeCuissonPret;
@@ -76,7 +69,7 @@ function Grill({
       tabPretCopie.splice(oldestSteak, 1);
       setPlaqueDeCuissonPret(tabPretCopie);
     }, 10000);
-    setTimeOutPretId([...timeOutPretRef.current, standByTimeOut]);
+    setTimeOutPretId([...timeOutPretId, standByTimeOut]);
   }
 
   function handleClickFrigoToGrill(element: string): void {
@@ -84,9 +77,9 @@ function Grill({
       stocksCuisine[8].stockActuel.find((e) => e.produit === element);
     if (stockFrigoGrill !== undefined && stockFrigoGrill.quantite > 0) {
       const actualSizeGrill: number =
-        tabCuisson.current.length +
-        tabPret.current.length +
-        tabGrille.current.length;
+        plaqueDeCuisson.length +
+        plaqueDeCuissonPret.length +
+        plaqueDeCuissonGrille.length;
 
       if (actualSizeGrill < limitSizeGrill) {
         setPlaqueDeCuisson([...plaqueDeCuisson, element]);
@@ -112,9 +105,9 @@ function Grill({
 
   useEffect(() => {
     const actualSizeGrill: number =
-      tabCuisson.current.length +
-      tabPret.current.length +
-      tabGrille.current.length;
+      plaqueDeCuisson.length +
+      plaqueDeCuissonPret.length +
+      plaqueDeCuissonGrille.length;
     const placeVide: string[] = [];
     if (actualSizeGrill < limitSizeGrill) {
       for (let i = actualSizeGrill; i < limitSizeGrill; i++) {
@@ -125,13 +118,13 @@ function Grill({
   }, [plaqueDeCuisson, plaqueDeCuissonPret, plaqueDeCuissonGrille]);
 
   function handleClickAvailabilitySteak(element: string): void {
-    const getReadySteak: number = tabPret.current.indexOf(element);
-    let timeOutIdCopie: number[] = timeOutPretRef.current.slice();
+    const getReadySteak: number = plaqueDeCuissonPret.indexOf(element);
+    let timeOutIdCopie: number[] = timeOutPretId.slice();
     const steakTimeOutId = timeOutIdCopie[getReadySteak];
     clearTimeout(steakTimeOutId);
     timeOutIdCopie = timeOutIdCopie.filter((e) => e !== steakTimeOutId);
     setTimeOutPretId(timeOutIdCopie);
-    const tabCuissonCopie: string[] = tabPret.current.slice();
+    const tabCuissonCopie: string[] = plaqueDeCuissonPret.slice();
     tabCuissonCopie.splice(getReadySteak, 1);
     setPlaqueDeCuissonPret(tabCuissonCopie);
     const viandePretCopie: ViandePret[] = viandePretRef.current.slice();
@@ -144,8 +137,8 @@ function Grill({
   }
 
   function handleClickPoubelle(element: string): void {
-    const oldestSteak: number = tabGrille.current.indexOf(element);
-    const tabGrilleCopie: string[] = tabGrille.current.slice();
+    const oldestSteak: number = plaqueDeCuissonGrille.indexOf(element);
+    const tabGrilleCopie: string[] = plaqueDeCuissonGrille.slice();
     tabGrilleCopie.splice(oldestSteak, 1);
     setPlaqueDeCuissonGrille(tabGrilleCopie);
   }

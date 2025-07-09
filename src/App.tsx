@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Cuisine from "./components/cuisine/Cuisine";
 import BureauManager from "./components/bureauManager/BureauManager";
@@ -82,12 +82,6 @@ function App() {
     [number, number][]
   >([]);
 
-  const tailleEtPrixRef = useRef<[number, number][]>([]);
-
-  useEffect(() => {
-    tailleEtPrixRef.current = tailleEtPrixCommande;
-  }, [tailleEtPrixCommande]);
-
   useEffect(() => {
     if (commandeAPreparer.length > 0) {
       const allFinalTailleCommande: [number, number][] = [];
@@ -135,7 +129,7 @@ function App() {
     <div id="page">
       <CommandesAPreparerContext value={commandeAPreparer}>
         <CommandesAPreparerContextSetter value={setCommandeAPreparer}>
-          <TailleEtPrixCommandeContext value={tailleEtPrixRef.current}>
+          <TailleEtPrixCommandeContext value={tailleEtPrixCommande}>
             <TailleEtPrixCommandeContextSetter value={setTailleEtPrixCommande}>
               <FondDeCaisseContext value={fondDeCaisse}>
                 <FondDeCaisseContextSetter value={setFondDeCaisse}>

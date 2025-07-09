@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import close from "../../assets/close.svg";
 import * as stocks from "../../elements/stocks";
 import {
@@ -238,32 +238,6 @@ function ComptoirAssemblage({
   const [tabTaille, setTabTaille] = useState<number[]>([]);
   const [tabPrix, setTabPrix] = useState<number[]>([]);
 
-  const enCourRef = useRef<Produit[][]>([]);
-  const enCourAffichageRef = useRef<(string | string[])[][]>([]);
-  const idPlateauRef = useRef<number>(0);
-  const sacRef = useRef<[string, number][][]>([]);
-  const sacAffichageRef = useRef<string[][]>([]);
-
-  useEffect(() => {
-    enCourRef.current = commandeEnCour;
-  }, [commandeEnCour]);
-
-  useEffect(() => {
-    enCourAffichageRef.current = enCourAffichage;
-  }, [enCourAffichage]);
-
-  useEffect(() => {
-    idPlateauRef.current = idPlateauPrepa;
-  }, [idPlateauPrepa]);
-
-  useEffect(() => {
-    sacRef.current = sacEnCour;
-  }, [sacEnCour]);
-
-  useEffect(() => {
-    sacAffichageRef.current = sacAffichage;
-  }, [sacAffichage]);
-
   function handleClickActionModal(): void {
     setButtonActionModalComptoirA(!buttonActionModalComptoirA);
   }
@@ -274,7 +248,7 @@ function ComptoirAssemblage({
 
   function handleClickPlateau(position: number): void {
     if (position === -1) {
-      setIdPlateauPrepa(enCourRef.current.length);
+      setIdPlateauPrepa(commandeEnCour.length);
     } else {
       setIdPlateauPrepa(position);
     }
@@ -300,11 +274,11 @@ function ComptoirAssemblage({
 
     if (okRemplirPlateau === true) {
       if (plat.prix !== 0) {
-        const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+        const allCommandeEnCourCopie: Produit[][] = commandeEnCour.slice();
         let commandeCopie: Produit[] = [];
 
-        if (allCommandeEnCourCopie[idPlateauRef.current] !== undefined) {
-          commandeCopie = allCommandeEnCourCopie[idPlateauRef.current];
+        if (allCommandeEnCourCopie[idPlateauPrepa] !== undefined) {
+          commandeCopie = allCommandeEnCourCopie[idPlateauPrepa];
         }
         if ("friture" in plat) {
           const nuggetProduit: Produit | undefined = nuggets.find(
@@ -381,15 +355,15 @@ function ComptoirAssemblage({
             clearTimeout(plat.timeId);
           }
         }
-        allCommandeEnCourCopie.splice(idPlateauRef.current, 1, commandeCopie);
+        allCommandeEnCourCopie.splice(idPlateauPrepa, 1, commandeCopie);
         setCommandeEnCour(allCommandeEnCourCopie);
 
         const commandeAffichageCopie: (string | string[])[] =
           affichageCommande(commandeCopie);
         const enCourTabAffichageCopie: (string | string[])[][] =
-          enCourAffichageRef.current.slice();
+          enCourAffichage.slice();
         enCourTabAffichageCopie.splice(
-          idPlateauRef.current,
+          idPlateauPrepa,
           1,
           commandeAffichageCopie
         );
@@ -407,7 +381,7 @@ function ComptoirAssemblage({
   }
 
   function handleClickSupprimerPlat(commande: number, plat: number): void {
-    const allCommandeEnCourCopie: Produit[][] = enCourRef.current.slice();
+    const allCommandeEnCourCopie: Produit[][] = commandeEnCour.slice();
     const commandeCopie: Produit[] = allCommandeEnCourCopie[commande];
     const currentPlat: Produit = commandeCopie[plat];
     commandeCopie.splice(plat, 1);
@@ -421,7 +395,7 @@ function ComptoirAssemblage({
     setCommandeEnCour(allCommandeEnCourCopie);
 
     const allCommandeAffichageCopie: (string | string[])[][] =
-      enCourAffichageRef.current;
+      enCourAffichage.slice();
     const commandeAffichageCopie: (string | string[])[] =
       allCommandeAffichageCopie[commande];
     commandeAffichageCopie.splice(plat, 1);
@@ -520,29 +494,23 @@ function ComptoirAssemblage({
     const stockFrigoSac: StocksActuelInteriorType | undefined =
       stocksComptoir[3].stockActuel.find((e) => e.produit === produit);
     if (stockFrigoSac !== undefined && stockFrigoSac.quantite > 0) {
-      if (enCourAffichageRef.current[idPlateauRef.current] !== undefined) {
-        const allSacCommandeCopie: [string, number][][] =
-          sacRef.current.slice();
+      if (enCourAffichage[idPlateauPrepa] !== undefined) {
+        const allSacCommandeCopie: [string, number][][] = sacEnCour.slice();
         let uniqueCommandeSacCopie: [string, number][] = [];
         if (allSacCommandeCopie.length > 0) {
-          uniqueCommandeSacCopie =
-            allSacCommandeCopie[idPlateauRef.current].slice();
+          uniqueCommandeSacCopie = allSacCommandeCopie[idPlateauPrepa].slice();
         }
         const formatSac: [string, number] | undefined = stocks.sac.find(
           (e) => e[0] === produit
         );
         if (formatSac !== undefined) {
           uniqueCommandeSacCopie.push(formatSac);
-          allSacCommandeCopie.splice(
-            idPlateauRef.current,
-            1,
-            uniqueCommandeSacCopie
-          );
+          allSacCommandeCopie.splice(idPlateauPrepa, 1, uniqueCommandeSacCopie);
           setSacEnCour(allSacCommandeCopie);
 
-          const allAffichageSacCopie = sacAffichageRef.current.slice();
+          const allAffichageSacCopie = sacAffichage.slice();
           const uniqueAffichageSacCopie =
-            allAffichageSacCopie[idPlateauRef.current].slice();
+            allAffichageSacCopie[idPlateauPrepa].slice();
           if (uniqueAffichageSacCopie[0] === "Aucun Sac") {
             uniqueAffichageSacCopie.splice(0, 1, formatSac[0]);
           } else {
@@ -550,7 +518,7 @@ function ComptoirAssemblage({
           }
 
           allAffichageSacCopie.splice(
-            idPlateauRef.current,
+            idPlateauPrepa,
             1,
             uniqueAffichageSacCopie
           );
@@ -563,28 +531,25 @@ function ComptoirAssemblage({
   }
 
   useEffect(() => {
-    if (
-      enCourRef.current.length > 0 &&
-      enCourRef.current.length > sacRef.current.length
-    ) {
-      const allSacAffichageCopie = sacAffichageRef.current.slice();
+    if (commandeEnCour.length > 0 && commandeEnCour.length > sacEnCour.length) {
+      const allSacAffichageCopie = sacAffichage.slice();
       allSacAffichageCopie.push(["Aucun Sac"]);
       setSacAffichage(allSacAffichageCopie);
     }
   }, [commandeEnCour]);
 
   function handleClickSupprimerSac(position: number) {
-    const allSacCopie = sacRef.current.slice();
-    const uniqueSacCopie = allSacCopie[idPlateauRef.current].slice();
+    const allSacCopie = sacEnCour.slice();
+    const uniqueSacCopie = allSacCopie[idPlateauPrepa].slice();
     const sacSupprimee = uniqueSacCopie[position];
     uniqueSacCopie.splice(position, 1);
-    allSacCopie.splice(idPlateauRef.current, 1, uniqueSacCopie);
+    allSacCopie.splice(idPlateauPrepa, 1, uniqueSacCopie);
     setSacEnCour(allSacCopie);
 
-    const allAffSacCopie = sacAffichageRef.current.slice();
-    const uniqueAffSacCopie = allAffSacCopie[idPlateauRef.current].slice();
+    const allAffSacCopie = sacAffichage.slice();
+    const uniqueAffSacCopie = allAffSacCopie[idPlateauPrepa].slice();
     uniqueAffSacCopie.splice(position, 1);
-    allAffSacCopie.splice(idPlateauRef.current, 1, uniqueAffSacCopie);
+    allAffSacCopie.splice(idPlateauPrepa, 1, uniqueAffSacCopie);
     setSacAffichage(allAffSacCopie);
 
     const stockComptoirCopie = stocksComptoir.slice();
@@ -605,7 +570,7 @@ function ComptoirAssemblage({
   function handleClickValiderPlateau(commande: number): void {
     if (validerPlateau === true) {
       const copiePlateau: ProduitEtMenu[] =
-        enCourRef.current[idPlateauPrepa].slice();
+        commandeEnCour[idPlateauPrepa].slice();
       const copieCommande: ProduitEtMenu[] =
         aPreparerRef.current[commande].slice();
       let malusPrix: number = 0;
@@ -671,7 +636,7 @@ function ComptoirAssemblage({
 
       const tailleCommandeAValider: number = tailleEtPrixCommande[commande][0];
       const taillePlateau: [string, number][] =
-        sacRef.current[idPlateauPrepa].slice();
+        sacEnCour[idPlateauPrepa].slice();
       let finalContenancePlateau: number = 0;
 
       if (taillePlateau !== undefined) {
@@ -705,10 +670,10 @@ function ComptoirAssemblage({
       copieCommandeAPreparerAffi.splice(commande, 1);
       setAPreparerAffichage(copieCommandeAPreparerAffi);
 
-      const copieAllPlateau = enCourRef.current.slice();
+      const copieAllPlateau = commandeEnCour.slice();
       copieAllPlateau.splice(idPlateauPrepa, 1);
       setCommandeEnCour(copieAllPlateau);
-      const copieEnCourAffichage = enCourAffichageRef.current.slice();
+      const copieEnCourAffichage = enCourAffichage.slice();
       copieEnCourAffichage.splice(idPlateauPrepa, 1);
       setEnCourAffichage(copieEnCourAffichage);
 
@@ -726,8 +691,7 @@ function ComptoirAssemblage({
   }
 
   useEffect(() => {
-    let placeVide: number = tailleEnCour - enCourRef.current.length;
-    placeVide = placeVide - sacAffichageRef.current.length;
+    const placeVide: number = tailleEnCour - commandeEnCour.length;
     if (placeVide <= tailleEnCour) {
       const placeVideTab: string[] = [];
       for (let i = 0; i < placeVide; i++) {
