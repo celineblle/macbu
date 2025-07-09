@@ -391,7 +391,6 @@ function BureauManager({
                   </div>
                 ))}
               </div>
-              <br />
             </div>
             <br />
             <hr />
