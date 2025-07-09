@@ -718,7 +718,7 @@ function ComptoirAssemblage({
     <div id="comptoirAssemblageComponent" className="component">
       <div id="headerPage">
         <button className="buttonModal" onClick={handleClickActionModal}>
-          comptoir ComptoirAssemblage
+          Comptoir
         </button>
         <p id="compteurCommande">
           Commande en attente : {aPreparerAffichage.length}

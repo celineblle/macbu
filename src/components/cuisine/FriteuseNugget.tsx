@@ -190,11 +190,11 @@ function FriteuseNugget({
         Friteuse Nugget
       </button>
       <div id="pageContentNugget">
-        <div>
+        <div className="contentFrontPageNugget">
           <h4>Pret</h4>
         </div>
         <hr />
-        <div>
+        <div className="contentFrontPageNugget">
           <h4>Stock</h4>
         </div>
       </div>

@@ -2,14 +2,14 @@
   width: calc(20vw - 24px);
 }
 
-#boissonListePage {
+#glaceListePage {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
 
   padding: 0;
   margin: 0;
-  height: 28vh;
+  height: 24vh;
   overflow: scroll;
   button {
     margin: 4px auto;

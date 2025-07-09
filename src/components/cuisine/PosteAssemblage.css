@@ -5,7 +5,7 @@
 #posteAssemblageComponent {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  align-items: flex-start;
   width: calc(40vw - 24px);
   height: calc(100% - 24px);
 }
@@ -13,10 +13,6 @@
 .suivantButtonHidden,
 .exitButtonBurgerHidden {
   display: none;
-}
-
-#buttonCuisine {
-  width: 55px;
 }
 
 .postePosteAssemblage {

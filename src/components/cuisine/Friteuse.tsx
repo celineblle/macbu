@@ -356,6 +356,7 @@ function Friteuse({
             </button>
           ))}
         </div>
+        <hr />
         <div>
           <h4>Stock</h4>
         </div>

@@ -202,7 +202,7 @@ function Glace({
         glace
       </button>
       <h3>Pret</h3>
-      <div id="boissonListePage">
+      <div id="glaceListePage">
         {posteGlaceFondue.map((emplacement: GlaceType, index: number) => (
           <button
             key={index}

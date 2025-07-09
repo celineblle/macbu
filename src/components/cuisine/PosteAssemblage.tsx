@@ -75,9 +75,16 @@ function PosteAssemblage({
   const limitBurgerRack: number = 4;
 
   const [modalAction, setModalAction] = useState<boolean>(false);
-  const [burgerEnAttente, setBurgerEnAttente] = useState<BurgerAllOptional[]>(
-    []
-  );
+  const [burgerEnAttente, setBurgerEnAttente] = useState<BurgerAllOptional[]>([
+    {
+      nom: "Vide",
+      pain: "Vide",
+      viande: "Vide",
+      tailleProduit: "Vide",
+      type: "Vide",
+      sousType: "Vide",
+    },
+  ]);
   const [currentBurger, setCurrentBurger] = useState<BurgerAllOptional>({});
   const [commandeSandwich, setCommandeSandwich] = useState<
     (string | string[])[]
@@ -460,12 +467,7 @@ function PosteAssemblage({
 
   return (
     <div id="posteAssemblageComponent" className="component">
-      <button
-        className="buttonModal"
-        role="button"
-        onClick={handleClickToggleModal}
-        id="buttonCuisine"
-      >
+      <button className="buttonModal" onClick={handleClickToggleModal}>
         Cuisine
       </button>
 

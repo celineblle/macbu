@@ -47,6 +47,7 @@
 #pageContentNugget {
   display: flex;
   flex-direction: row;
+  height: calc(100% - 20px - 2em);
 }
 
 .preparationFriteuseNugget {
@@ -69,4 +70,8 @@
     padding-top: 5px;
     margin: 0;
   }
+}
+
+.contentFrontPageNugget {
+  width: calc(50% - 21px);
 }

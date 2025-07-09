@@ -108,12 +108,11 @@ function BureauManager({
   return (
     <div id="bureauManagerComponent">
       <div id="bureauManagerContentPage">
-        <h2>bureau manager</h2>
+        <button className="buttonModal" onClick={handleClickActionModal}>
+          Magasin
+        </button>
 
         <h3>Budget : {fondDeCaisse}</h3>
-        <button className="buttonModal" onClick={handleClickActionModal}>
-          Ouvrir magasin
-        </button>
       </div>
       <div className={buttonActionModalBureau ? "modalOpen" : "modalClose"}>
         <div className="modalContent">

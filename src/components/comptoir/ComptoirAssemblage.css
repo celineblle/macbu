@@ -49,6 +49,7 @@
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  height: 24vh;
 }
 .commandesComptoir ::-webkit-scrollbar-track {
   background: transparent;
@@ -90,7 +91,7 @@
 }
 
 .commandeVide {
-  height: 224px;
+  height: 160px;
 }
 
 .commandeVide,
@@ -100,8 +101,12 @@
   outline: none;
   border: none;
   color: #0d0d0d;
-  padding: 5px 8px;
-  margin: 5px 8px;
+  padding: 10px;
+  margin: 3px 8px;
+}
+
+#compteurCommande {
+  height: 25px;
 }
 
 #contenuVide {

@@ -11,6 +11,7 @@
   list-style: none;
   padding: 0;
   overflow: scroll;
+  height: calc(100% - 10px - 4em);
 }
 
 .commandeUniquePage {
@@ -20,4 +21,15 @@
   width: 150px;
   text-align: center;
   margin: 4px;
+}
+
+#headerFrontPageCaisse {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.texteCommandeCaisse {
+  margin-top: 4px;
+  margin-left: 4px;
 }
