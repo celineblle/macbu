@@ -9,7 +9,7 @@ import {
   BacTimeOut,
   EtatBacAFrite,
 } from "../../elements/ingredientsQuantite";
-import { taille } from "../../elements/stocks";
+import { taille, frite } from "../../elements/stocks";
 import {
   FritesContextSetter,
   CommandesAPreparerContext,
@@ -359,6 +359,15 @@ function Friteuse({
         <hr />
         <div>
           <h4>Stock</h4>
+          <ul>
+            {stocksCuisine.length > 0
+              ? stocksCuisine[0].stockActuel.map((e, i) => (
+                  <li key={i}>
+                    {e.produit} : {e.quantite}
+                  </li>
+                ))
+              : frite.map((e, i) => <li key={i}>{e} : 0</li>)}
+          </ul>
         </div>
       </div>
       <div

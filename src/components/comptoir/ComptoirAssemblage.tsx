@@ -720,9 +720,7 @@ function ComptoirAssemblage({
         <button className="buttonModal" onClick={handleClickActionModal}>
           Comptoir
         </button>
-        <p id="compteurCommande">
-          Commande en attente : {aPreparerAffichage.length}
-        </p>
+        <p>Commande en attente : {aPreparerAffichage.length}</p>
       </div>
       <div>
         <h3>Commandes en cours</h3>

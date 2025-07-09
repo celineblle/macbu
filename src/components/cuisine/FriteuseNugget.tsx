@@ -192,10 +192,18 @@ function FriteuseNugget({
       <div id="pageContentNugget">
         <div className="contentFrontPageNugget">
           <h4>Pret</h4>
-        </div>
-        <hr />
-        <div className="contentFrontPageNugget">
-          <h4>Stock</h4>
+          <ul id="listeStockNugget">
+            {nuggetsStateContext.map((nugget, index) => (
+              <li key={index}>
+                {nugget.friture} : {nugget.quantitePret}
+              </li>
+            ))}
+            {bacFriture.map((emplacement: Friture, index: number) => (
+              <li key={index}>
+                {emplacement.friture} : {emplacement.quantiteSachet}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

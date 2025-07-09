@@ -13,6 +13,7 @@ import {
   StocksActuelInteriorType,
   StocksActuelsType,
 } from "../../StocksActuels";
+import { viande } from "../../elements/stocks";
 
 function Grill({
   viandePret,
@@ -168,6 +169,15 @@ function Grill({
         <hr />
         <div id="stockFrigoPage">
           <h3>Stock</h3>
+          <ul className="listStock">
+            {stocksCuisine.length > 0
+              ? stocksCuisine[7].stockActuel.map((e, i) => (
+                  <li key={i}>
+                    {e.produit} : {e.quantite}
+                  </li>
+                ))
+              : viande.map((e, i) => <li key={i}>{e} : 0</li>)}
+          </ul>
         </div>
       </div>
       <div className={toggleModalGrill ? "modalOpen" : "modalClose"}>
