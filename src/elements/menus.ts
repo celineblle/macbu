@@ -2,7 +2,7 @@ import * as burgers from "./burgers";
 import { taille } from "./stocks";
 
 export interface Menu {
-  sandwich: burgers.Salade | burgers.Nugget | burgers.Burger;
+  sandwich: burgers.Nugget | burgers.Burger;
   accompagnement: burgers.Accompagnement;
   boisson: burgers.Boisson;
   taille: number;
@@ -11,12 +11,12 @@ export interface Menu {
 
 function getElementByTab(
   refTab: (
-    | (burgers.Salade | burgers.Nugget | burgers.Burger)
+    | ( burgers.Nugget | burgers.Burger)
     | burgers.Accompagnement
     | burgers.Boisson
   )[],
   currentTab: (
-    | (burgers.Salade | burgers.Nugget | burgers.Burger)
+    | ( burgers.Nugget | burgers.Burger)
     | burgers.Accompagnement
     | burgers.Boisson
   )[],
@@ -30,7 +30,7 @@ function getElementByTab(
 }
 
 export interface MenuEnfant {
-  sandwich: burgers.Salade | burgers.Nugget | burgers.Burger;
+  sandwich: burgers.Nugget | burgers.Burger;
   accompagnement: burgers.Accompagnement;
   boisson: burgers.Boisson;
   dessert: burgers.GlaceType | burgers.Accompagnement;

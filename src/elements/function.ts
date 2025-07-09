@@ -36,12 +36,6 @@ function isItNugget(element: Produit): string | undefined {
     if (frituresCuisine.includes(element.viande)) {
       return element.viande;
     }
-  } else if ("feculent" in element) {
-    if (frituresCuisine.includes(element.topping)) {
-      return element.topping;
-    } else {
-      return undefined;
-    }
   } else {
     return undefined;
   }

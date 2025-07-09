@@ -14,7 +14,6 @@ import {
   prixQuantiteFromages,
   prixQuantiteSauces,
   prixQuantiteIngredientsBurger,
-  prixQuantiteIngredientSalade,
   prixQuantiteGrill,
   prixQuantiteSac,
   prixQuantiteAutresProduits,
@@ -393,42 +392,12 @@ function BureauManager({
                 ))}
               </div>
               <br />
-
-              <h4 className="titreRayons">Ingrédients salade</h4>
-              <div className="rayonUnique">
-                {nomDesPostesCuisine[7][1].map((e, i) => (
-                  <div key={i} className="produit">
-                    <div>
-                      <p>{e}</p>
-                      <p>{prixQuantiteIngredientSalade[i][1]} pièces</p>
-                      <p>
-                        Stock actuel:{" "}
-                        {stocksCuisine.length > 0 &&
-                          stocksCuisine[7].stockActuel[i].quantite}
-                      </p>
-                    </div>
-                    <button
-                      className="buttonNeutre"
-                      onClick={() =>
-                        handleClickAcheter(
-                          nomDesPostesCuisine[7][0],
-                          7,
-                          e,
-                          prixQuantiteIngredientSalade[i][0]
-                        )
-                      }
-                    >
-                      Acheter {prixQuantiteIngredientSalade[i][0]} €
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
             <br />
             <hr />
             <h3 className="titreRayons">Grill</h3>
             <div className="rayonUnique">
-              {nomDesPostesCuisine[8][1].map((e, i) => (
+              {nomDesPostesCuisine[7][1].map((e, i) => (
                 <div key={i} className="produit">
                   <div>
                     <p>{e}</p>
@@ -436,14 +405,14 @@ function BureauManager({
                     <p>
                       Stock actuel:{" "}
                       {stocksCuisine.length > 0 &&
-                        stocksCuisine[8].stockActuel[i].quantite}
+                        stocksCuisine[7].stockActuel[i].quantite}
                     </p>
                   </div>
                   <button
                     className="buttonNeutre"
                     onClick={() =>
                       handleClickAcheter(
-                        nomDesPostesCuisine[8][0],
+                        nomDesPostesCuisine[7][0],
                         8,
                         e,
                         prixQuantiteGrill[i][0]

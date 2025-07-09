@@ -74,7 +74,7 @@ function Grill({
 
   function handleClickFrigoToGrill(element: string): void {
     const stockFrigoGrill: StocksActuelInteriorType | undefined =
-      stocksCuisine[8].stockActuel.find((e) => e.produit === element);
+      stocksCuisine[7].stockActuel.find((e) => e.produit === element);
     if (stockFrigoGrill !== undefined && stockFrigoGrill.quantite > 0) {
       const actualSizeGrill: number =
         plaqueDeCuisson.length +
@@ -242,7 +242,7 @@ function Grill({
               <br />
               <div id="buttonFrigoGrill">
                 {stocksCuisine.length > 0 &&
-                  stocksCuisine[8].stockActuel.map((element, i) => (
+                  stocksCuisine[7].stockActuel.map((element, i) => (
                     <div key={i}>
                       <button
                         onClick={() => handleClickFrigoToGrill(element.produit)}

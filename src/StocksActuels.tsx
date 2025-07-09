@@ -5,7 +5,6 @@ import {
   fromages,
   ingredientBurger,
   sauces,
-  ingredientSalade,
   viande,
   sac,
   boisson,
@@ -20,7 +19,6 @@ import {
   prixQuantiteFromages,
   prixQuantiteIngredientsBurger,
   prixQuantiteSauces,
-  prixQuantiteIngredientSalade,
   prixQuantiteGrill,
   prixQuantiteSac,
   prixQuantiteBoisson,
@@ -51,7 +49,6 @@ export const nomDesPostesCuisine: [string, string[], [number, number][]][] = [
   ["fromage", fromages, prixQuantiteFromages],
   ["ingredient burger", ingredientBurger, prixQuantiteIngredientsBurger],
   ["sauce", sauces, prixQuantiteSauces],
-  ["ingredient salade", ingredientSalade, prixQuantiteIngredientSalade],
   ["viande", viande, prixQuantiteGrill],
 ];
 

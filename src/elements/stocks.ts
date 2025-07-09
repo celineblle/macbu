@@ -2,13 +2,11 @@ export const  pains: string[] = ["Pain sésame 3 tranches", "Grand pain sésame"
 
 export const frituresCuisine: string[] = ["Nugget poulet", "Petit poisson pané", "Grand poisson pané", "Petit steak poulet pané", "Grand steak poulet pané", "Palet chêvre"];
 
-export const sauces: string[] = ["César", "Huile salade", "Tartare", "Spécial Bu", "Abricot", "Ketchup", "Ranch", "Moutarde"];
+export const sauces: string[] = [ "Tartare", "Spécial Bu", "Abricot", "Ketchup", "Ranch", "Moutarde"];
 
-export const fromages: string[] = ["Cube d'emmental", "Cheddar", "Emmental", "Mozza burger", "Boule de mozza"];
+export const fromages: string[] = [ "Cheddar", "Emmental", "Mozza burger"];
 
 export const viande: string[] = ["Jambon", "Oeuf", "Grand steak plat", "Petit steak plat", "Grand gros steak", "Moyen gros steak"];
-
-export const ingredientSalade: string[] = ["Salade", "Croutons", "Tomates séchés", "Pates"];
 
 export const ingredientBurger: string[] = ["Salade", "Tomates", "Oignons", "Pickles", "Bacon", "Cornichons", "Oignon frit"];
 

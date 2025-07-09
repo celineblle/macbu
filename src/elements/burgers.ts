@@ -1,45 +1,6 @@
 import * as stocks from "./stocks";
 import { Menu, MenuEnfant } from "./menus";
 
-export interface Salade {
-    nom: string,
-    base: string,
-    topping: string,
-    feculent: string,
-    fromage: string,
-    sauce: string, 
-    tailleProduit: string,
-    type: string,
-    sousType: string,
-    prix: number,
-};
-
-export const saladeCesar: Salade = {
-    nom: "Salade César",
-    base: stocks.ingredientSalade[0],
-    topping: stocks.frituresCuisine[0],
-    feculent: stocks.ingredientSalade[1],
-    fromage: stocks.fromages[0],
-    sauce: stocks.sauces[0], 
-    tailleProduit: stocks.taille[0],
-    type: "sandwich",
-    sousType: "salade",
-    prix: 15,
-};
-
-export const saladeItalienne: Salade = {
-    nom: "Salade Italienne",
-    base: stocks.ingredientSalade[0],
-    topping: stocks.ingredientSalade[2],
-    feculent: stocks.ingredientSalade[3],
-    fromage: stocks.fromages[4],
-    sauce: stocks.sauces[1],
-    tailleProduit: stocks.taille[0],  
-    type: "sandwich",
-    sousType: "salade",
-    prix: 15,
-};
-
 export interface Nugget {
     nom: string,
     ingredient: string,
@@ -92,9 +53,9 @@ export const fishNPan: Burger = {
     nom: "Fish N Pan",
     pain: stocks.pains[7],
     viande: stocks.frituresCuisine[2],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[0], stocks.ingredientBurger[1]],
-    sauce: [stocks.sauces[2]],
+    sauce: [stocks.sauces[0]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -105,9 +66,9 @@ export const specialBu: Burger = {
     nom: "Special Bu",
     pain: stocks.pains[0],
     viande: stocks.viande[2],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[2], stocks.ingredientBurger[0], stocks.ingredientBurger[3]],
-    sauce: [stocks.sauces[3]],
+    sauce: [stocks.sauces[1]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -118,9 +79,9 @@ export const classicBig: Burger = {
      nom: "Classic Big",
     pain: stocks.pains[1],
     viande: stocks.viande[4],
-    fromage: [stocks.fromages[2]],
+    fromage: [stocks.fromages[1]],
     ingredient: [stocks.ingredientBurger[1],  stocks.ingredientBurger[0], stocks.ingredientBurger[2]],
-    sauce: [stocks.sauces[4]], 
+    sauce: [stocks.sauces[2]], 
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -135,9 +96,9 @@ function primSBu (): Burger[] {
                 nom: "Prim'S Bu",
                 pain: stocks.pains[2],
                 viande: viandes[i],
-                fromage: [stocks.fromages[1]],
+                fromage: [stocks.fromages[0]],
                 ingredient: [stocks.ingredientBurger[1], stocks.ingredientBurger[0], stocks.ingredientBurger[2]],
-                sauce: [stocks.sauces[5], stocks.sauces[6]],
+                sauce: [stocks.sauces[3], stocks.sauces[4]],
                 tailleProduit: stocks.taille[1],
                 type: "sandwich",
                 sousType: "burger",
@@ -155,9 +116,9 @@ export const optiBacon: Burger = {
     nom: "Opti Bacon",
     pain: stocks.pains[1],
     viande: stocks.viande[4],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[4], stocks.ingredientBurger[5], stocks.ingredientBurger[2]],
-    sauce: [stocks.sauces[5], stocks.sauces[7]],
+    sauce: [stocks.sauces[3], stocks.sauces[5]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -168,9 +129,9 @@ export const bigCheeseOrigin: Burger = {
     nom: "Big Cheese Origin",
     pain: stocks.pains[1],
     viande: stocks.viande[4],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[5], stocks.ingredientBurger[2]],
-    sauce: [stocks.sauces[5], stocks.sauces[7]],
+    sauce: [stocks.sauces[3], stocks.sauces[5]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -181,9 +142,9 @@ export const italicain: Burger = {
     nom: "Italicain",
     pain: stocks.pains[3],
     viande: stocks.viande[4],
-    fromage: [stocks.fromages[3], stocks.fromages[2]],
+    fromage: [stocks.fromages[2], stocks.fromages[1]],
     ingredient: [stocks.ingredientBurger[1]],
-    sauce: [stocks.sauces[2]],
+    sauce: [stocks.sauces[0]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -194,9 +155,9 @@ export const baconBasic: Burger = {
     nom: "Bacon Basic",
     pain: stocks.pains[4],
     viande: stocks.frituresCuisine[4],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[0], stocks.ingredientBurger[4], stocks.ingredientBurger[6]],
-    sauce: [stocks.sauces[2]],
+    sauce: [stocks.sauces[0]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "burger",
@@ -207,7 +168,7 @@ export const englishTouch: Burger = {
     nom: "English Touch",
     pain: stocks.pains[5],
     viande: stocks.viande[1],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
@@ -218,9 +179,9 @@ export const cheeseOrigin: Burger = {
     nom: "Cheese Origin",
     pain: stocks.pains[6],
     viande: stocks.viande[3],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[2], stocks.ingredientBurger[5]],
-    sauce: [stocks.sauces[5], stocks.sauces[7]],
+    sauce: [stocks.sauces[3], stocks.sauces[5]],
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
@@ -232,7 +193,7 @@ export const originBurger: Burger = {
     pain: stocks.pains[6],
     viande: stocks.viande[3],
     ingredient: [stocks.ingredientBurger[2], stocks.ingredientBurger[5]],
-    sauce: [stocks.sauces[5], stocks.sauces[7]],
+    sauce: [stocks.sauces[3], stocks.sauces[5]],
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
@@ -243,7 +204,7 @@ export const pouce: Burger = {
     nom: "Pouce",
     pain: stocks.pains[6],
     viande: stocks.viande[0],
-    fromage: [stocks.fromages[2]],
+    fromage: [stocks.fromages[1]],
     tailleProduit: stocks.taille[2],
     type: "sandwich",
     sousType: "burger",
@@ -255,7 +216,7 @@ export const goatyWrap: Burger = {
     pain: stocks.pains[8],
     viande: stocks.frituresCuisine[6],
     ingredient: [stocks.ingredientBurger[0],  stocks.ingredientBurger[1], stocks.ingredientBurger[6]],
-    sauce: [stocks.sauces[2]],
+    sauce: [stocks.sauces[0]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "wrap",
@@ -266,9 +227,9 @@ export const classyWrap: Burger = {
     nom: "Classy Wrap",
     pain: stocks.pains[8],
     viande: stocks.frituresCuisine[0],
-    fromage: [stocks.fromages[1]],
+    fromage: [stocks.fromages[0]],
     ingredient: [stocks.ingredientBurger[4], stocks.ingredientBurger[1], stocks.ingredientBurger[0]],
-    sauce: [stocks.sauces[2]],
+    sauce: [stocks.sauces[0]],
     tailleProduit: stocks.taille[0],
     type: "sandwich",
     sousType: "wrap",
@@ -429,7 +390,7 @@ accompagnements.push(legume)
 
 export const fraisProduitFormat: (Accompagnement | Boisson)[] = [salade, legume, jusDefruit, boissonYaourt, fruits]
 
-export const sandwichs: (Salade | Nugget | Burger)[] = [saladeCesar, saladeItalienne, nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
+export const sandwichs: ( Nugget | Burger)[] = [  nuggets[0], nuggets[1], nuggets[2], fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, goatyWrap, classyWrap, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
 
 export const burgers: Burger[] = [fishNPan, specialBu, classicBig, optiBacon, bigCheeseOrigin, italicain, baconBasic, primSBus[0], primSBus[1], primSBus[2], englishTouch, cheeseOrigin, originBurger, pouce]
 
@@ -451,7 +412,7 @@ export const adultAccompagnement: Accompagnement[] = getOnlyAdultAccompagnement(
 export const enfantDessert: (GlaceType | Accompagnement)[] = glaces.slice()
 enfantDessert.push(boissonYaourt, fruits)
 
-export const allProduits: (Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
+export const allProduits: ( Nugget | Burger | GlaceType | Accompagnement | Boisson)[] = [ ...sandwichs, ...burgers, ...burgers, ...glaces, ...accompagnements, ...accompagnements, ...boissons]
 
-export type Produit = Salade | Nugget | Burger | GlaceType | Accompagnement | Boisson;
+export type Produit =  Nugget | Burger | GlaceType | Accompagnement | Boisson;
 export type ProduitEtMenu = Produit | Menu | MenuEnfant;

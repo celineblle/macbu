@@ -1,11 +1,11 @@
-import { Produit, ProduitEtMenu, Salade, Nugget, Burger, Accompagnement, Boisson, GlaceType, allProduits, salade, saladeCesar, boissons, adultAccompagnement, pouce, legume, jusDefruit, fruits } from "../../elements/burgers";
+import { Produit, ProduitEtMenu,  Nugget, Burger, Accompagnement, Boisson, GlaceType, allProduits, salade, boissons, adultAccompagnement, pouce, legume, jusDefruit, fruits } from "../../elements/burgers";
 import { Menu, MenuEnfant, menuEnfant, prixMenu } from "../../elements/menus";
 import * as stocks from "../../elements/stocks";
 
 const tailleMaxCommande: number = 8;
 
-export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] {
-    const plat: (Salade | Nugget | Burger)[] = [];
+export function triProduit(commande: ProduitEtMenu[]): [(  Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] {
+    const plat: (Nugget | Burger)[] = [];
     const complement: Accompagnement[] = [];
     const boissonCommande: Boisson[] = [];
     const autreProduit: (GlaceType | Accompagnement | Boisson)[] = [];
@@ -13,7 +13,7 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
     for (let i = 0; i < commande.length; i++) {
       const actuelProduit: ProduitEtMenu = commande[i];
       if (
-        ("feculent" in actuelProduit ||
+        (
           "nombreNugget" in actuelProduit ||
           "pain" in actuelProduit) &&
         actuelProduit.sousType !== "enfant"
@@ -39,12 +39,12 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
       }
     }
 
-    const finalProduitTriee: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = [plat, complement, boissonCommande, autreProduit];
+    const finalProduitTriee: [( Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = [plat, complement, boissonCommande, autreProduit];
     return finalProduitTriee;
   }
 
-  export function triProduitEnfant(tableauToutProduit: Produit[][]): [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] {
-      const petitPlat: (Salade | Nugget | Burger)[] = [];
+  export function triProduitEnfant(tableauToutProduit: Produit[][]): [( Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] {
+      const petitPlat: (Nugget | Burger)[] = [];
       const petitComplement: Accompagnement[] = [];
       const petiteBoisson: Boisson[] = [];
       const dessert: (GlaceType | Accompagnement)[] = [];
@@ -93,7 +93,7 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
         }
       }
   
-      const toutProduitEnfant:  [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = [petitPlat, petitComplement, petiteBoisson, dessert];
+      const toutProduitEnfant:  [( Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = [petitPlat, petitComplement, petiteBoisson, dessert];
       return toutProduitEnfant;
     }
   
@@ -118,8 +118,8 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
         function getAllMenu(commande: Produit[]) {
 
           const finalCommande: ProduitEtMenu[] = [];
-          const commandeTrie: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = triProduit(commande);
-          const commandeTrieEnfant: [(Salade | Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = triProduitEnfant(commandeTrie);
+          const commandeTrie: [( Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement | Boisson)[]] = triProduit(commande);
+          const commandeTrieEnfant: [( Nugget | Burger)[], Accompagnement[], Boisson[], (GlaceType | Accompagnement)[]] = triProduitEnfant(commandeTrie);
     
           const resteBurger: Produit[] = commandeTrie[0].slice();
 
@@ -132,7 +132,7 @@ export function triProduit(commande: ProduitEtMenu[]): [(Salade | Nugget | Burge
 
                 const currentSize: string = commandeTrie[0][i].tailleProduit;
                 const currentMenu: Menu = {
-                  sandwich: saladeCesar,
+                  sandwich: pouce,
                   accompagnement: salade,
                   boisson: boissons[0],
                   taille: 0,
@@ -301,7 +301,7 @@ export function affichageCommande(
             }
             finalProduct = menuVersion;
             menuVersion = [];
-          } else if ("feculent" in produitEnCour || "pain" in produitEnCour) {
+          } else if ( "pain" in produitEnCour) {
             finalProduct = produitEnCour.nom;
           } else if ("nombreNugget" in produitEnCour) {
             finalProduct = produitEnCour.nom;

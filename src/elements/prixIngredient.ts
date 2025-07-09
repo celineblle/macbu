@@ -30,18 +30,14 @@ export const prixQuantiteFriture: [number, number][] =
   ];
 
   export const prixQuantiteFromages: [number, number][] = [
-    [20, 50],
     [18, 20],
     [18, 20],
     [25, 20],
-    [30, 50],
   ];
 
   export const prixQuantiteIngredientsBurger: [number, number][] = [ [6, 20], [6, 20], [6, 20], [8, 20], [10, 20], [6, 20], [7, 20]]
 
-export  const prixQuantiteSauces: [number, number][] = [[8, 20], [6, 20], [7, 20], [9, 20], [8, 20], [6, 20], [7, 20], [6, 20]]
-
-export  const prixQuantiteIngredientSalade: [number, number][] = [[30, 50], [6, 20], [13, 20], [8, 20]]
+export  const prixQuantiteSauces: [number, number][] = [ [7, 20], [9, 20], [8, 20], [6, 20], [7, 20], [6, 20]]
 
 export const prixQuantiteGrill: [number, number][] = [[40, 20], [30, 20], [110, 50], [100, 50], [130, 50], [120, 50]]
 
