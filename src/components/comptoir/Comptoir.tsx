@@ -26,8 +26,8 @@ function Comptoir({
     {
       nom: "Glace",
       base: "Glace au lait",
-      topping: "glace prête",
-      coulis: "Aucune ",
+      topping: "",
+      coulis: "Vide",
       tailleProduit: "initial",
       temps: 0,
       timeId: 0,

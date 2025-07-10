@@ -46,6 +46,14 @@
   min-width: 50px;
 }
 
+.buttonLancer {
+  border: 2px solid #78e8c1;
+}
+
+.buttonAttente {
+  border: 2px solid #402116;
+}
+
 #toutOnglets {
   height: 10%;
 }
@@ -62,7 +70,7 @@
 #suiviConstruction {
   display: flex;
   flex-direction: row;
-  height: 50%;
+  height: 40%;
 }
 
 #partieRecette,
@@ -71,10 +79,14 @@
   width: 100%;
 }
 
+#partieRecette {
+  margin-bottom: 0;
+  margin-top: 1em;
+  overflow: scroll;
+}
+
 .commandeSandwich {
-  min-height: 30px;
-  max-height: 80px;
-  height: auto;
+  height: 60px;
   overflow: scroll;
   width: 140px;
 }

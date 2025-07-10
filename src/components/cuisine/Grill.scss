@@ -1,3 +1,5 @@
+@use "../../sass/style" as style;
+
 #grillComponent {
   width: calc(25vw - 24px);
   height: calc(100% - 24px);
@@ -9,24 +11,25 @@
   height: 90%;
 }
 
-#stockPretGrill,
 #cuissonGrill,
-#finModal {
-  width: 20%;
+#stockPretGrill {
+  width: 15%;
+}
+
+#frigoGrill {
+  width: 25%;
 }
 
 #finModal {
   display: flex;
   flex-direction: column;
-}
-
-#frigoGrill {
   width: 40%;
 }
 
 #buttonFrigoGrill {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .buttonGrill {
@@ -65,4 +68,15 @@
     padding-top: 5px;
     margin: 0;
   }
+}
+
+.buttonUniqueFrigoGrill {
+  margin-bottom: 8px;
+  p {
+    display: inline;
+  }
+}
+
+#ensembleCommandeGrill {
+  @include style.commandesInPostes;
 }

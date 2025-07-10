@@ -95,6 +95,12 @@
 #modalStockBoisson {
   height: 35%;
 }
+#modalStockBoisson ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 45%;
+}
 
 .commandeBoisson {
   min-height: 30px;
@@ -107,6 +113,13 @@
   padding-left: 15px;
   padding-top: 5px;
   margin: 0;
+}
+
+#allCommandeBoisson {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=Boisson.css.map */

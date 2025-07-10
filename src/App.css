@@ -125,7 +125,7 @@ hr {
   height: calc(100% - 24px);
   margin: auto;
   width: 80%;
-  height: 80%;
+  height: 85%;
 }
 
 .tabLinksButton {
@@ -189,16 +189,16 @@ hr {
 
 .buttonGrille:active,
 .commandeCuisson:active {
-  background-color: #D9AF8B;
+  background-color: #d9af8b;
   color: #0d0d0d;
 }
 
 .buttonPret:hover {
-  background-color: #4BBF52;
+  background-color: #4bbf52;
 }
 
 .buttonPret:active {
-  background-color: #C7F2B3;
+  background-color: #c7f2b3;
 }
 
 .commandeCuisson {
@@ -230,8 +230,18 @@ hr {
 }
 
 .commandePret:active {
-  background-color: #C7F2B3;
-  border-color: #C7F2B3;
+  background-color: #c7f2b3;
+  border-color: #c7f2b3;
+}
+
+.buttonStockVide {
+  background-color: transparent;
+  border: 2px solid #a6a6a6;
+}
+.buttonStockVide :hover {
+  background-color: transparent;
+  border: 2px solid #a6a6a6;
+  cursor: default;
 }
 
 /*# sourceMappingURL=App.css.map */

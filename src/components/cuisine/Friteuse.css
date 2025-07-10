@@ -45,7 +45,7 @@
 .fritureConstructeur {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
 }
@@ -56,16 +56,33 @@
 }
 
 .commandeFrite {
-  min-height: 30px;
-  max-height: 80px;
-  height: auto;
+  height: 60px;
   overflow: scroll;
   width: 140px;
+  border: 2px solid #78e8c1;
+  border-radius: 5px;
+  text-align: center;
+  margin: 4px;
 }
 .commandeFrite ul {
   padding-left: 15px;
   padding-top: 5px;
   margin: 0;
+}
+
+#listeCommandeFrite {
+  list-style: none;
+  padding: 4px;
+}
+#listeCommandeFrite li {
+  text-align: left;
+}
+
+#touteCommandeFrite {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=Friteuse.css.map */

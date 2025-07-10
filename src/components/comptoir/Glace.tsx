@@ -93,8 +93,8 @@ function Glace({
         tabPosteGlacePretCopie.push({
           nom: "Glace",
           base: "Glace au lait",
-          topping: "glace prête",
-          coulis: "Aucune ",
+          topping: "",
+          coulis: "Vide",
           tailleProduit: "initial",
           temps: 0,
           timeId: 0,
@@ -158,7 +158,7 @@ function Glace({
           const tabPosteGlaceCopie: GlaceType[] = posteGlaceRef.current.slice();
           tabPosteGlaceCopie.splice(oldestGlace, 1);
           setPosteGlace(tabPosteGlaceCopie);
-          if (glacesCommandeRef.current[0].coulis === "Aucune ") {
+          if (glacesCommandeRef.current[0].coulis === "Vide") {
             setGlacesCommande([glacePrepa]);
           } else {
             setGlacesCommande([...glacesCommandeRef.current, glacePrepa]);
@@ -239,38 +239,47 @@ function Glace({
           <div id="modalContentGlace">
             <div id="posteGlace">
               <h3>Pret</h3>
-              {posteGlaceFondue.map((emplacement: GlaceType, index: number) => (
-                <button
-                  key={index}
-                  onClick={() => handleClickPoubelle(index)}
-                  className="buttonGrille buttonPretGlace"
-                >
-                  {emplacement.coulis} {emplacement.topping}
-                </button>
-              ))}
-              {glacesCommande.map((emplacement: GlaceType, index: number) => (
-                <button
-                  key={index}
-                  disabled={true}
-                  className="buttonPret buttonPretGlace"
-                >
-                  {emplacement.coulis} {emplacement.topping}
-                </button>
-              ))}
-              {posteGlace.map((emplacement: GlaceType, index: number) => (
-                <button
-                  disabled={true}
-                  key={index}
-                  className="buttonCuisson buttonPretGlace"
-                >
-                  {emplacement.coulis} {emplacement.topping}
-                </button>
-              ))}
-              {placeVidePosteGlace.map((emplacement: string, index: number) => (
-                <button key={index} className="buttonNeutre buttonVideGlace">
-                  {emplacement}
-                </button>
-              ))}
+              <div id="ensembleButtonGlacePret">
+                {posteGlaceFondue.map(
+                  (emplacement: GlaceType, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => handleClickPoubelle(index)}
+                      className="buttonGrille buttonPretGlace"
+                    >
+                      {emplacement.coulis} {emplacement.topping}
+                    </button>
+                  )
+                )}
+                {glacesCommande.map((emplacement: GlaceType, index: number) => (
+                  <button
+                    key={index}
+                    disabled={true}
+                    className="buttonPret buttonPretGlace"
+                  >
+                    {emplacement.coulis} {emplacement.topping}
+                  </button>
+                ))}
+                {posteGlace.map((emplacement: GlaceType, index: number) => (
+                  <button
+                    disabled={true}
+                    key={index}
+                    className="buttonCuisson buttonPretGlace"
+                  >
+                    {emplacement.coulis} {emplacement.topping}
+                  </button>
+                ))}
+                {placeVidePosteGlace.map(
+                  (emplacement: string, index: number) => (
+                    <button
+                      key={index}
+                      className="buttonNeutre buttonVideGlace"
+                    >
+                      {emplacement}
+                    </button>
+                  )
+                )}
+              </div>
             </div>
             <hr />
             <div id="frigoGlace">
@@ -281,7 +290,12 @@ function Glace({
                 <button
                   onClick={() => handleClickGlaceConstruction(element)}
                   key={index}
-                  className="buttonNeutre buttonCoulis"
+                  className={
+                    stocksComptoir.length > 0 &&
+                    stocksComptoir[1].stockActuel[index].quantite > 0
+                      ? "buttonNeutre buttonCoulis"
+                      : " buttonCoulis buttonStockVide"
+                  }
                 >
                   {element}
                 </button>
@@ -293,7 +307,12 @@ function Glace({
                   <button
                     onClick={() => handleClickGlaceConstruction(element)}
                     key={index}
-                    className="buttonNeutre buttonTopping"
+                    className={
+                      stocksComptoir.length > 0 &&
+                      stocksComptoir[1].stockActuel[index + 2].quantite > 0
+                        ? "buttonNeutre buttonTopping"
+                        : " buttonTopping buttonStockVide"
+                    }
                   >
                     {element}
                   </button>

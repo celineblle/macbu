@@ -36,6 +36,7 @@
   width: 250px;
   scroll-snap-align: start;
   flex-shrink: 0;
+  height: calc(100% - 10px);
 }
 
 .visuelPage {
@@ -54,7 +55,7 @@
 
 .tabComptoirA button {
   height: 30px;
-  width: 80px;
+  width: 90px;
 }
 
 #buttonProduitDispo {
@@ -88,10 +89,6 @@
 }
 
 .commandeVide {
-  height: 160px;
-}
-
-.commandeVide {
   background-color: style.$gris;
   border-radius: 5px;
   outline: none;
@@ -99,6 +96,7 @@
   color: style.$noir;
   padding: 10px;
   margin: 3px 8px;
+  height: calc(100% - 26px);
 }
 
 #contenuVide {

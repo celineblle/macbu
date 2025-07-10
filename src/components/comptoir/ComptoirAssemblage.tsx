@@ -341,8 +341,8 @@ function ComptoirAssemblage({
               glaceDispoCopie.push({
                 nom: "Glace",
                 base: "Glace au lait",
-                topping: "glace prête",
-                coulis: "Aucune ",
+                topping: "",
+                coulis: "Vide",
                 tailleProduit: "initial",
                 temps: 0,
                 timeId: 0,
@@ -443,8 +443,8 @@ function ComptoirAssemblage({
             copieGlaceCommande.push({
               nom: "Glace",
               base: "Glace au lait",
-              topping: "glace prete",
-              coulis: "Aucune ",
+              topping: "",
+              coulis: "Vide",
               tailleProduit: "initial",
               temps: 0,
               timeId: 0,
@@ -763,7 +763,8 @@ function ComptoirAssemblage({
       <div className={buttonActionModalComptoirA ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
           <div id="headerModal">
-            <h2>Comptoir {fondDeCaisse}</h2>
+            <h2>Comptoir</h2>
+            <h3>Budget : {fondDeCaisse} €</h3>
             <button
               onClick={handleClickActionModal}
               className="closeModalButton"
@@ -1053,7 +1054,11 @@ function ComptoirAssemblage({
                       <button
                         key={i}
                         onClick={() => handleClickRemplirPlateau(e)}
-                        className="buttonNeutre"
+                        className={
+                          stocksComptoir[2].stockActuel[i].quantite > 0
+                            ? "buttonNeutre"
+                            : "buttonStockVide"
+                        }
                         disabled={
                           stocksComptoir[2].stockActuel[i].quantite > 0
                             ? false
@@ -1080,7 +1085,11 @@ function ComptoirAssemblage({
                         key={i}
                         disabled={element.quantite > 0 ? false : true}
                         onClick={() => handleClickGetSac(element.produit)}
-                        className="buttonNeutre"
+                        className={
+                          element.quantite > 0
+                            ? "buttonNeutre"
+                            : "buttonStockVide"
+                        }
                       >
                         {element.produit} capacité {stocks.sac[i][1]}
                       </button>

@@ -385,10 +385,10 @@ function Friteuse({
               <img alt="fermer" title="fermer" src={close}></img>
             </button>
           </div>
-
+          <br />
           <div id="modalFriteuseContent">
             <div id="pretFriteuse" className="modalComponent">
-              <h3 className="titreModalContent">Pret</h3>
+              <h3 className="titreModalContent">Fabrication</h3>
               <br />
               <div className="fritureConstructeur">
                 {bacAFrite.map((emplacement: EtatBacAFrite, index: number) => (
@@ -398,7 +398,7 @@ function Friteuse({
                       emplacement.grille === true
                         ? "buttonGrille bacFriteuse"
                         : emplacement.quantiteSachet === 0
-                          ? "buttonNeutre bacFriteuse"
+                          ? "bacFriteuse buttonStockVide"
                           : "buttonPret bacFriteuse"
                     }
                     onClick={
@@ -422,7 +422,9 @@ function Friteuse({
                   </button>
                 ))}
               </div>
-              <br />
+              <hr />
+              <h3 className="titreModalContent">Pret</h3>
+
               <div className="fritureConstructeur">
                 {rackAFrite.map(
                   (emplacement: Accompagnement, index: number) => (
@@ -451,7 +453,12 @@ function Friteuse({
                   <button
                     onClick={() => handleClickFrigoToFriteuse(emplacement)}
                     key={index}
-                    className="buttonNeutre bacFriteuse"
+                    className={
+                      stocksCuisine.length > 0 &&
+                      stocksCuisine[0].stockActuel[index].quantite > 0
+                        ? "buttonNeutre bacFriteuse"
+                        : "bacFriteuse buttonStockVide"
+                    }
                   >
                     {emplacement.friture} : {emplacement.quantiteSachet}
                   </button>
@@ -517,23 +524,27 @@ function Friteuse({
             <hr />
             <div id="commandeFriteuse" className="modalComponent">
               <h3 className="titreModalContent">Commande</h3>
-              {commandeFrite.map((frite: string | string[], index: number) => (
-                <button
-                  key={index}
-                  disabled={true}
-                  className="commandeUniquePage commandeFrite"
-                >
-                  {typeof frite === "string" ? (
-                    frite
-                  ) : (
-                    <ul>
-                      {frite.map((unique: string, i: number) => (
-                        <li key={i}>{unique}</li>
-                      ))}
-                    </ul>
-                  )}
-                </button>
-              ))}
+              <div id="touteCommandeFrite">
+                {commandeFrite.map(
+                  (frite: string | string[], index: number) => (
+                    <button
+                      key={index}
+                      disabled={true}
+                      className="commandeFrite"
+                    >
+                      {typeof frite === "string" ? (
+                        frite
+                      ) : (
+                        <ul id="listeCommandeFrite">
+                          {frite.map((unique: string, i: number) => (
+                            <li key={i}>{unique}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </button>
+                  )
+                )}
+              </div>
               <br />
             </div>
           </div>

@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #grillComponent {
   width: calc(25vw - 24px);
   height: calc(100% - 24px);
@@ -9,24 +13,25 @@
   height: 90%;
 }
 
-#stockPretGrill,
 #cuissonGrill,
-#finModal {
-  width: 20%;
+#stockPretGrill {
+  width: 15%;
+}
+
+#frigoGrill {
+  width: 25%;
 }
 
 #finModal {
   display: flex;
   flex-direction: column;
-}
-
-#frigoGrill {
   width: 40%;
 }
 
 #buttonFrigoGrill {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .buttonGrill {
@@ -66,6 +71,20 @@
   padding-left: 15px;
   padding-top: 5px;
   margin: 0;
+}
+
+.buttonUniqueFrigoGrill {
+  margin-bottom: 8px;
+}
+.buttonUniqueFrigoGrill p {
+  display: inline;
+}
+
+#ensembleCommandeGrill {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=Grill.css.map */

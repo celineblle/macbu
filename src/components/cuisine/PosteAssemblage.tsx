@@ -120,13 +120,13 @@ function PosteAssemblage({
 
   const buttonIngredientsBurger: ButtonIngredient[] = [
     {
-      nom: "pain",
-      tableau: pains,
+      nom: "viande",
+      tableau: viandeEtFriture,
       fonctionConstruction: handleClickOneIngredient,
     },
     {
-      nom: "viande",
-      tableau: viandeEtFriture,
+      nom: "pain",
+      tableau: pains,
       fonctionConstruction: handleClickOneIngredient,
     },
     {
@@ -514,13 +514,13 @@ function PosteAssemblage({
                 <h3 id="titreEnCour">En cour</h3>
                 <div id="buttonActionBurger">
                   <button
-                    className="buttonNeutre buttonSortieBurger"
+                    className="buttonSortieBurger buttonAttente"
                     onClick={handleClickBurgerAttente}
                   >
                     Mettre en attente
                   </button>
                   <button
-                    className="buttonNeutre buttonSortieBurger"
+                    className="buttonSortieBurger buttonLancer"
                     onClick={handleClickBurgerPret}
                   >
                     Prêt
@@ -541,7 +541,7 @@ function PosteAssemblage({
               </div>
 
               <div>
-                {buttonIngredientsBurger.map((element: ButtonIngredient) => (
+                {buttonIngredientsBurger.map((element: ButtonIngredient, i) => (
                   <div
                     key={element.nom}
                     id={element.nom}
@@ -552,7 +552,7 @@ function PosteAssemblage({
                     }
                   >
                     <div id="toutButtonIngredient">
-                      {element.tableau.map((e: string) => (
+                      {element.tableau.map((e: string, index) => (
                         <button
                           key={e}
                           onClick={() =>
@@ -562,7 +562,15 @@ function PosteAssemblage({
                               element.nom as keyof BurgerAllOptional
                             )
                           }
-                          className="buttonNeutre buttonIngredient"
+                          className={
+                            i > 0
+                              ? stocksCuisine.length > 0 &&
+                                stocksCuisine[i + 2].stockActuel[index]
+                                  .quantite > 0
+                                ? "buttonNeutre buttonIngredient"
+                                : "buttonIngredient buttonStockVide"
+                              : "buttonNeutre buttonIngredient"
+                          }
                         >
                           {e}
                         </button>
@@ -652,17 +660,6 @@ function PosteAssemblage({
                     {e.pain}
                   </button>
                 ))}
-              </div>
-              <div id="partieStock">
-                <h3>Stocks</h3>
-                <ul>
-                  <li>stocks : 1</li>
-                  <li>stocks : 2</li>
-                  <li>stocks : 3</li>
-                  <li>stocks : 4</li>
-                  <li>stocks : 5</li>
-                  <li>stocks : 6</li>
-                </ul>
               </div>
             </div>
           </div>

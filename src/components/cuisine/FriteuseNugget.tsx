@@ -39,7 +39,7 @@ function FriteuseNugget({
   const setNuggetsStateContext = useContext(NuggetsContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
-  const tailleFriteuseGp: number = 5;
+  const tailleFriteuseGp: number = 6;
   let standByTimeOutFriteuseGp: number = 0;
   const [modalActionFriteuseNugget, setModalActionFriteuseNugget] =
     useState<boolean>(false);
@@ -222,35 +222,50 @@ function FriteuseNugget({
               <img alt="fermer" title="fermer" src={close}></img>
             </button>
           </div>
+          <br />
           <div id="modalNuggetContent">
             <div className="nuggetConstructeur" id="pretNugget">
               <div>
                 <h3>Pret</h3>
-                {bacFriture.map((emplacement: Friture, index: number) => (
-                  <button key={index} className="buttonNeutre buttonFrigo">
-                    {emplacement.friture} : {emplacement.quantiteSachet}
-                  </button>
-                ))}
+                <ul className="pretNugget">
+                  {bacFriture.map((emplacement: Friture, index: number) => (
+                    <li key={index}>
+                      {emplacement.friture} : {emplacement.quantiteSachet}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div>
                 <h3>Boite à nugget</h3>
+                <h4>Fabrication</h4>
                 {nuggetsStateContext.map((nugget, index) => (
                   <div key={index}>
                     <button
-                      className="buttonNeutre buttonFrigo"
+                      className={
+                        nugget.quantitePret > 0
+                          ? "buttonNeutre buttonFrigo"
+                          : "buttonFrigo buttonStockVide"
+                      }
                       onClick={() => handleClickGetNuggetBox(nugget, index)}
                     >
                       {nugget.friture}
                     </button>
-                    <p className="compteurBoite">{`Boite pret : ${nugget.quantitePret}`}</p>
                   </div>
                 ))}
+                <h4>Pret</h4>
+                <ul className="pretNugget">
+                  {nuggetsStateContext.map((nugget, index) => (
+                    <li key={index}>
+                      {nugget.friture} : {nugget.quantitePret}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
             <hr />
             <div className="nuggetConstructeur" id="cuissonNugget">
               <h3>Cuisson</h3>
-              <div className="preparationFriteuseNugget">
+              <div>
                 {friteuseGpGrille.map((emplacement: Friture, index: number) => (
                   <button
                     key={index}
@@ -286,20 +301,27 @@ function FriteuseNugget({
                   )
                 )}
               </div>
+              <br />
               <h3>Frigo</h3>
-              <div className="preparationFriteuseNugget">
+              <div>
                 {frituresCuisineQuantite.map(
                   (emplacement: Friture, index: number) => (
                     <button
                       onClick={() => handleClickFrigoToFriteuseGp(emplacement)}
                       key={index}
-                      className="buttonNeutre buttonFrigo"
+                      className={
+                        stocksCuisine.length > 0 &&
+                        stocksCuisine[2].stockActuel[index].quantite > 0
+                          ? "buttonNeutre buttonFrigo"
+                          : "buttonFrigo buttonStockVide"
+                      }
                     >
                       {emplacement.friture} : {emplacement.quantiteSachet}
                     </button>
                   )
                 )}
               </div>
+              <br />
               <h3>Stocks frigo</h3>
               <ul>
                 {stocksCuisine.length > 0 &&
@@ -313,23 +335,25 @@ function FriteuseNugget({
             <hr />
             <div className="nuggetConstructeur" id="commandeNugget">
               <h3>Commandes</h3>
-              {commandeNugget.map((nug: string | string[], index: number) => (
-                <button
-                  key={index}
-                  className="commandeUniquePage commandeNuggetButton"
-                  disabled={true}
-                >
-                  {typeof nug === "string" ? (
-                    nug
-                  ) : (
-                    <ul>
-                      {nug.map((unique: string, i: number) => (
-                        <li key={i}>{unique}</li>
-                      ))}
-                    </ul>
-                  )}
-                </button>
-              ))}
+              <div id="touteCommandesNugget">
+                {commandeNugget.map((nug: string | string[], index: number) => (
+                  <button
+                    key={index}
+                    className="commandeUniquePage commandeNuggetButton"
+                    disabled={true}
+                  >
+                    {typeof nug === "string" ? (
+                      nug
+                    ) : (
+                      <ul className="listeCommandeNugget">
+                        {nug.map((unique: string, i: number) => (
+                          <li key={i}>{unique}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

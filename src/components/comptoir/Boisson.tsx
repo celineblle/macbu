@@ -238,7 +238,11 @@ function PosteBoisson({
                             handleClickBoissonConstruction(element)
                           }
                           key={index}
-                          className="buttonNeutre buttonSaveur"
+                          className={
+                            element.quantite > 0
+                              ? "buttonNeutre buttonSaveur"
+                              : "buttonSaveur buttonStockVide"
+                          }
                           disabled={element.quantite > 0 ? false : true}
                         >
                           {element.produit}
@@ -280,25 +284,27 @@ function PosteBoisson({
             <div id="modalDroiteBoisson">
               <div id="commandeModalBoisson">
                 <h3>Commande</h3>
-                {commandeBoisson.map(
-                  (boisson: string | string[], index: number) => (
-                    <button
-                      className="commandeUniquePage commandeBoisson"
-                      key={index}
-                      disabled={true}
-                    >
-                      {typeof boisson === "string" ? (
-                        boisson
-                      ) : (
-                        <ul>
-                          {boisson.map((unique: string, i: number) => (
-                            <li key={i}>{unique}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </button>
-                  )
-                )}
+                <div id="allCommandeBoisson">
+                  {commandeBoisson.map(
+                    (boisson: string | string[], index: number) => (
+                      <button
+                        className="commandeUniquePage commandeBoisson"
+                        key={index}
+                        disabled={true}
+                      >
+                        {typeof boisson === "string" ? (
+                          boisson
+                        ) : (
+                          <ul>
+                            {boisson.map((unique: string, i: number) => (
+                              <li key={i}>{unique}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </button>
+                    )
+                  )}
+                </div>
               </div>
               <hr />
               <div id="modalStockBoisson">

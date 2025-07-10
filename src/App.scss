@@ -114,7 +114,7 @@ hr {
   @include style.border-component;
   margin: auto;
   width: 80%;
-  height: 80%;
+  height: 85%;
 }
 
 .tabLinksButton {
@@ -221,4 +221,14 @@ hr {
 .commandePret:active {
   background-color: style.$vertClair;
   border-color: style.$vertClair;
+}
+
+.buttonStockVide {
+  background-color: transparent;
+  border: 2px solid style.$grisBordure;
+  :hover {
+    background-color: transparent;
+    border: 2px solid style.$grisBordure;
+    cursor: default;
+  }
 }

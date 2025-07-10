@@ -14,9 +14,9 @@ $gris: #d7d3d2;
 $grisBordure: #a6a6a6;
 $blanc: #f2f2f2;
 $noir: #0d0d0d;
-$beige: #D9AF8B;
-$vertFonce: #4BBF52;
-$vertClair: #C7F2B3;
+$beige: #d9af8b;
+$vertFonce: #4bbf52;
+$vertClair: #c7f2b3;
 
 @mixin border-component {
   border: 4px solid $rose;
@@ -29,4 +29,11 @@ $vertClair: #C7F2B3;
 
 @mixin close-mode {
   display: none;
+}
+
+@mixin commandesInPostes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
 }

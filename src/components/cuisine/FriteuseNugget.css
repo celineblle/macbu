@@ -22,6 +22,10 @@
   width: 30%;
 }
 
+#pretNugget {
+  margin-left: 4px;
+}
+
 #commandeNugget {
   overflow: scroll;
 }
@@ -52,13 +56,10 @@
   height: calc(100% - 20px - 2em);
 }
 
-.preparationFriteuseNugget {
-  height: 33%;
-}
-
 .compteurBoite {
   margin-top: 4px;
   margin-bottom: 8px;
+  margin-left: 12px;
 }
 
 .commandeNuggetButton {
@@ -87,6 +88,27 @@
   margin: 0;
   padding-left: 4px;
   list-style: none;
+}
+
+#touteCommandesNugget {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
+}
+
+.listeCommandeNugget,
+.pretNugget {
+  list-style: none;
+  padding: 4px;
+}
+.listeCommandeNugget li,
+.pretNugget li {
+  text-align: left;
+}
+
+.pretNugget li {
+  padding-left: 8px;
 }
 
 /*# sourceMappingURL=FriteuseNugget.css.map */

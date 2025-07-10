@@ -192,6 +192,7 @@ function Grill({
               <img alt="fermer" title="fermer" src={close}></img>
             </button>
           </div>
+          <br />
           <div id="modalGrillContent">
             <div id="stockPretGrill">
               <h3>Pret</h3>
@@ -253,10 +254,14 @@ function Grill({
               <div id="buttonFrigoGrill">
                 {stocksCuisine.length > 0 &&
                   stocksCuisine[7].stockActuel.map((element, i) => (
-                    <div key={i}>
+                    <div key={i} className="buttonUniqueFrigoGrill">
                       <button
                         onClick={() => handleClickFrigoToGrill(element.produit)}
-                        className="buttonNeutre buttonGrill"
+                        className={
+                          element.quantite > 0
+                            ? "buttonNeutre buttonGrill"
+                            : "buttonGrill buttonStockVide"
+                        }
                       >
                         {element.produit}
                       </button>
@@ -267,30 +272,29 @@ function Grill({
             </div>
             <hr />
             <div id="finModal">
-              <div id="stockFrigoGrill">
-                <h3>Stock</h3>
-              </div>
               <div id="commandeFrigoGrill">
                 <h3>Commande</h3>
-                {commandeSteak.map(
-                  (steak: string | string[], index: number) => (
-                    <button
-                      key={index}
-                      disabled={true}
-                      className="commandeUniquePage commandeSteak"
-                    >
-                      {typeof steak === "string" ? (
-                        steak
-                      ) : (
-                        <ul>
-                          {steak.map((unique: string, i: number) => (
-                            <li key={i}>{unique}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </button>
-                  )
-                )}
+                <div id="ensembleCommandeGrill">
+                  {commandeSteak.map(
+                    (steak: string | string[], index: number) => (
+                      <button
+                        key={index}
+                        disabled={true}
+                        className="commandeUniquePage commandeSteak"
+                      >
+                        {typeof steak === "string" ? (
+                          steak
+                        ) : (
+                          <ul>
+                            {steak.map((unique: string, i: number) => (
+                              <li key={i}>{unique}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </button>
+                    )
+                  )}
+                </div>
               </div>
             </div>
           </div>
