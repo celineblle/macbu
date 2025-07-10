@@ -354,7 +354,7 @@ function BureauManager({
                         )
                       }
                     >
-                      Acheter {prixQuantiteIngredientsBurger[i]} €
+                      Acheter {prixQuantiteIngredientsBurger[i][0]} €
                     </button>
                   </div>
                 ))}
