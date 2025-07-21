@@ -1,13 +1,125 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #boissonComponent {
-  background-color: #94d7f2;
-  color: #5B1E13;
-  width: 100%;
-  height: 100%;
+  width: calc(20vw - 24px);
 }
 
-#buttonBoisson {
-  background-color: #5B1E13;
-  color: #94d7f2;
+#boissonListePage {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 24vh;
+  overflow: scroll;
+}
+#boissonListePage li {
+  margin: 4px auto;
+  background-color: #d7d3d2;
+  border-radius: 5px;
+  height: 30px;
+  width: 160px;
+}
+#boissonListePage li p {
+  margin: 6px auto;
+  text-align: center;
+}
+
+#buttonLancer,
+#buttonJeter {
+  border-radius: 5px;
+  height: 30px;
+  width: 80px;
+}
+
+#buttonLancer {
+  border: 2px solid #78e8c1;
+}
+
+#buttonJeter {
+  border: 2px solid #402116;
+}
+
+.buttonFontaine,
+.buttonVide,
+.buttonSaveur,
+.buttonTaille {
+  height: 30px;
+}
+
+.buttonVide,
+.buttonTaille {
+  width: 65px;
+}
+
+.buttonSaveur {
+  width: 120px;
+}
+
+.buttonFontaine {
+  width: 160px;
+}
+
+#modalContentBoisson {
+  display: flex;
+  flex-direction: row;
+  height: 89%;
+}
+
+#modalGaucheBoisson {
+  width: 15%;
+}
+
+#modalCentreBoisson {
+  width: 27%;
+}
+
+#modalDroiteBoisson {
+  width: 53%;
+}
+
+.ensembleButton {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 4px;
+}
+
+#commandeModalBoisson {
+  height: 65%;
+  overflow: scroll;
+}
+
+#modalStockBoisson {
+  height: 35%;
+}
+#modalStockBoisson ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 45%;
+}
+
+.commandeBoisson {
+  min-height: 30px;
+  max-height: 80px;
+  height: auto;
+  overflow: scroll;
+  width: 140px;
+}
+.commandeBoisson ul {
+  padding-left: 15px;
+  padding-top: 5px;
+  margin: 0;
+}
+
+#allCommandeBoisson {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=Boisson.css.map */

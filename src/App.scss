@@ -1,30 +1,245 @@
-html {
-  font-size: 10px;
+@use "sass/style" as style;
+
+body {
+  margin: 0px;
+  background-color: whitesmoke;
+  color: style.$noir;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "BebasNeue";
+  margin: 4px;
+}
+
+p,
+button,
+li {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+h1 {
+  font-size: 3em;
 }
 
 h2 {
-  font-size: 1.2em;
-  font-weight: bold;
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 1.7em;
+}
+
+h4 {
+  font-size: 1.4em;
+  margin: 4px;
+}
+
+button {
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: style.$noir;
+  padding: 2px 8px;
+  margin: 3px 8px;
+}
+
+hr {
+  border: 1px solid style.$noir;
+  margin: 10px;
 }
 
 #page {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-#bureauManager {
-  border: solid black;
-  height: 10vh;
+.component {
+  @include style.border-component;
 }
 
-#cuisine {
-  border: solid red;
-  height: 55vh;
+.buttonModal {
+  background-color: transparent;
+  font-family: "BebasNeue", Impact;
+  border: 2px solid style.$rose;
+  font-size: 2em;
 }
 
-#comptoir {
-  border: solid blue;
-  height: 35vh;
+#headerModal {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px;
+  height: 40px;
+  width: calc(100% - 24px);
+  background-color: style.$blanc;
+  border-radius: 5px;
+}
+
+.closeModalButton {
+  background-color: transparent;
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.modalOpen {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  animation-name: animatetop;
+  background-color: rgba(0, 0, 0, 0.4);
+  animation-duration: 0.4s;
+}
+
+.modalContent {
+  position: relative;
+  background-color: style.$blanc;
+  color: style.$noir;
+  @include style.border-component;
+  margin: auto;
+  width: 80%;
+  height: 85%;
+}
+
+.tabLinksButton {
+  background-color: style.$gris;
+  padding: 5px;
+  transition: 0.3s;
+  float: left;
+  outline: none;
+  border: 1px solid style.$grisBordure;
+}
+
+.tabLinksButton:hover {
+  background-color: style.$grisBordure;
+}
+
+.tabLinksButton:active {
+  background-color: style.$rose;
+  transition: 0.2s;
+}
+
+.tabContentHidden,
+.modalClose {
+  @include style.close-mode;
+}
+
+.buttonGrille {
+  background-color: style.$marron;
+  color: style.$blanc;
+}
+
+.buttonPret {
+  background-color: style.$vert;
+}
+
+.buttonCuisson,
+.commandeCuisson:hover {
+  background-color: style.$orange;
+}
+
+.buttonNeutre {
+  background-color: style.$gris;
+}
+
+.onglet {
+  background-color: style.$gris;
+  border: 1px solid style.$grisBordure;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.buttonNeutre:hover,
+.onglet:hover,
+.buttonGrille:hover {
+  background-color: style.$rose;
+  color: style.$noir;
+}
+
+.buttonNeutre:active,
+.onglet:active {
+  background-color: style.$grisBordure;
+}
+
+.buttonGrille:active,
+.commandeCuisson:active {
+  background-color: style.$beige;
+  color: style.$noir;
+}
+
+.buttonPret:hover {
+  background-color: style.$vertFonce;
+}
+
+.buttonPret:active {
+  background-color: style.$vertClair;
+}
+
+.commandeCuisson {
+  background-color: transparent;
+  border: 2px solid style.$orange;
+  border-radius: 5px;
+  width: 170px;
+  height: 75px;
+}
+
+.commandePret {
+  background-color: transparent;
+  border: 2px solid style.$vert;
+  border-radius: 5px;
+  width: 170px;
+  height: 75px;
+}
+
+.commandeModal {
+  background-color: transparent;
+  border: 2px solid style.$rose;
+  border-radius: 5px;
+  width: 170px;
+  height: 75px;
+}
+
+.commandePret:hover {
+  background-color: style.$vert;
+}
+
+.commandePret:active {
+  background-color: style.$vertClair;
+  border-color: style.$vertClair;
+}
+
+.buttonStockVide {
+  background-color: transparent;
+  border: 2px solid style.$grisBordure;
+  :hover {
+    background-color: transparent;
+    border: 2px solid style.$grisBordure;
+    cursor: default;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }

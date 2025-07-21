@@ -1,14 +1,12 @@
 export const  pains: string[] = ["Pain sésame 3 tranches", "Grand pain sésame", "Moyen pain sésame", "Pain carré ciabatta", "Pain carré bacon", "Pain muffin", "Petit pain bun", "Moyen pain bun", "Galette wrap"];
 
-export const frituresCuisine: string[] = ["Nugget poulet", "Petit poisson pané", "Grand poisson pané", "Petit steak poulet pané", "Grand steak poulet pané", "Poulet pané", "Palet chêvre"];
+export const frituresCuisine: string[] = ["Nugget poulet", "Petit poisson pané", "Grand poisson pané", "Petit steak poulet pané", "Grand steak poulet pané", "Palet chêvre"];
 
-export const sauces: string[] = ["César", "Huile salade", "Tartare", "Spécial Bu", "Abricot", "Ketchup", "Ranch", "Moutarde"];
+export const sauces: string[] = [ "Tartare", "Spécial Bu", "Abricot", "Ketchup", "Ranch", "Moutarde"];
 
-export const fromages: string[] = ["Cube d'emmental", "Cheddar", "Emmental", "Mozza burger", "Boule de mozza"];
+export const fromages: string[] = [ "Cheddar", "Emmental", "Mozza burger"];
 
 export const viande: string[] = ["Jambon", "Oeuf", "Grand steak plat", "Petit steak plat", "Grand gros steak", "Moyen gros steak"];
-
-export const ingredientSalade: string[] = ["Salade", "Croutons", "Tomates séchés", "Pates"];
 
 export const ingredientBurger: string[] = ["Salade", "Tomates", "Oignons", "Pickles", "Bacon", "Cornichons", "Oignon frit"];
 
@@ -18,19 +16,11 @@ export const glaceToppings: string[] = [ "Coulis caramel", "Coulis chocolat", "E
 
 export const frite: string[] = ["Frite", "Potatoe"];
 
-export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Orange gazeuse", "Jus d'orange", "jus multifruit", "Thé glacé"];
+export const boisson: string[] = ["Eau", "Eau gazeuse", "Limonade", "Cola", "Orange gazeuse", "Jus d'orange", "Jus multifruit", "Thé glacé"];
 
 export const taille: string[] = ["Grand", "Moyen", "Petit"];
 
-export const sac: string[] = ["Grand sac", "Grand sachet", "Petit sachet", "Boite enfant"];
-
-export const boiteBurger: string[] = ["Grande boite", "Moyenne boite", "Papier burger", "Grand papier wrap"];
-
-export const autresEmballage: string[] = [ "Boite 18 nuggets","Boite 6 nuggets", "Boite 3 nuggets", "Boite salade", "Serviette"];
-
-export const gobelet: string[] = ["Grand gobelet", "Moyen gobelet", "Petit gobelet", "Pot"];
-
-export const emballageFrite: string[] = ["Grande boite", "Boite moyenne", "Petit sachet"];
+export const sac: [string, number][] = [["Grand sac", 12], ["Sac moyen", 6], ["Petit sac", 3]];
 
 export const grandProduitBurger: string[] = [pains[0], pains[1], pains[3], pains[4], viande[2], viande[4], frituresCuisine[4]];
 

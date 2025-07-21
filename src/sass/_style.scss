@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "BebasNeue";
+  src:
+    url("./assets/BebasNeue-Regular.ttf") format("truetype"),
+    url("bebasneue-regular-webfont.woff2") format("woff2"),
+    url("bebasneue-regular-webfont.woff") format("woff");
+}
+
+$rose: #f2bbc9;
+$vert: #78e8c1;
+$orange: #f78800;
+$marron: #402116;
+$gris: #d7d3d2;
+$grisBordure: #a6a6a6;
+$blanc: #f2f2f2;
+$noir: #0d0d0d;
+$beige: #d9af8b;
+$vertFonce: #4bbf52;
+$vertClair: #c7f2b3;
+
+@mixin border-component {
+  border: 4px solid $rose;
+  margin: 4px;
+  padding: 4px;
+  border-radius: 15px;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+}
+
+@mixin close-mode {
+  display: none;
+}
+
+@mixin commandesInPostes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: scroll;
+}

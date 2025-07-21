@@ -1,13 +1,59 @@
+@font-face {
+  font-family: "BebasNeue";
+  src: url("./assets/BebasNeue-Regular.ttf") format("truetype"), url("bebasneue-regular-webfont.woff2") format("woff2"), url("bebasneue-regular-webfont.woff") format("woff");
+}
 #bureauManagerComponent {
-  background-color: #F2D4AE;
-  color: #8b2a09;
   width: 100%;
-  height: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#bureauManagerComponent h1 {
+  margin: 10px;
 }
 
-#buttonBureauManager {
-  background-color: #8b2a09;
-  color: #F2D4AE;
+#bureauManagerContentPage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#rayons {
+  overflow: scroll;
+  height: 89%;
+  width: 100%;
+}
+
+.rayonUnique {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+.produit {
+  border: solid 2px #f2bbc9;
+  border-radius: 15px;
+  height: 140px;
+  width: 140px;
+  flex-shrink: 0;
+  padding: 8px;
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.produit p {
+  margin: 4px;
+}
+.produit button {
+  background-color: #d7d3d2;
+  padding: 5px 8px;
+  margin: 4px auto;
+}
+
+.titreRayons {
+  margin-left: 12px;
 }
 
 /*# sourceMappingURL=BureauManager.css.map */

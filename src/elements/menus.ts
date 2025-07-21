@@ -1,135 +1,57 @@
 import * as burgers from "./burgers";
-import {taille, sac} from "./stocks";
+import { taille } from "./stocks";
 
 export interface Menu {
-    sandwich: object, 
-    accompagnement: object, 
-    boisson: object,
-    taille: number,
-};
-
-function menu (): Menu[] {
-    const grandSandwichs: object[] = [];
-    const moyenSandwichs: object[] = [];
-    const petitSandwichs: object[] = [];
-    const grandAccompagnement: object[] = [];
-    const moyenAccompagnement: object[] = [];
-    const petitAccompagnement: object[] = [];
-    const grandeBoisson: object[] = [];
-    const moyenneBoisson: object[] = [];
-    const petiteBoisson: object[] = [];
-    const allMenu: object[] = [];
-
-    function tableauTaille (tabGrand: object[], tabMoyen: object[], tabPetit: object[], tabReference: object[]) {
-       const result = [];
-        for (let a = 0; a < tabReference.length; a++) {
-
-            switch(tabReference[a].tailleProduit){
-                case taille[0]:
-                    tabGrand.push(tabReference[a]);
-                    break;
-                case taille[1]:
-                    tabMoyen.push(tabReference[a]);
-                    break;
-                case taille[2]:
-                    tabPetit.push(tabReference[a]);
-                    break;
-            };
-        };
-    }
-
-    tableauTaille(grandSandwichs, moyenSandwichs, petitSandwichs, burgers.sandwichs );
-    tableauTaille(grandAccompagnement, moyenAccompagnement, petitAccompagnement, burgers.accompagnements);
-    tableauTaille(grandeBoisson, moyenneBoisson, petiteBoisson, burgers.boissons)
-
-
-    function composeMenu (tabSandwich: object[], tabAccompagnement: object[], tabBoisson: object[], taille) {
-       
-        for (let i = 0; i < tabSandwich.length; i++){
-            for (let j = 0; j < tabAccompagnement.length; j++){
-                for (let k = 0; k < tabBoisson.length; k++){
-                    const unMenu: Menu = {
-                        sandwich: tabSandwich[i],
-                        accompagnement: tabAccompagnement[j],
-                        boisson: tabBoisson[k],
-                        taille: taille,
-                    };
-                    allMenu.push(unMenu);
-                };
-            };
-        };
-        
-    }
-
-    composeMenu(grandSandwichs, grandAccompagnement, grandeBoisson, 9);
-    composeMenu(moyenSandwichs, moyenAccompagnement, moyenneBoisson, 6);
-    composeMenu(petitSandwichs, petitAccompagnement, petiteBoisson, 3)
-
-    console.log(allMenu);
-    return allMenu;
-};
-
-export const menus: Menu[] = menu();
-
-
-export interface MenuEnfant {
-    sandwich: object,
-    accompagnement: object,
-    boisson: object,
-    dessert: object,
-    emballage: string,
-    taille: number,
+  sandwich: burgers.Nugget | burgers.Burger;
+  accompagnement: burgers.Accompagnement;
+  boisson: burgers.Boisson;
+  taille: number;
+  prix: number;
 }
 
-function menuEnfant (): MenuEnfant[] {
-    const petitSandwichs = [];
-    const petitAccompagnement = [burgers.legume];
-    const petiteBoisson = [burgers.jusDefruit];
-    const dessert = [burgers.boissonYaourt, burgers.fruits ];
-    const allMenuEnfant = [];
-
-    for (let a = 0; burgers.sandwichs.length; a++){
-        if(burgers.sandwichs[a].tailleProduit === taille[2]){
-            petitSandwichs.push(burgers.sandwichs[a])
-        }
+function getElementByTab(
+  refTab: (
+    | ( burgers.Nugget | burgers.Burger)
+    | burgers.Accompagnement
+    | burgers.Boisson
+  )[],
+  currentTab: (
+    | ( burgers.Nugget | burgers.Burger)
+    | burgers.Accompagnement
+    | burgers.Boisson
+  )[],
+  taille: string
+): void {
+  for (let i = 0; i < refTab.length; i++) {
+    if (refTab[i].tailleProduit === taille) {
+      currentTab.push(refTab[i]);
     }
+  }
+}
 
-    for (let b = 0; b < burgers.accompagnements.length; b++){
-        if(burgers.accompagnements[b].tailleProduit === taille[2]){
-            petitAccompagnement.push(burgers.accompagnements[b]);
-        }
-    }
+export interface MenuEnfant {
+  sandwich: burgers.Nugget | burgers.Burger;
+  accompagnement: burgers.Accompagnement;
+  boisson: burgers.Boisson;
+  dessert: burgers.GlaceType | burgers.Accompagnement;
+  taille: number;
+  prix: number;
+}
 
-    for (let c = 0; c < burgers.boissons.length; c++){
-        if (burgers.boissons[c].tailleProduit === taille[2]) {
-            petiteBoisson.push(burgers.boissons[c]);
-        }
-    }
+export function getMenuEnfant() {
+  const sandwich: (burgers.Nugget | burgers.Burger)[] = [];
+  const accompagnement: burgers.Accompagnement[] = [];
+  const boisson: burgers.Boisson[] = [];
 
-    for (let d = 0; d < burgers.glaces.length; d++){
-        if (burgers.glaces[d].tailleProduit === taille[2]) {
-            dessert.push(burgers.glaces[d]);
-        }
-    }
+  getElementByTab(burgers.sandwichs, sandwich, taille[2]);
+  getElementByTab(burgers.accompagnements, accompagnement, taille[2]);
+  getElementByTab(burgers.boissons, boisson, taille[2]);
 
-    for (let i = 0; i < petitSandwichs.length; i++){
-        for(let j = 0; j < petitAccompagnement.length; j++){
-            for (let k = 0; k < petiteBoisson.length; k++){
-                for (let l = 0; l < dessert.length; l++){
-                    const unMenuEnfant: MenuEnfant = {
-                        sandwich: petitSandwichs[i],
-                        accompagnement: petitAccompagnement[j],
-                        boisson: petiteBoisson[k],
-                        dessert: dessert[l],
-                        emballage: sac[3],
-                        taille: 4,
-                    };
-                    allMenuEnfant.push(unMenuEnfant);
-                };
-            };
-        };
-    };
-    return allMenuEnfant;
-};
+  const allTabMenu: [( burgers.Nugget | burgers.Burger)[], burgers.Accompagnement[], burgers.Boisson[], (burgers.Accompagnement | burgers.GlaceType)[]] = [sandwich, accompagnement, boisson, burgers.enfantDessert];
 
-export const menusEnfant: MenuEnfant[] = menuEnfant();
+  return allTabMenu;
+}
+
+export const menuEnfant: [( burgers.Nugget | burgers.Burger)[], burgers.Accompagnement[], burgers.Boisson[], (burgers.Accompagnement | burgers.GlaceType)[]] = getMenuEnfant();
+
+export const prixMenu = [[9, 16], [6, 13], [4, 5]]

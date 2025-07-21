@@ -1,27 +1,6 @@
 #comptoirComponent {
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    height: 100%;
-}
-
-#caisse {
-    border: solid blue;
-    width: 20vw;
-   
-}
-
-#comptoirAssemblage {
-    border: solid pink;
-    width: 40vw;
-}
-
-#boisson {
-    border: solid yellow;
-    width: 20vw;
-}
-
-#glace {
-    border: solid green;
-    width: 20vw;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 40vh;
 }
