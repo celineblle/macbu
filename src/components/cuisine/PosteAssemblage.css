@@ -86,7 +86,11 @@
 }
 
 .commandeSandwich {
-  height: 60px;
+  border: 2px solid #78e8c1;
+  border-radius: 5px;
+  text-align: center;
+  margin: 4px;
+  height: 75px;
   overflow: scroll;
   width: 140px;
 }
@@ -107,6 +111,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   overflow: scroll;
+  flex-direction: column;
 }
 
 #pretBurger,

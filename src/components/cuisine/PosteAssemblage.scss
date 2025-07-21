@@ -84,7 +84,11 @@
 }
 
 .commandeSandwich {
-  height: 60px;
+  border: 2px solid style.$vert;
+  border-radius: 5px;
+  text-align: center;
+  margin: 4px;
+  height: 75px;
   overflow: scroll;
   width: 140px;
   ul {
@@ -102,6 +106,7 @@
 
 #commandeCuisineAllButton {
   @include style.commandesInPostes;
+  flex-direction: column;
 }
 
 #pretBurger,

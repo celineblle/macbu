@@ -112,13 +112,13 @@ function BureauManager({
           Magasin
         </button>
 
-        <h3>Budget : {fondDeCaisse}</h3>
+        <h3>Budget : {fondDeCaisse} €</h3>
       </div>
       <div className={buttonActionModalBureau ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
           <div id="headerModal">
             <h2>Magasin</h2>
-            <h3>Budget : {fondDeCaisse}</h3>
+            <h3>Budget : {fondDeCaisse} €</h3>
             <button
               onClick={handleClickActionModal}
               className="closeModalButton"
@@ -424,32 +424,6 @@ function BureauManager({
             </div>
             <br />
             <hr />
-            <h3 className="titreRayons">Sac</h3>
-            <div className="rayonUnique">
-              {sac.map((e, i) => (
-                <div key={i} className="produit">
-                  <div>
-                    <p>{e[0]}</p>
-                    <p>{prixQuantiteSac[i][1]} pièces</p>
-                    <p>
-                      Stock actuel:{" "}
-                      {stocksComptoir.length > 0 &&
-                        stocksComptoir[3].stockActuel[i].quantite}
-                    </p>
-                  </div>
-                  <button
-                    className="buttonNeutre"
-                    onClick={() =>
-                      handleClickAcheter("sac", 3, e[0], prixQuantiteSac[i][0])
-                    }
-                  >
-                    Acheter {prixQuantiteSac[i][0]} €
-                  </button>
-                </div>
-              ))}
-            </div>
-            <br />
-            <hr />
             <h3 className="titreRayons">Boisson</h3>
             <div className="rayonUnique">
               {nomDesPostesComptoir[0][1].map((e, i) => (
@@ -537,6 +511,32 @@ function BureauManager({
                     }
                   >
                     Acheter {prixQuantiteAutresProduits[i][0]} €
+                  </button>
+                </div>
+              ))}
+            </div>
+            <br />
+            <hr />
+            <h3 className="titreRayons">Sac</h3>
+            <div className="rayonUnique">
+              {sac.map((e, i) => (
+                <div key={i} className="produit">
+                  <div>
+                    <p>{e[0]}</p>
+                    <p>{prixQuantiteSac[i][1]} pièces</p>
+                    <p>
+                      Stock actuel:{" "}
+                      {stocksComptoir.length > 0 &&
+                        stocksComptoir[3].stockActuel[i].quantite}
+                    </p>
+                  </div>
+                  <button
+                    className="buttonNeutre"
+                    onClick={() =>
+                      handleClickAcheter("sac", 3, e[0], prixQuantiteSac[i][0])
+                    }
+                  >
+                    Acheter {prixQuantiteSac[i][0]} €
                   </button>
                 </div>
               ))}

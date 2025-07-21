@@ -450,9 +450,14 @@ function PosteAssemblage({
   }
   console.log(stocksCuisine);
 
-  function handleClickReprendreBurger(element: object): void {
-    setCurrentBurger(element);
-    setBurgerEnAttente(burgerEnAttente.filter((e: object) => e != element));
+  function handleClickReprendreBurger(element: BurgerAllOptional): void {
+    if (
+      Object.prototype.hasOwnProperty.call(element, "nom") &&
+      element.nom !== "Vide"
+    ) {
+      setCurrentBurger(element);
+      setBurgerEnAttente(burgerEnAttente.filter((e: object) => e != element));
+    }
   }
 
   useEffect(() => {
@@ -585,8 +590,11 @@ function PosteAssemblage({
                             <li key={index}>
                               {burger.nom} :{" "}
                               {!burger[element.nom as keyof Burger]
-                                ? "aucun"
-                                : `${burger[element.nom as keyof Burger]} `}
+                                ? element.nom === "ingredient burger" &&
+                                  burger.ingredient !== undefined
+                                  ? ` ${burger.ingredient} `
+                                  : " Aucun"
+                                : ` ${burger[element.nom as keyof Burger]} `}
                             </li>
                           ))}
                         </ul>
@@ -625,7 +633,7 @@ function PosteAssemblage({
                       <button
                         key={index}
                         disabled={true}
-                        className="commandeUniquePage commandeSandwich"
+                        className="commandeSandwich"
                       >
                         {typeof sandwich === "string" ? (
                           sandwich
