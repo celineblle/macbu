@@ -14,7 +14,7 @@ React typescript
 
 ## Versions 
 
-V1 : Création de l'interface et des features de jeu - finalisation
+V1 : Création de l'interface et des features de jeu.
 
 V2 : Création de profils user pour identifier les joueurs et créer un classement tous joueurs confondu (création de la BDD joueurs et back identification + pages des scores en front) - à venir
 
