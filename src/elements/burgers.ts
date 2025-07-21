@@ -36,6 +36,13 @@ function nugget (): Nugget[] {
 
 export const nuggets: Nugget[] = nugget();
 
+  export interface BoiteNugget {
+    friture: string;
+    nombreNugget: number;
+    quantitePret: number;
+    prix: number;
+  }
+
 export interface Burger {
     nom: string,
     pain: string,

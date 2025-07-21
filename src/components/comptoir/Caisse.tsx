@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import "./Caisse.css";
 import { TailleEtPrixCommandeContext } from "../../CommandeContext";
-import { FondDeCaisseContext } from "../../CaisseContext";
 
-function Caisse() {
+function Caisse({ fondDeCaisse }: { fondDeCaisse: number }) {
   const tailleEtPrixCommande = useContext(TailleEtPrixCommandeContext);
-  const fondDeCaisse = useContext(FondDeCaisseContext);
 
   return (
     <div id="caisseComponent" className="component">
