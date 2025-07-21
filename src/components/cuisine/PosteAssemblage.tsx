@@ -15,11 +15,7 @@ import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
-import {
-  BurgersContext,
-  BurgersContextSetter,
-  CommandesAPreparerContext,
-} from "../../CommandeContext";
+import { CommandesAPreparerContext } from "../../CommandeContext";
 import {
   demantelerMenu,
   quiEstQuoi,
@@ -37,6 +33,8 @@ function PosteAssemblage({
   setBacFriture,
   stocksCuisine,
   setStocksCuisine,
+  burgerDispo,
+  setBurgerDispo,
 }: {
   viandePretRef: React.RefObject<ViandePret[]>;
   setViandePret: React.Dispatch<React.SetStateAction<ViandePret[]>>;
@@ -44,6 +42,8 @@ function PosteAssemblage({
   setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
   stocksCuisine: StocksActuelsType[];
   setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  burgerDispo: Burger[];
+  setBurgerDispo: React.Dispatch<React.SetStateAction<Burger[]>>;
 }) {
   interface BurgerAllOptional {
     nom?: string;
@@ -68,8 +68,6 @@ function PosteAssemblage({
     ) => void;
   }
 
-  const burgersContext = useContext(BurgersContext);
-  const setBurgersContext = useContext(BurgersContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const limitBurgerRack: number = 4;
@@ -355,7 +353,7 @@ function PosteAssemblage({
   }
 
   function handleClickBurgerPret(): void {
-    if (burgersContext.length < limitBurgerRack) {
+    if (burgerDispo.length < limitBurgerRack) {
       const finalBurger: Burger = {
         nom: "initial",
         pain: "initial",
@@ -441,9 +439,8 @@ function PosteAssemblage({
           finalBurger.nom = "Recette Personnelle";
         }
       }
-      if (setBurgersContext !== undefined) {
-        setBurgersContext([...burgersContext, finalBurger]);
-      }
+      setBurgerDispo([...burgerDispo, finalBurger]);
+
       retirerAllIngredientsStock();
       setCurrentBurger({});
     }
@@ -478,7 +475,7 @@ function PosteAssemblage({
 
       <div id="pretPosteAssemblage" className="postePosteAssemblage">
         <h3>Pret</h3>
-        {burgersContext.map((e: Burger, index: number) => (
+        {burgerDispo.map((e: Burger, index: number) => (
           <button className="commandePret" key={index}>
             {e.nom}
           </button>
@@ -651,7 +648,7 @@ function PosteAssemblage({
               </div>
               <h3>Pret</h3>
               <div id="pretBurger" className="postePosteAssemblage">
-                {burgersContext.map((e: Burger, index: number) => (
+                {burgerDispo.map((e: Burger, index: number) => (
                   <button className="commandePret" key={index}>
                     {e.nom}
                   </button>

@@ -10,6 +10,7 @@ import Friteuse from "./Friteuse";
 import FriteuseNugget from "./FriteuseNugget";
 import Grill from "./Grill";
 import { StocksActuelsType } from "../../StocksActuels";
+import { Accompagnement, BoiteNugget, Burger } from "../../elements/burgers";
 
 export interface ViandePret {
   nom: string;
@@ -19,9 +20,19 @@ export interface ViandePret {
 function Cuisine({
   stocksCuisine,
   setStocksCuisine,
+  setFritesDispo,
+  nuggetsGlobal,
+  setNuggetsGlobal,
+  burgerDispo,
+  setBurgerDispo,
 }: {
   stocksCuisine: StocksActuelsType[];
   setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  setFritesDispo: React.Dispatch<React.SetStateAction<Accompagnement[]>>;
+  nuggetsGlobal: BoiteNugget[];
+  setNuggetsGlobal: React.Dispatch<React.SetStateAction<BoiteNugget[]>>;
+  burgerDispo: Burger[];
+  setBurgerDispo: React.Dispatch<React.SetStateAction<Burger[]>>;
 }) {
   function getStockPret(): ViandePret[] {
     const viandePretTab: ViandePret[] = [];
@@ -71,6 +82,7 @@ function Cuisine({
         <Friteuse
           stocksCuisine={stocksCuisine}
           setStocksCuisine={setStocksCuisine}
+          setFritesDispo={setFritesDispo}
         />
         <FriteuseNugget
           bacFriture={bacFriture}
@@ -78,6 +90,8 @@ function Cuisine({
           bacFritureRef={bacFritureRef}
           stocksCuisine={stocksCuisine}
           setStocksCuisine={setStocksCuisine}
+          nuggetsGlobal={nuggetsGlobal}
+          setNuggetsGlobal={setNuggetsGlobal}
         />
       </div>
       <PosteAssemblage
@@ -87,6 +101,8 @@ function Cuisine({
         setBacFriture={setBacFriture}
         stocksCuisine={stocksCuisine}
         setStocksCuisine={setStocksCuisine}
+        burgerDispo={burgerDispo}
+        setBurgerDispo={setBurgerDispo}
       />
       <Grill
         viandePret={viandePret}

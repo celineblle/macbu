@@ -11,24 +11,14 @@ import {
   Burger,
   Accompagnement,
   fraisProduitFormat,
+  BoiteNugget,
 } from "../../elements/burgers";
 import "./ComptoirAssemblage.css";
 import {
-  FritesContext,
-  NuggetsContext,
-  BoiteNugget,
-  NuggetsContextSetter,
-  BurgersContext,
-  BurgersContextSetter,
-  FritesContextSetter,
   TailleEtPrixCommandeContext,
   CommandesAPreparerContextSetter,
   TailleEtPrixCommandeContextSetter,
 } from "../../CommandeContext";
-import {
-  FondDeCaisseContext,
-  FondDeCaisseContextSetter,
-} from "../../CaisseContext";
 import { triProduit, affichageCommande } from "./gestionCommandes";
 import {
   StocksActuelsType,
@@ -50,6 +40,14 @@ function ComptoirAssemblage({
   posteGlaceFondueRef,
   stocksComptoir,
   setStocksComptoir,
+  fondDeCaisse,
+  setFondDeCaisse,
+  fritesDispo,
+  setFritesDispo,
+  nuggetsGlobal,
+  setNuggetsGlobal,
+  burgerDispo,
+  setBurgerDispo,
 }: {
   glacesCommande: GlaceType[];
   setGlacesCommande: React.Dispatch<React.SetStateAction<GlaceType[]>>;
@@ -65,137 +63,23 @@ function ComptoirAssemblage({
   posteGlaceFondueRef: React.RefObject<GlaceType[]>;
   stocksComptoir: StocksActuelsType[];
   setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  fondDeCaisse: number;
+  setFondDeCaisse: React.Dispatch<React.SetStateAction<number>>;
+  fritesDispo: Accompagnement[];
+  setFritesDispo: React.Dispatch<React.SetStateAction<Accompagnement[]>>;
+  nuggetsGlobal: BoiteNugget[];
+  setNuggetsGlobal: React.Dispatch<React.SetStateAction<BoiteNugget[]>>;
+  burgerDispo: Burger[];
+  setBurgerDispo: React.Dispatch<React.SetStateAction<Burger[]>>;
 }) {
-  const fritesDispo = useContext(FritesContext);
-  const setFritesDispo = useContext(FritesContextSetter);
-  const nuggetsDispo = useContext(NuggetsContext);
-  const setNuggetsStateContext = useContext(NuggetsContextSetter);
-  const burgerDispo = useContext(BurgersContext);
-  const setBurgerDispo = useContext(BurgersContextSetter);
   const tailleEtPrixCommande = useContext(TailleEtPrixCommandeContext);
   const setTailleEtPrixCommande = useContext(TailleEtPrixCommandeContextSetter);
-  const fondDeCaisse = useContext(FondDeCaisseContext);
-  const setFondDeCaisse = useContext(FondDeCaisseContextSetter);
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
-
-  const burger: Burger[] = [
-    {
-      nom: "Origin Burger",
-      pain: stocks.pains[6],
-      viande: stocks.viande[3],
-      ingredient: [stocks.ingredientBurger[2], stocks.ingredientBurger[5]],
-      sauce: [stocks.sauces[3], stocks.sauces[5]],
-      tailleProduit: stocks.taille[2],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 6,
-    },
-    {
-      nom: "Opti Bacon",
-      pain: stocks.pains[1],
-      viande: stocks.viande[4],
-      fromage: [stocks.fromages[0]],
-      ingredient: [
-        stocks.ingredientBurger[4],
-        stocks.ingredientBurger[5],
-        stocks.ingredientBurger[2],
-      ],
-      sauce: [stocks.sauces[3], stocks.sauces[5]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 0,
-    },
-    {
-      nom: "Classic Big",
-      pain: stocks.pains[1],
-      viande: stocks.viande[4],
-      fromage: [stocks.fromages[1]],
-      ingredient: [
-        stocks.ingredientBurger[1],
-        stocks.ingredientBurger[0],
-        stocks.ingredientBurger[2],
-      ],
-      sauce: [stocks.sauces[2]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 12,
-    },
-    {
-      nom: "Fish N Pan",
-      pain: stocks.pains[7],
-      viande: stocks.frituresCuisine[2],
-      fromage: [stocks.fromages[0]],
-      ingredient: [stocks.ingredientBurger[0], stocks.ingredientBurger[1]],
-      sauce: [stocks.sauces[0]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 8,
-    },
-    {
-      nom: "Special Bu",
-      pain: stocks.pains[1],
-      viande: stocks.viande[2],
-      fromage: [stocks.fromages[1]],
-      ingredient: [
-        stocks.ingredientBurger[2],
-        stocks.ingredientBurger[0],
-        stocks.ingredientBurger[3],
-      ],
-      sauce: [stocks.sauces[1]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 8,
-    },
-    {
-      nom: "Big Cheese Origin",
-      pain: stocks.pains[1],
-      viande: stocks.viande[2],
-      fromage: [stocks.fromages[0]],
-      ingredient: [stocks.ingredientBurger[5], stocks.ingredientBurger[2]],
-      sauce: [stocks.sauces[3], stocks.sauces[1]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 15,
-    },
-    {
-      nom: "Italicain",
-      pain: stocks.pains[1],
-      viande: stocks.viande[4],
-      fromage: [stocks.fromages[2], stocks.fromages[1]],
-      ingredient: [stocks.ingredientBurger[1]],
-      sauce: [stocks.sauces[0]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 15,
-    },
-    {
-      nom: "Bacon Basic",
-      pain: stocks.pains[4],
-      viande: stocks.frituresCuisine[4],
-      fromage: [stocks.fromages[0]],
-      ingredient: [
-        stocks.ingredientBurger[0],
-        stocks.ingredientBurger[2],
-        stocks.ingredientBurger[6],
-      ],
-      sauce: [stocks.sauces[1]],
-      tailleProduit: stocks.taille[0],
-      type: "sandwich",
-      sousType: "burger",
-      prix: 12,
-    },
-  ];
 
   const elementsCommandes = [
     {
       nom: "Burgers",
-      produit: burger,
+      produit: burgerDispo,
     },
     {
       nom: "Frites",
@@ -203,7 +87,7 @@ function ComptoirAssemblage({
     },
     {
       nom: "Nuggets",
-      produit: nuggetsDispo,
+      produit: nuggetsGlobal,
     },
     {
       nom: "Boisson",
@@ -214,10 +98,6 @@ function ComptoirAssemblage({
       produit: glaces,
     },
   ];
-
-  // console.log("bu", burgersDispo);
-  // console.log("nu", nuggetsDispo);
-  // console.log("fr", fritesDispo);
 
   const tailleEnCour: number = 4;
 
@@ -329,15 +209,13 @@ function ComptoirAssemblage({
             }
           }
 
-          const nuggetTabCopie: BoiteNugget[] = nuggetsDispo.slice();
+          const nuggetTabCopie: BoiteNugget[] = nuggetsGlobal.slice();
           const quelNugget: number = nuggetTabCopie.findIndex(
             (e) => e.friture === plat.friture
           );
           nuggetTabCopie[quelNugget].quantitePret =
             nuggetTabCopie[quelNugget].quantitePret - 1;
-          if (setNuggetsStateContext !== undefined) {
-            setNuggetsStateContext(nuggetTabCopie);
-          }
+          setNuggetsGlobal(nuggetTabCopie);
         } else {
           commandeCopie.push(plat);
           if ("pain" in plat) {
@@ -346,9 +224,7 @@ function ComptoirAssemblage({
               (e) => e.nom === plat.nom
             );
             burgerDispoCopie.splice(quelBurger, 1);
-            if (setBurgerDispo !== undefined) {
-              setBurgerDispo(burgerDispoCopie);
-            }
+            setBurgerDispo(burgerDispoCopie);
           } else if ("complement" in plat && plat.sousType === "frite") {
             const friteDispoCopie: Accompagnement[] = fritesDispo.slice();
             const quelFrite: number = friteDispoCopie.findIndex(
@@ -447,10 +323,9 @@ function ComptoirAssemblage({
     setEnCourAffichage(allCommandeAffichageCopie);
 
     if ("pain" in currentPlat) {
-      const copieBurgerPret: Produit[] = burgerDispo.slice();
+      const copieBurgerPret: Burger[] = burgerDispo.slice();
       copieBurgerPret.push(currentPlat);
-      // A METTRE EN PLACE EN MEME TEMPS QUE LES BURGERS
-      // setBurgerDispo(copieBurgerPret)
+      setBurgerDispo(copieBurgerPret);
     } else if ("complement" in currentPlat) {
       const copieFritePret: Accompagnement[] = fritesDispo.slice();
       copieFritePret.push(currentPlat);
@@ -458,15 +333,13 @@ function ComptoirAssemblage({
         setFritesDispo(copieFritePret);
       }
     } else if ("nombreNugget" in currentPlat) {
-      const copieNugget: BoiteNugget[] = nuggetsDispo.slice();
+      const copieNugget: BoiteNugget[] = nuggetsGlobal.slice();
       const quelNugget: number = copieNugget.findIndex(
         (e) => e.friture === currentPlat.nom
       );
       copieNugget[quelNugget].quantitePret =
         copieNugget[quelNugget].quantitePret + 1;
-      if (setNuggetsStateContext !== undefined) {
-        setNuggetsStateContext(copieNugget);
-      }
+      setNuggetsGlobal(copieNugget);
     } else if ("saveur" in currentPlat) {
       const copieBoissonPret: Boisson[] = fontainePret.slice();
       copieBoissonPret.push(currentPlat);
@@ -982,7 +855,7 @@ function ComptoirAssemblage({
                       : "tabContenComptoirA"
                   }
                 >
-                  {burger.map((e, i) => (
+                  {burgerDispo.map((e, i) => (
                     <button
                       key={i}
                       onClick={() => handleClickRemplirPlateau(e)}
@@ -1024,40 +897,46 @@ function ComptoirAssemblage({
                   }
                 >
                   <button
-                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[0])}
-                    disabled={nuggetsDispo[0].quantitePret === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsGlobal[0])}
+                    disabled={
+                      nuggetsGlobal[0].quantitePret === 0 ? true : false
+                    }
                     className={
-                      nuggetsDispo[0].quantitePret === 0
+                      nuggetsGlobal[0].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    {nuggetsDispo[0].friture} <br />
-                    disponible : {nuggetsDispo[0].quantitePret}
+                    {nuggetsGlobal[0].friture} <br />
+                    disponible : {nuggetsGlobal[0].quantitePret}
                   </button>
                   <button
-                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[1])}
-                    disabled={nuggetsDispo[1].quantitePret === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsGlobal[1])}
+                    disabled={
+                      nuggetsGlobal[1].quantitePret === 0 ? true : false
+                    }
                     className={
-                      nuggetsDispo[1].quantitePret === 0
+                      nuggetsGlobal[1].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    {nuggetsDispo[1].friture} <br />
-                    disponible : {nuggetsDispo[1].quantitePret}
+                    {nuggetsGlobal[1].friture} <br />
+                    disponible : {nuggetsGlobal[1].quantitePret}
                   </button>
                   <button
-                    onClick={() => handleClickRemplirPlateau(nuggetsDispo[2])}
-                    disabled={nuggetsDispo[2].quantitePret === 0 ? true : false}
+                    onClick={() => handleClickRemplirPlateau(nuggetsGlobal[2])}
+                    disabled={
+                      nuggetsGlobal[2].quantitePret === 0 ? true : false
+                    }
                     className={
-                      nuggetsDispo[2].quantitePret === 0
+                      nuggetsGlobal[2].quantitePret === 0
                         ? "buttonNeutre buttonNuggetVide"
                         : "buttonNeutre"
                     }
                   >
-                    {nuggetsDispo[2].friture} <br />
-                    disponible : {nuggetsDispo[2].quantitePret}
+                    {nuggetsGlobal[2].friture} <br />
+                    disponible : {nuggetsGlobal[2].quantitePret}
                   </button>
                 </div>
                 <div

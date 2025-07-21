@@ -10,10 +10,7 @@ import {
   EtatBacAFrite,
 } from "../../elements/ingredientsQuantite";
 import { taille, frite } from "../../elements/stocks";
-import {
-  FritesContextSetter,
-  CommandesAPreparerContext,
-} from "../../CommandeContext";
+import { CommandesAPreparerContext } from "../../CommandeContext";
 import {
   Accompagnement,
   accompagnements,
@@ -32,11 +29,12 @@ import {
 function Friteuse({
   stocksCuisine,
   setStocksCuisine,
+  setFritesDispo,
 }: {
   stocksCuisine: StocksActuelsType[];
   setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  setFritesDispo: React.Dispatch<React.SetStateAction<Accompagnement[]>>;
 }) {
-  const setFrites = useContext(FritesContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuse: number = 6;
@@ -123,9 +121,9 @@ function Friteuse({
 
   useEffect(() => {
     emplacementVide(tailleRackAFrite, rackAFrite, null, null, setPlaceVideRack);
-    if (setFrites !== undefined && rackAFrite.length > 0) {
+    if (rackAFrite.length > 0) {
       const newFrite: Accompagnement[] = rackAFrite.slice();
-      setFrites(newFrite);
+      setFritesDispo(newFrite);
     }
   }, [rackAFrite]);
 

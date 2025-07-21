@@ -4,33 +4,23 @@ import Cuisine from "./components/cuisine/Cuisine";
 import BureauManager from "./components/bureauManager/BureauManager";
 import Comptoir from "./components/comptoir/Comptoir";
 import {
-  FritesContext,
-  FritesContextSetter,
-  NuggetsContext,
-  NuggetsContextSetter,
-  BurgersContext,
-  BurgersContextSetter,
   CommandesAPreparerContext,
   CommandesAPreparerContextSetter,
-  BoiteNugget,
   TailleEtPrixCommandeContext,
   TailleEtPrixCommandeContextSetter,
 } from "./CommandeContext";
-import {
-  FondDeCaisseContext,
-  FondDeCaisseContextSetter,
-} from "./CaisseContext";
 import {
   Accompagnement,
   Burger,
   ProduitEtMenu,
   nuggets,
+  BoiteNugget,
 } from "./elements/burgers";
 import * as stocks from "./elements/stocks";
 import { StocksActuelsType, stocksActuels } from "./StocksActuels";
 
 function App() {
-  const [frites, setFrites] = useState<Accompagnement[]>([
+  const [fritesDispo, setFritesDispo] = useState<Accompagnement[]>([
     {
       nom: "Vide",
       complement: "Vide",
@@ -40,29 +30,28 @@ function App() {
       prix: 0,
     },
   ]);
-  const [nuggetsStateContext, setNuggetsStateContext] = useState<BoiteNugget[]>(
-    [
-      {
-        friture: nuggets[0].nom,
-        nombreNugget: nuggets[0].nombreNugget,
-        quantitePret: 0,
-        prix: nuggets[0].prix,
-      },
-      {
-        friture: nuggets[1].nom,
-        nombreNugget: nuggets[1].nombreNugget,
-        quantitePret: 0,
-        prix: nuggets[1].prix,
-      },
-      {
-        friture: nuggets[2].nom,
-        nombreNugget: nuggets[2].nombreNugget,
-        quantitePret: 0,
-        prix: nuggets[2].prix,
-      },
-    ]
-  );
-  const [burgers, setBurgers] = useState<Burger[]>([
+
+  const [nuggetsGlobal, setNuggetsGlobal] = useState<BoiteNugget[]>([
+    {
+      friture: nuggets[0].nom,
+      nombreNugget: nuggets[0].nombreNugget,
+      quantitePret: 0,
+      prix: nuggets[0].prix,
+    },
+    {
+      friture: nuggets[1].nom,
+      nombreNugget: nuggets[1].nombreNugget,
+      quantitePret: 0,
+      prix: nuggets[1].prix,
+    },
+    {
+      friture: nuggets[2].nom,
+      nombreNugget: nuggets[2].nombreNugget,
+      quantitePret: 0,
+      prix: nuggets[2].prix,
+    },
+  ]);
+  const [burgerDispo, setBurgerDispo] = useState<Burger[]>([
     {
       nom: "Vide",
       pain: "Vide",
@@ -131,36 +120,35 @@ function App() {
         <CommandesAPreparerContextSetter value={setCommandeAPreparer}>
           <TailleEtPrixCommandeContext value={tailleEtPrixCommande}>
             <TailleEtPrixCommandeContextSetter value={setTailleEtPrixCommande}>
-              <FondDeCaisseContext value={fondDeCaisse}>
-                <FondDeCaisseContextSetter value={setFondDeCaisse}>
-                  <BureauManager
-                    stocksCuisine={stocksCuisine}
-                    setStocksCuisine={setStocksCuisine}
-                    stocksComptoir={stocksComptoir}
-                    setStocksComptoir={setStocksComptoir}
-                  />
-                  <FritesContext value={frites}>
-                    <FritesContextSetter value={setFrites}>
-                      <NuggetsContext value={nuggetsStateContext}>
-                        <NuggetsContextSetter value={setNuggetsStateContext}>
-                          <BurgersContext value={burgers}>
-                            <BurgersContextSetter value={setBurgers}>
-                              <Cuisine
-                                stocksCuisine={stocksCuisine}
-                                setStocksCuisine={setStocksCuisine}
-                              />
-                              <Comptoir
-                                stocksComptoir={stocksComptoir}
-                                setStocksComptoir={setStocksComptoir}
-                              />
-                            </BurgersContextSetter>
-                          </BurgersContext>
-                        </NuggetsContextSetter>
-                      </NuggetsContext>
-                    </FritesContextSetter>
-                  </FritesContext>
-                </FondDeCaisseContextSetter>
-              </FondDeCaisseContext>
+              <BureauManager
+                stocksCuisine={stocksCuisine}
+                setStocksCuisine={setStocksCuisine}
+                stocksComptoir={stocksComptoir}
+                setStocksComptoir={setStocksComptoir}
+                fondDeCaisse={fondDeCaisse}
+                setFondDeCaisse={setFondDeCaisse}
+              />
+              <Cuisine
+                stocksCuisine={stocksCuisine}
+                setStocksCuisine={setStocksCuisine}
+                setFritesDispo={setFritesDispo}
+                nuggetsGlobal={nuggetsGlobal}
+                setNuggetsGlobal={setNuggetsGlobal}
+                burgerDispo={burgerDispo}
+                setBurgerDispo={setBurgerDispo}
+              />
+              <Comptoir
+                stocksComptoir={stocksComptoir}
+                setStocksComptoir={setStocksComptoir}
+                fondDeCaisse={fondDeCaisse}
+                setFondDeCaisse={setFondDeCaisse}
+                fritesDispo={fritesDispo}
+                setFritesDispo={setFritesDispo}
+                nuggetsGlobal={nuggetsGlobal}
+                setNuggetsGlobal={setNuggetsGlobal}
+                burgerDispo={burgerDispo}
+                setBurgerDispo={setBurgerDispo}
+              />
             </TailleEtPrixCommandeContextSetter>
           </TailleEtPrixCommandeContext>
         </CommandesAPreparerContextSetter>

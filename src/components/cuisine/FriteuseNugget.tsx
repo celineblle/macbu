@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import "./FriteuseNugget.css";
 import close from "../../assets/close.svg";
-import { Produit } from "../../elements/burgers";
+import { Produit, BoiteNugget } from "../../elements/burgers";
 import {
   Friture,
   frituresCuisineQuantite,
 } from "../../elements/ingredientsQuantite";
-import {
-  NuggetsContextSetter,
-  CommandesAPreparerContext,
-  BoiteNugget,
-  NuggetsContext,
-} from "../../CommandeContext";
+import { CommandesAPreparerContext } from "../../CommandeContext";
 import {
   demantelerMenu,
   quiEstQuoi,
@@ -28,15 +23,17 @@ function FriteuseNugget({
   bacFritureRef,
   stocksCuisine,
   setStocksCuisine,
+  nuggetsGlobal,
+  setNuggetsGlobal,
 }: {
   bacFriture: Friture[];
   setBacFriture: React.Dispatch<React.SetStateAction<Friture[]>>;
   bacFritureRef: React.RefObject<Friture[]>;
   stocksCuisine: StocksActuelsType[];
   setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  nuggetsGlobal: BoiteNugget[];
+  setNuggetsGlobal: React.Dispatch<React.SetStateAction<BoiteNugget[]>>;
 }) {
-  const nuggetsStateContext = useContext(NuggetsContext);
-  const setNuggetsStateContext = useContext(NuggetsContextSetter);
   const commandeAPreparer = useContext(CommandesAPreparerContext);
 
   const tailleFriteuseGp: number = 6;
@@ -162,11 +159,10 @@ function FriteuseNugget({
     indexBoite: number
   ): void {
     if (bacFritureRef.current[0].quantiteSachet > nugget.nombreNugget) {
-      const allBoite: BoiteNugget[] = nuggetsStateContext.slice();
+      const allBoite: BoiteNugget[] = nuggetsGlobal.slice();
       allBoite[indexBoite].quantitePret = allBoite[indexBoite].quantitePret + 1;
-      if (setNuggetsStateContext !== undefined) {
-        setNuggetsStateContext(allBoite);
-      }
+      setNuggetsGlobal(allBoite);
+
       const copieBacFriture = bacFritureRef.current.slice();
       copieBacFriture[0].quantiteSachet =
         copieBacFriture[0].quantiteSachet - nugget.nombreNugget;
@@ -193,7 +189,7 @@ function FriteuseNugget({
         <div className="contentFrontPageNugget">
           <h4>Pret</h4>
           <ul id="listeStockNugget">
-            {nuggetsStateContext.map((nugget, index) => (
+            {nuggetsGlobal.map((nugget, index) => (
               <li key={index}>
                 {nugget.friture} : {nugget.quantitePret}
               </li>
@@ -238,7 +234,7 @@ function FriteuseNugget({
               <div>
                 <h3>Boite à nugget</h3>
                 <h4>Fabrication</h4>
-                {nuggetsStateContext.map((nugget, index) => (
+                {nuggetsGlobal.map((nugget, index) => (
                   <div key={index}>
                     <button
                       className={
@@ -254,7 +250,7 @@ function FriteuseNugget({
                 ))}
                 <h4>Pret</h4>
                 <ul className="pretNugget">
-                  {nuggetsStateContext.map((nugget, index) => (
+                  {nuggetsGlobal.map((nugget, index) => (
                     <li key={index}>
                       {nugget.friture} : {nugget.quantitePret}
                     </li>

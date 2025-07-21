@@ -4,7 +4,14 @@ import Caisse from "./Caisse";
 import ComptoirAssemblage from "./ComptoirAssemblage";
 import PosteBoisson from "./Boisson";
 import Glace from "./Glace";
-import { Boisson, GlaceType, ProduitEtMenu } from "../../elements/burgers";
+import {
+  Accompagnement,
+  Boisson,
+  BoiteNugget,
+  Burger,
+  GlaceType,
+  ProduitEtMenu,
+} from "../../elements/burgers";
 import { affichageCommande, randomCommande } from "./gestionCommandes";
 import {
   CommandesAPreparerContext,
@@ -15,9 +22,25 @@ import { StocksActuelsType } from "../../StocksActuels";
 function Comptoir({
   stocksComptoir,
   setStocksComptoir,
+  fondDeCaisse,
+  setFondDeCaisse,
+  fritesDispo,
+  setFritesDispo,
+  nuggetsGlobal,
+  setNuggetsGlobal,
+  burgerDispo,
+  setBurgerDispo,
 }: {
   stocksComptoir: StocksActuelsType[];
   setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  fondDeCaisse: number;
+  setFondDeCaisse: React.Dispatch<React.SetStateAction<number>>;
+  fritesDispo: Accompagnement[];
+  setFritesDispo: React.Dispatch<React.SetStateAction<Accompagnement[]>>;
+  nuggetsGlobal: BoiteNugget[];
+  setNuggetsGlobal: React.Dispatch<React.SetStateAction<BoiteNugget[]>>;
+  burgerDispo: Burger[];
+  setBurgerDispo: React.Dispatch<React.SetStateAction<Burger[]>>;
 }) {
   const commandeAPreparer = useContext(CommandesAPreparerContext);
   const setCommandeAPreparer = useContext(CommandesAPreparerContextSetter);
@@ -99,7 +122,7 @@ function Comptoir({
 
   return (
     <div id="comptoirComponent">
-      <Caisse />
+      <Caisse fondDeCaisse={fondDeCaisse} />
       <ComptoirAssemblage
         glacesCommande={glacesCommande}
         setGlacesCommande={setGlacesCommande}
@@ -113,6 +136,14 @@ function Comptoir({
         posteGlaceFondueRef={posteGlaceFondueRef}
         stocksComptoir={stocksComptoir}
         setStocksComptoir={setStocksComptoir}
+        fondDeCaisse={fondDeCaisse}
+        setFondDeCaisse={setFondDeCaisse}
+        fritesDispo={fritesDispo}
+        setFritesDispo={setFritesDispo}
+        nuggetsGlobal={nuggetsGlobal}
+        setNuggetsGlobal={setNuggetsGlobal}
+        burgerDispo={burgerDispo}
+        setBurgerDispo={setBurgerDispo}
       />
       <PosteBoisson
         fontainePret={fontainePret}

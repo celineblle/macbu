@@ -1,9 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./BureauManager.css";
-import {
-  FondDeCaisseContext,
-  FondDeCaisseContextSetter,
-} from "../../CaisseContext";
 import close from "../../assets/close.svg";
 import { sac } from "../../elements/stocks";
 import {
@@ -32,15 +28,16 @@ function BureauManager({
   setStocksCuisine,
   stocksComptoir,
   setStocksComptoir,
+  fondDeCaisse,
+  setFondDeCaisse,
 }: {
   stocksCuisine: StocksActuelsType[];
   setStocksCuisine: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
   stocksComptoir: StocksActuelsType[];
   setStocksComptoir: React.Dispatch<React.SetStateAction<StocksActuelsType[]>>;
+  fondDeCaisse: number;
+  setFondDeCaisse: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const fondDeCaisse = useContext(FondDeCaisseContext);
-  const setFondDeCaisse = useContext(FondDeCaisseContextSetter);
-
   const [buttonActionModalBureau, setButtonActionModalBureau] =
     useState<boolean>(false);
 
