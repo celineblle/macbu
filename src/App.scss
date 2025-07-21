@@ -102,8 +102,8 @@ hr {
   width: 100%;
   height: 100%;
   overflow: scroll;
-  background-color: rgba(0, 0, 0, 0.4);
   animation-name: animatetop;
+  background-color: rgba(0, 0, 0, 0.4);
   animation-duration: 0.4s;
 }
 
@@ -230,5 +230,16 @@ hr {
     background-color: transparent;
     border: 2px solid style.$grisBordure;
     cursor: default;
+  }
+}
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
   }
 }
