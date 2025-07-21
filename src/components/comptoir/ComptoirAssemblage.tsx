@@ -35,6 +35,7 @@ import {
   StocksActuelInteriorType,
 } from "../../StocksActuels";
 import { retirerStock } from "../../elements/function";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 function ComptoirAssemblage({
   glacesCommande,
@@ -237,6 +238,44 @@ function ComptoirAssemblage({
   const [sacAffichage, setSacAffichage] = useState<string[][]>([]);
   const [tabTaille, setTabTaille] = useState<number[]>([]);
   const [tabPrix, setTabPrix] = useState<number[]>([]);
+
+  const finirPlateau = () => (
+    <div>
+      <p>Validez un plateau pour finir la commande</p>
+    </div>
+  );
+  const displayFinirPlateau = () => {
+    toast.error(finirPlateau);
+  };
+
+  const noPlateau = () => (
+    <div>
+      <p>On ne peut pas mettre de sac sur un plateau vide.</p>
+      <p>Veuillez selectionner un autre plateau</p>
+    </div>
+  );
+  const displayNoPlateau = () => {
+    toast.error(noPlateau);
+  };
+
+  const validCommande = (prixCommande: number) => (
+    <div>
+      <p>Commande délivrée : {prixCommande}</p>
+    </div>
+  );
+  const displayValidCommande = (prixCommande: number) => {
+    toast.success(validCommande(prixCommande));
+  };
+
+  const noSac = () => (
+    <div>
+      <p>La commande ne peut pas etre validé sans sac</p>
+    </div>
+  );
+
+  const displayNoSac = () => {
+    toast.error(noSac);
+  };
 
   function handleClickActionModal(): void {
     setButtonActionModalComptoirA(!buttonActionModalComptoirA);
@@ -486,6 +525,10 @@ function ComptoirAssemblage({
   }
 
   function handleClickFinirPlateau(plateau: number): void {
+    if (sacAffichage[plateau][0] === "Aucun Sac") {
+      displayNoSac();
+    }
+
     setIdPlateauPrepa(plateau);
     setValiderPlateau(true);
   }
@@ -526,6 +569,8 @@ function ComptoirAssemblage({
 
           retirerStock(stocksComptoir, setStocksComptoir, "sac", stockFrigoSac);
         }
+      } else {
+        displayNoPlateau();
       }
     }
   }
@@ -656,6 +701,7 @@ function ComptoirAssemblage({
       } else if (malusPrix > finalPrix) {
         finalPrix = 0;
       }
+      displayValidCommande(finalPrix);
 
       finalPrix = fondDeCaisse + finalPrix;
       if (setFondDeCaisse !== undefined) {
@@ -682,11 +728,10 @@ function ComptoirAssemblage({
       if (setTailleEtPrixCommande !== undefined) {
         setTailleEtPrixCommande(copieTaillePrix);
       }
-
       setIdPlateauPrepa(0);
       setValiderPlateau(false);
     } else {
-      console.log("a finir");
+      displayFinirPlateau();
     }
   }
 
@@ -762,6 +807,19 @@ function ComptoirAssemblage({
 
       <div className={buttonActionModalComptoirA ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Slide}
+          />
           <div id="headerModal">
             <h2>Comptoir</h2>
             <h3>Budget : {fondDeCaisse} €</h3>

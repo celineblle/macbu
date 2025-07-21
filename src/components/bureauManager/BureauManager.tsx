@@ -25,6 +25,7 @@ import {
   nomDesPostesComptoir,
   StocksActuelsType,
 } from "../../StocksActuels";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 function BureauManager({
   stocksCuisine,
@@ -46,6 +47,15 @@ function BureauManager({
   function handleClickActionModal(): void {
     setButtonActionModalBureau(!buttonActionModalBureau);
   }
+
+  const lowBudget = () => (
+    <div>
+      <p>Il n&apos;y a pas assez de budget pour acheter ces ingrédients</p>
+    </div>
+  );
+  const displayLowBudget = () => {
+    toast.error(lowBudget);
+  };
 
   const isItComptoir = (poste: string) => {
     let inComptoir: boolean = false;
@@ -102,6 +112,8 @@ function BureauManager({
       } else {
         insertProduct(stocksCuisine, setStocksCuisine);
       }
+    } else {
+      displayLowBudget();
     }
   }
 
@@ -116,6 +128,19 @@ function BureauManager({
       </div>
       <div className={buttonActionModalBureau ? "modalOpen" : "modalClose"}>
         <div className="modalContent">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Slide}
+          />
           <div id="headerModal">
             <h2>Magasin</h2>
             <h3>Budget : {fondDeCaisse} €</h3>
