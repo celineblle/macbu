@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Cuisine from "./components/cuisine/Cuisine";
 import BureauManager from "./components/bureauManager/BureauManager";

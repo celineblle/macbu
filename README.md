@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# MacBu
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projet personnel inspiré par Universal Paperclips et une experience professionnelle dans un fastfood.
 
-Currently, two official plugins are available:
+## Concept
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Jeu au clic simulant la cuisine et le comptoir d'un restaurant fastfood.
+A la réception des commandes, le joueur doit cuisiner et préparer les ingredients, pour fabriquer le plateau et la servir à la commande correspondante.
 
-## Expanding the ESLint configuration
+## Techs 
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+React typescript
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Versions 
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+V1 : Création de l'interface et des features de jeu.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+V2 : Création de profils user pour identifier les joueurs et créer un classement tous joueurs confondu (création de la BDD joueurs et back identification + pages des scores en front) - à venir
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+V3 : Possibiliter d'integrer des employés dans le restaurant pour automatiser les postes - à venir
+
+V4 : Integration du temps dans le jeu pour avoir une variation du flux de commande en fonction de l'heure et d'evenements fictifs. Intégration de malus sur le temps de préparation des commandes - à venir
+
+V5 : Création d'un systeme de franchise et d'un jeux avec plusieurs restaurants en simultané. Gestion de l'argent plus poussé avec l'intégration d'enjeux économiques influencé par la localisation des restaurants (villes, campagne, centre ville, périphérie/ zone industrielles), la gestion de l'ouverture de nouvelles franchise et la rentabilité économique d'une entité restorant. 
+Intégration d'une fin "banqueroute" - à venir 
